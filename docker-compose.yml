@@ -1,0 +1,76 @@
+version: '3.8'
+
+services:
+  # PostgreSQL數據庫
+  postgres:
+    image: postgres:15-alpine
+    container_name: multi-ai-platform-db
+    environment:
+      POSTGRES_DB: multi_ai_platform
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  # Redis緩存
+  redis:
+    image: redis:7-alpine
+    container_name: multi-ai-platform-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  # 後端API服務
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: multi-ai-platform-backend
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/multi_ai_platform
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+    command: npm run dev
+
+  # 前端應用
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: multi-ai-platform-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - app-network
+    command: npm run dev
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  app-network:
+    driver: bridge
