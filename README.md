@@ -1,6 +1,6 @@
-# 多功能AI平台
+# ITR-AI-Platform
 
-一個整合多種AI服務提供商的現代化Web應用程序，支持聊天、圖片生成、影片生成等功能。
+多功能AI平台 - 一個整合多種AI服務提供商的現代化Web應用程序，支持聊天、圖片生成、影片生成等功能。
 
 ## 功能特色
 
@@ -45,8 +45,8 @@
 
 1. **克隆專案**
 ```bash
-git clone <repository-url>
-cd multi-ai-platform
+git clone https://github.com/itr20250124/ITR-AI-Platform.git
+cd ITR-AI-Platform
 ```
 
 2. **安裝依賴**
@@ -81,7 +81,7 @@ npm run dev
 ## 專案結構
 
 ```
-multi-ai-platform/
+ITR-AI-Platform/
 ├── frontend/                 # React前端應用
 │   ├── src/
 │   │   ├── components/      # React組件
