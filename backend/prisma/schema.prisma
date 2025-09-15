@@ -89,6 +89,7 @@ model GeneratedImage {
   parameters Json     @default("{}")
   imageUrl   String
   status     String   @default("pending") // 'pending' | 'completed' | 'failed'
+  metadata   Json?    // 存儲額外的元數據，如模型、尺寸、類型等
   createdAt  DateTime @default(now())
 
   // 關聯用戶

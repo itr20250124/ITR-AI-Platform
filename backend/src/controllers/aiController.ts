@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import { AIServiceFactory } from '../services/ai/AIServiceFactory';
 import { AIServiceError } from '../types';
 
-const aiFactory = new AIServiceFactory();
-
 /**
  * 發送聊天訊息
  */
@@ -11,7 +9,7 @@ export const sendChatMessage = async (req: Request, res: Response) => {
   try {
     const { message, provider = 'openai', parameters = {} } = req.body;
 
-    const chatService = aiFactory.createChatService(provider);
+    const chatService = AIServiceFactory.createChatService(provider);
     const response = await chatService.sendMessage(message, parameters);
 
     res.json({
@@ -25,7 +23,7 @@ export const sendChatMessage = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         error: {
-          type: error.type,
+          code: error.code,
           message: error.message,
           provider: error.provider,
         },
@@ -35,7 +33,7 @@ export const sendChatMessage = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: {
-        type: 'INTERNAL_ERROR',
+        code: 'INTERNAL_ERROR',
         message: 'Internal server error',
       },
     });
@@ -49,7 +47,7 @@ export const sendChatMessageWithContext = async (req: Request, res: Response) =>
   try {
     const { messages, provider = 'openai', parameters = {} } = req.body;
 
-    const chatService = aiFactory.createChatService(provider);
+    const chatService = AIServiceFactory.createChatService(provider);
     const response = await chatService.sendMessageWithContext(messages, parameters);
 
     res.json({
@@ -63,7 +61,7 @@ export const sendChatMessageWithContext = async (req: Request, res: Response) =>
       return res.status(400).json({
         success: false,
         error: {
-          type: error.type,
+          code: error.code,
           message: error.message,
           provider: error.provider,
         },
@@ -73,7 +71,7 @@ export const sendChatMessageWithContext = async (req: Request, res: Response) =>
     res.status(500).json({
       success: false,
       error: {
-        type: 'INTERNAL_ERROR',
+        code: 'INTERNAL_ERROR',
         message: 'Internal server error',
       },
     });
@@ -87,7 +85,7 @@ export const generateImage = async (req: Request, res: Response) => {
   try {
     const { prompt, provider = 'openai', parameters = {} } = req.body;
 
-    const imageService = aiFactory.createImageService(provider);
+    const imageService = AIServiceFactory.createImageService(provider);
     const response = await imageService.generateImage(prompt, parameters);
 
     res.json({
@@ -101,7 +99,7 @@ export const generateImage = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         error: {
-          type: error.type,
+          code: error.code,
           message: error.message,
           provider: error.provider,
         },
@@ -111,7 +109,7 @@ export const generateImage = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: {
-        type: 'INTERNAL_ERROR',
+        code: 'INTERNAL_ERROR',
         message: 'Internal server error',
       },
     });
@@ -136,14 +134,9 @@ export const createImageVariation = async (req: Request, res: Response) => {
       });
     }
 
-    const imageService = aiFactory.createImageService(provider);
+    const imageService = AIServiceFactory.createImageService(provider);
     
-    // Convert buffer to File-like object
-    const file = new File([imageFile.buffer], imageFile.originalname, {
-      type: imageFile.mimetype,
-    });
-
-    const response = await imageService.createVariation(file, parameters);
+    const response = await imageService.createImageVariation(imageFile.buffer, parameters);
 
     res.json({
       success: true,
@@ -156,7 +149,7 @@ export const createImageVariation = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         error: {
-          type: error.type,
+          code: error.code,
           message: error.message,
           provider: error.provider,
         },
@@ -166,7 +159,7 @@ export const createImageVariation = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: {
-        type: 'INTERNAL_ERROR',
+        code: 'INTERNAL_ERROR',
         message: 'Internal server error',
       },
     });
@@ -194,17 +187,9 @@ export const editImage = async (req: Request, res: Response) => {
     const imageFile = files.image[0];
     const maskFile = files.mask[0];
 
-    const imageService = aiFactory.createImageService(provider);
+    const imageService = AIServiceFactory.createImageService(provider);
     
-    // Convert buffers to File-like objects
-    const image = new File([imageFile.buffer], imageFile.originalname, {
-      type: imageFile.mimetype,
-    });
-    const mask = new File([maskFile.buffer], maskFile.originalname, {
-      type: maskFile.mimetype,
-    });
-
-    const response = await imageService.editImage(image, mask, prompt, parameters);
+    const response = await imageService.editImage(imageFile.buffer, maskFile.buffer, prompt, parameters);
 
     res.json({
       success: true,
@@ -217,7 +202,7 @@ export const editImage = async (req: Request, res: Response) => {
       return res.status(400).json({
         success: false,
         error: {
-          type: error.type,
+          code: error.code,
           message: error.message,
           provider: error.provider,
         },
@@ -227,7 +212,7 @@ export const editImage = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       error: {
-        type: 'INTERNAL_ERROR',
+        code: 'INTERNAL_ERROR',
         message: 'Internal server error',
       },
     });

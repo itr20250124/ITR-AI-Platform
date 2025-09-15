@@ -137,14 +137,17 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
   /**
    * 圖片變體生成
    */
-  async createVariation(
-    imageFile: File | Blob,
-    parameters: Partial<ImageParameters> = {}
+  async createImageVariation(
+    imageBuffer: Buffer,
+    parameters: ImageParameters = {}
   ): Promise<ImageResponse> {
     try {
       const mergedParams = this.mergeParameters(parameters);
 
       const response = await this.retryHandler.execute(async () => {
+        // 將Buffer轉換為File對象
+        const imageFile = new File([imageBuffer], 'image.png', { type: 'image/png' });
+        
         return await this.openai.images.createVariation({
           image: imageFile,
           n: mergedParams.n || 1,
@@ -182,15 +185,19 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
    * 圖片編輯
    */
   async editImage(
-    imageFile: File | Blob,
-    maskFile: File | Blob,
+    imageBuffer: Buffer,
+    maskBuffer: Buffer,
     prompt: string,
-    parameters: Partial<ImageParameters> = {}
+    parameters: ImageParameters = {}
   ): Promise<ImageResponse> {
     try {
       const mergedParams = this.mergeParameters(parameters);
 
       const response = await this.retryHandler.execute(async () => {
+        // 將Buffer轉換為File對象
+        const imageFile = new File([imageBuffer], 'image.png', { type: 'image/png' });
+        const maskFile = new File([maskBuffer], 'mask.png', { type: 'image/png' });
+        
         return await this.openai.images.edit({
           image: imageFile,
           mask: maskFile,

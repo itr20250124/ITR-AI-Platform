@@ -2,6 +2,7 @@ import { Router } from 'express';
 import authRoutes from './auth';
 import parameterRoutes from './parameters';
 import aiRoutes from './ai';
+import conversationRoutes from './conversations';
 
 const router = Router();
 
@@ -13,6 +14,9 @@ router.use('/parameters', parameterRoutes);
 
 // AI服務路由
 router.use('/ai', aiRoutes);
+
+// 對話路由
+router.use('/conversations', conversationRoutes);
 
 // API信息端點
 router.get('/', (req, res) => {

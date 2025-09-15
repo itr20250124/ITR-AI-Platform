@@ -7,6 +7,7 @@ import {
   createImageVariation,
   editImage
 } from '../controllers/aiController';
+import { streamChat } from '../controllers/streamingChatController';
 import { authenticateToken } from '../middleware/auth';
 import { validateBody } from '../middleware/validation';
 import { 
@@ -47,6 +48,13 @@ router.post('/chat', authenticateToken, validateBody(chatMessageSchema), sendCha
  * @access Private
  */
 router.post('/chat/context', authenticateToken, validateBody(chatContextSchema), sendChatMessageWithContext);
+
+/**
+ * 串流聊天
+ * @route POST /api/ai/chat/stream
+ * @access Private
+ */
+router.post('/chat/stream', authenticateToken, validateBody(chatContextSchema), streamChat);
 
 /**
  * 生成圖片
