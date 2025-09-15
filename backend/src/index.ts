@@ -4,9 +4,14 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { ServerConfig } from './types';
 import apiRoutes from './routes';
+import { AIServiceFactory } from './services/ai/AIServiceFactory';
+import { rateLimiterManager } from './services/ai/utils/RateLimiter';
 
 // 載入環境變量
 dotenv.config();
+
+// 初始化AI服務
+AIServiceFactory.initialize();
 
 const app = express();
 
