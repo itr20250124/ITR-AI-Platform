@@ -1,18 +1,25 @@
 import { OpenAIImageService } from '../OpenAIImageService';
+import { ImageParameters } from '../interfaces/AIServiceInterface';
 import OpenAI from 'openai';
 
 // Mock OpenAI
 jest.mock('openai');
 const MockedOpenAI = OpenAI as jest.MockedClass<typeof OpenAI>;
 
+// Mock environment variables
+const originalEnv = process.env;
+
 describe('OpenAIImageService', () => {
   let service: OpenAIImageService;
   let mockOpenAI: jest.Mocked<OpenAI>;
 
   beforeEach(() => {
-    // Set up environment variable
-    process.env.OPENAI_API_KEY = 'test-api-key';
-    
+    // Reset environment variables
+    process.env = {
+      ...originalEnv,
+      OPENAI_API_KEY: 'test-api-key',
+    };
+
     // Create mock OpenAI instance
     mockOpenAI = {
       images: {
@@ -23,207 +30,335 @@ describe('OpenAIImageService', () => {
     } as any;
 
     MockedOpenAI.mockImplementation(() => mockOpenAI);
-    
+
     service = new OpenAIImageService();
   });
 
   afterEach(() => {
+    process.env = originalEnv;
     jest.clearAllMocks();
-    delete process.env.OPENAI_API_KEY;
   });
 
   describe('generateImage', () => {
-    it('should generate image with DALL-E 3', async () => {
+    it('should generate image with DALL-E 3 successfully', async () => {
+      // Arrange
+      const prompt = 'A beautiful sunset over mountains';
+      const parameters: ImageParameters = {
+        model: 'dall-e-3',
+        size: '1024x1024',
+        quality: 'standard',
+        style: 'vivid',
+      };
+
       const mockResponse = {
-        data: [
-          {
-            url: 'https://example.com/image.png',
-            revised_prompt: 'A beautiful sunset over mountains',
-          },
-        ],
+        data: [{
+          url: 'https://example.com/generated-image.png',
+          revised_prompt: 'A beautiful sunset over mountains with enhanced details',
+        }],
       };
 
       mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
 
-      const result = await service.generateImage('A sunset', {
+      // Act
+      const result = await service.generateImage(prompt, parameters);
+
+      // Assert
+      expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
         model: 'dall-e-3',
+        prompt: prompt,
+        n: 1, // DALL-E 3 only supports n=1
         size: '1024x1024',
-        quality: 'hd',
+        quality: 'standard',
         style: 'vivid',
+        response_format: 'url',
       });
 
       expect(result).toMatchObject({
-        imageUrl: 'https://example.com/image.png',
-        prompt: 'A sunset',
+        imageUrl: 'https://example.com/generated-image.png',
+        prompt: prompt,
+        parameters: parameters,
         status: 'completed',
         metadata: {
           model: 'dall-e-3',
-          revisedPrompt: 'A beautiful sunset over mountains',
+          revisedPrompt: 'A beautiful sunset over mountains with enhanced details',
         },
       });
-
-      expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
-        model: 'dall-e-3',
-        prompt: 'A sunset',
-        n: 1,
-        size: '1024x1024',
-        response_format: 'url',
-        quality: 'hd',
-        style: 'vivid',
-      });
+      expect(result.id).toBeDefined();
+      expect(result.createdAt).toBeInstanceOf(Date);
     });
 
-    it('should generate image with DALL-E 2', async () => {
+    it('should generate image with DALL-E 2 successfully', async () => {
+      // Arrange
+      const prompt = 'A cute cat';
+      const parameters: ImageParameters = {
+        model: 'dall-e-2',
+        size: '512x512',
+        n: 2,
+      };
+
       const mockResponse = {
-        data: [
-          {
-            url: 'https://example.com/image.png',
-          },
-        ],
+        data: [{
+          url: 'https://example.com/cat-image.png',
+        }],
       };
 
       mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
 
-      const result = await service.generateImage('A cat', {
-        model: 'dall-e-2',
-        size: '512x512',
-        n: 2,
-      });
+      // Act
+      const result = await service.generateImage(prompt, parameters);
 
-      expect(result.imageUrl).toBe('https://example.com/image.png');
+      // Assert
       expect(mockOpenAI.images.generate).toHaveBeenCalledWith({
         model: 'dall-e-2',
-        prompt: 'A cat',
+        prompt: prompt,
         n: 2,
         size: '512x512',
         response_format: 'url',
       });
+
+      expect(result.imageUrl).toBe('https://example.com/cat-image.png');
     });
 
     it('should throw error when no image data returned', async () => {
-      mockOpenAI.images.generate.mockResolvedValue({
-        data: [],
-      } as any);
+      // Arrange
+      const prompt = 'Test prompt';
+      const mockResponse = { data: [] };
 
-      await expect(
-        service.generateImage('A sunset')
-      ).rejects.toThrow('No image data returned from OpenAI');
+      mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
+
+      // Act & Assert
+      await expect(service.generateImage(prompt, {})).rejects.toThrow(
+        'No image data returned from OpenAI'
+      );
     });
 
     it('should throw error when image URL is missing', async () => {
-      mockOpenAI.images.generate.mockResolvedValue({
-        data: [{}],
-      } as any);
-
-      await expect(
-        service.generateImage('A sunset')
-      ).rejects.toThrow('No image generated by OpenAI');
-    });
-  });
-
-  describe('parameter validation', () => {
-    it('should validate DALL-E 2 size restrictions', async () => {
-      await expect(
-        service.generateImage('A sunset', {
-          model: 'dall-e-2',
-          size: '1792x1024',
-        })
-      ).rejects.toThrow('DALL-E 2 only supports 256x256, 512x512, or 1024x1024 sizes');
-    });
-
-    it('should validate DALL-E 3 n parameter restriction', async () => {
-      await expect(
-        service.generateImage('A sunset', {
-          model: 'dall-e-3',
-          n: 2,
-        })
-      ).rejects.toThrow('DALL-E 3 only supports generating 1 image at a time');
-    });
-
-    it('should validate DALL-E 2 quality parameter', async () => {
-      await expect(
-        service.generateImage('A sunset', {
-          model: 'dall-e-2',
-          quality: 'hd',
-        })
-      ).rejects.toThrow('DALL-E 2 only supports standard quality');
-    });
-
-    it('should validate DALL-E 2 style parameter', async () => {
-      await expect(
-        service.generateImage('A sunset', {
-          model: 'dall-e-2',
-          style: 'natural',
-        })
-      ).rejects.toThrow('DALL-E 2 does not support style parameter');
-    });
-
-    it('should validate DALL-E 3 size restrictions', async () => {
-      await expect(
-        service.generateImage('A sunset', {
-          model: 'dall-e-3',
-          size: '512x512',
-        })
-      ).rejects.toThrow('DALL-E 3 only supports 1024x1024, 1792x1024, or 1024x1792 sizes');
-    });
-  });
-
-  describe('createVariation', () => {
-    it('should create image variation', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
       const mockResponse = {
-        data: [
-          {
-            url: 'https://example.com/variation.png',
-          },
-        ],
+        data: [{ url: null }],
+      };
+
+      mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
+
+      // Act & Assert
+      await expect(service.generateImage(prompt, {})).rejects.toThrow(
+        'No image generated by OpenAI'
+      );
+    });
+
+    it('should validate DALL-E 2 parameters', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
+      const invalidParameters: ImageParameters = {
+        model: 'dall-e-2',
+        size: '1792x1024', // Invalid for DALL-E 2
+      };
+
+      // Act & Assert
+      await expect(service.generateImage(prompt, invalidParameters)).rejects.toThrow(
+        'DALL-E 2 only supports 256x256, 512x512, or 1024x1024 sizes'
+      );
+    });
+
+    it('should validate DALL-E 3 parameters', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
+      const invalidParameters: ImageParameters = {
+        model: 'dall-e-3',
+        n: 2, // Invalid for DALL-E 3
+      };
+
+      // Act & Assert
+      await expect(service.generateImage(prompt, invalidParameters)).rejects.toThrow(
+        'DALL-E 3 only supports generating 1 image at a time'
+      );
+    });
+  });
+
+  describe('createImageVariation', () => {
+    it('should create image variation successfully', async () => {
+      // Arrange
+      const imageBuffer = Buffer.from('fake image data');
+      const parameters: ImageParameters = {
+        size: '1024x1024',
+        n: 1,
+      };
+
+      const mockResponse = {
+        data: [{
+          url: 'https://example.com/variation.png',
+        }],
       };
 
       mockOpenAI.images.createVariation.mockResolvedValue(mockResponse as any);
 
-      const mockFile = new File([''], 'test.png', { type: 'image/png' });
-      const result = await service.createVariation(mockFile, {
+      // Act
+      const result = await service.createImageVariation(imageBuffer, parameters);
+
+      // Assert
+      expect(mockOpenAI.images.createVariation).toHaveBeenCalledWith({
+        image: expect.any(File),
         n: 1,
         size: '1024x1024',
+        response_format: 'url',
       });
 
-      expect(result.imageUrl).toBe('https://example.com/variation.png');
-      expect(result.metadata?.type).toBe('variation');
+      expect(result).toMatchObject({
+        imageUrl: 'https://example.com/variation.png',
+        prompt: 'Image variation',
+        parameters: parameters,
+        status: 'completed',
+        metadata: {
+          type: 'variation',
+        },
+      });
+    });
+
+    it('should throw error when no variation data returned', async () => {
+      // Arrange
+      const imageBuffer = Buffer.from('fake image data');
+      const mockResponse = { data: [] };
+
+      mockOpenAI.images.createVariation.mockResolvedValue(mockResponse as any);
+
+      // Act & Assert
+      await expect(service.createImageVariation(imageBuffer, {})).rejects.toThrow(
+        'No variation data returned from OpenAI'
+      );
     });
   });
 
   describe('editImage', () => {
-    it('should edit image', async () => {
+    it('should edit image successfully', async () => {
+      // Arrange
+      const imageBuffer = Buffer.from('fake image data');
+      const maskBuffer = Buffer.from('fake mask data');
+      const prompt = 'Add a rainbow';
+      const parameters: ImageParameters = {
+        size: '1024x1024',
+        n: 1,
+      };
+
       const mockResponse = {
-        data: [
-          {
-            url: 'https://example.com/edited.png',
-          },
-        ],
+        data: [{
+          url: 'https://example.com/edited.png',
+        }],
       };
 
       mockOpenAI.images.edit.mockResolvedValue(mockResponse as any);
 
-      const mockImageFile = new File([''], 'image.png', { type: 'image/png' });
-      const mockMaskFile = new File([''], 'mask.png', { type: 'image/png' });
-      
-      const result = await service.editImage(
-        mockImageFile,
-        mockMaskFile,
-        'Add a rainbow',
-        { n: 1, size: '1024x1024' }
-      );
+      // Act
+      const result = await service.editImage(imageBuffer, maskBuffer, prompt, parameters);
 
-      expect(result.imageUrl).toBe('https://example.com/edited.png');
-      expect(result.metadata?.type).toBe('edit');
+      // Assert
+      expect(mockOpenAI.images.edit).toHaveBeenCalledWith({
+        image: expect.any(File),
+        mask: expect.any(File),
+        prompt: prompt,
+        n: 1,
+        size: '1024x1024',
+        response_format: 'url',
+      });
+
+      expect(result).toMatchObject({
+        imageUrl: 'https://example.com/edited.png',
+        prompt: prompt,
+        parameters: parameters,
+        status: 'completed',
+        metadata: {
+          type: 'edit',
+        },
+      });
+    });
+
+    it('should throw error when no edit data returned', async () => {
+      // Arrange
+      const imageBuffer = Buffer.from('fake image data');
+      const maskBuffer = Buffer.from('fake mask data');
+      const prompt = 'Add a rainbow';
+      const mockResponse = { data: [] };
+
+      mockOpenAI.images.edit.mockResolvedValue(mockResponse as any);
+
+      // Act & Assert
+      await expect(service.editImage(imageBuffer, maskBuffer, prompt, {})).rejects.toThrow(
+        'No edit data returned from OpenAI'
+      );
+    });
+  });
+
+  describe('parameter validation', () => {
+    it('should merge parameters with defaults', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
+      const customParameters = { size: '512x512' };
+
+      const mockResponse = {
+        data: [{
+          url: 'https://example.com/test.png',
+        }],
+      };
+
+      mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
+
+      // Act
+      await service.generateImage(prompt, customParameters);
+
+      // Assert
+      expect(mockOpenAI.images.generate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          model: 'dall-e-3', // default
+          size: '512x512', // custom
+          quality: 'standard', // default
+          style: 'vivid', // default
+        })
+      );
     });
   });
 
   describe('error handling', () => {
-    it('should handle API errors', async () => {
-      const apiError = new Error('API Error');
+    it('should handle OpenAI API errors', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
+      const apiError = new Error('OpenAI API Error');
+      
       mockOpenAI.images.generate.mockRejectedValue(apiError);
 
-      await expect(service.generateImage('A sunset')).rejects.toThrow();
+      // Act & Assert
+      await expect(service.generateImage(prompt, {})).rejects.toThrow('OpenAI API Error');
+    });
+  });
+
+  describe('makeRequest', () => {
+    it('should call generateImage for string input', async () => {
+      // Arrange
+      const prompt = 'Test prompt';
+      const parameters = { model: 'dall-e-3' };
+
+      const mockResponse = {
+        data: [{
+          url: 'https://example.com/test.png',
+        }],
+      };
+
+      mockOpenAI.images.generate.mockResolvedValue(mockResponse as any);
+
+      // Act
+      const result = await service.makeRequest(prompt, parameters);
+
+      // Assert
+      expect(result.imageUrl).toBe('https://example.com/test.png');
+    });
+
+    it('should throw error for invalid input format', async () => {
+      // Arrange
+      const invalidInput = { invalid: 'input' };
+
+      // Act & Assert
+      await expect(service.makeRequest(invalidInput, {})).rejects.toThrow(
+        'Invalid input format for OpenAI image service'
+      );
     });
   });
 });

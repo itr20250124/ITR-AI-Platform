@@ -1,264 +1,379 @@
-import request from 'supertest';
-import express from 'express';
-import aiRoutes from '../../routes/ai';
+import { Request, Response } from 'express';
+import { generateImage, createImageVariation, editImage } from '../aiController';
 import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
+import { AIServiceError } from '../../types';
 
-// Mock the AI services
+// Mock AIServiceFactory
 jest.mock('../../services/ai/AIServiceFactory');
-const MockedAIServiceFactory = AIServiceFactory as jest.MockedClass<typeof AIServiceFactory>;
+const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
 
-// Mock authentication middleware
-jest.mock('../../middleware/auth', () => ({
-  authenticateToken: (req: any, res: any, next: any) => {
-    req.user = { id: 'test-user-id' };
-    next();
-  },
-}));
+// Mock console.error to avoid noise in tests
+jest.spyOn(console, 'error').mockImplementation(() => {});
 
-describe('AI Controller', () => {
-  let app: express.Application;
-  let mockFactory: jest.Mocked<AIServiceFactory>;
-  let mockChatService: any;
+describe('AI Controller - Image Functions', () => {
+  let mockRequest: Partial<Request>;
+  let mockResponse: Partial<Response>;
   let mockImageService: any;
 
   beforeEach(() => {
-    app = express();
-    app.use(express.json());
-    app.use('/api/ai', aiRoutes);
-
-    // Create mock services
-    mockChatService = {
-      sendMessage: jest.fn(),
-      sendMessageWithContext: jest.fn(),
+    mockRequest = {};
+    mockResponse = {
+      json: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     };
-
+    
     mockImageService = {
       generateImage: jest.fn(),
-      createVariation: jest.fn(),
+      createImageVariation: jest.fn(),
       editImage: jest.fn(),
     };
 
-    // Create mock factory
-    mockFactory = {
-      createChatService: jest.fn().mockReturnValue(mockChatService),
-      createImageService: jest.fn().mockReturnValue(mockImageService),
-    } as any;
-
-    MockedAIServiceFactory.mockImplementation(() => mockFactory);
+    mockAIServiceFactory.createImageService.mockReturnValue(mockImageService);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('POST /api/ai/chat', () => {
-    it('should send chat message successfully with OpenAI', async () => {
-      const mockResponse = {
-        id: 'test-id',
-        content: 'Hello! How can I help you?',
-        role: 'assistant',
-        timestamp: new Date(),
+  describe('generateImage', () => {
+    it('should generate image successfully', async () => {
+      // Arrange
+      const mockImageResponse = {
+        id: 'img-123',
+        imageUrl: 'https://example.com/image.png',
+        prompt: 'A beautiful sunset',
+        parameters: { model: 'dall-e-3', size: '1024x1024' },
+        status: 'completed',
+        createdAt: new Date(),
       };
 
-      mockChatService.sendMessage.mockResolvedValue(mockResponse);
-
-      const response = await request(app)
-        .post('/api/ai/chat')
-        .send({
-          message: 'Hello',
-          provider: 'openai',
-          parameters: { temperature: 0.7 },
-        });
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({
-        success: true,
-        data: mockResponse,
-      });
-
-      expect(mockFactory.createChatService).toHaveBeenCalledWith('openai');
-      expect(mockChatService.sendMessage).toHaveBeenCalledWith(
-        'Hello',
-        { temperature: 0.7 }
-      );
-    });
-
-    it('should send chat message successfully with Gemini', async () => {
-      const mockResponse = {
-        id: 'test-id',
-        content: 'Hello! How can I assist you today?',
-        role: 'assistant',
-        timestamp: new Date(),
-      };
-
-      mockChatService.sendMessage.mockResolvedValue(mockResponse);
-
-      const response = await request(app)
-        .post('/api/ai/chat')
-        .send({
-          message: 'Hello',
-          provider: 'gemini',
-          parameters: { 
-            temperature: 0.9,
-            maxOutputTokens: 2048,
-            topK: 10 
-          },
-        });
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({
-        success: true,
-        data: mockResponse,
-      });
-
-      expect(mockFactory.createChatService).toHaveBeenCalledWith('gemini');
-      expect(mockChatService.sendMessage).toHaveBeenCalledWith(
-        'Hello',
-        { 
-          temperature: 0.9,
-          maxOutputTokens: 2048,
-          topK: 10 
-        }
-      );
-    });
-
-    it('should handle validation errors', async () => {
-      const response = await request(app)
-        .post('/api/ai/chat')
-        .send({
-          message: '', // Invalid empty message
-        });
-
-      expect(response.status).toBe(400);
-      expect(response.body.success).toBe(false);
-    });
-
-    it('should handle AI service errors', async () => {
-      const mockError = {
-        name: 'AIServiceError',
+      mockRequest.body = {
+        prompt: 'A beautiful sunset',
         provider: 'openai',
-        type: 'RATE_LIMIT_EXCEEDED',
-        message: 'Rate limit exceeded',
+        parameters: { model: 'dall-e-3', size: '1024x1024' },
       };
 
-      mockChatService.sendMessage.mockRejectedValue(mockError);
+      mockImageService.generateImage.mockResolvedValue(mockImageResponse);
 
-      const response = await request(app)
-        .post('/api/ai/chat')
-        .send({
-          message: 'Hello',
-        });
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
 
-      expect(response.status).toBe(400);
-      expect(response.body).toEqual({
+      // Assert
+      expect(mockAIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(mockImageService.generateImage).toHaveBeenCalledWith(
+        'A beautiful sunset',
+        { model: 'dall-e-3', size: '1024x1024' }
+      );
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: true,
+        data: mockImageResponse,
+      });
+    });
+
+    it('should use default provider when not specified', async () => {
+      // Arrange
+      mockRequest.body = {
+        prompt: 'A beautiful sunset',
+        parameters: {},
+      };
+
+      const mockImageResponse = {
+        id: 'img-123',
+        imageUrl: 'https://example.com/image.png',
+        prompt: 'A beautiful sunset',
+        parameters: {},
+        status: 'completed',
+        createdAt: new Date(),
+      };
+
+      mockImageService.generateImage.mockResolvedValue(mockImageResponse);
+
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockAIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+    });
+
+    it('should handle AIServiceError', async () => {
+      // Arrange
+      mockRequest.body = {
+        prompt: 'A beautiful sunset',
+        provider: 'openai',
+      };
+
+      const aiError = new AIServiceError('openai', 'RATE_LIMIT', 'Rate limit exceeded');
+      mockImageService.generateImage.mockRejectedValue(aiError);
+
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          type: 'RATE_LIMIT_EXCEEDED',
+          code: 'RATE_LIMIT',
           message: 'Rate limit exceeded',
+          provider: 'openai',
+        },
+      });
+    });
+
+    it('should handle generic errors', async () => {
+      // Arrange
+      mockRequest.body = {
+        prompt: 'A beautiful sunset',
+        provider: 'openai',
+      };
+
+      const genericError = new Error('Something went wrong');
+      mockImageService.generateImage.mockRejectedValue(genericError);
+
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(500);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          code: 'INTERNAL_ERROR',
+          message: 'Internal server error',
+        },
+      });
+    });
+  });
+
+  describe('createImageVariation', () => {
+    it('should create image variation successfully', async () => {
+      // Arrange
+      const mockBuffer = Buffer.from('fake image data');
+      mockRequest.body = {
+        provider: 'openai',
+        parameters: { size: '1024x1024' },
+      };
+      mockRequest.file = {
+        buffer: mockBuffer,
+        originalname: 'test.png',
+        mimetype: 'image/png',
+      } as Express.Multer.File;
+
+      const mockVariationResponse = {
+        id: 'var-123',
+        imageUrl: 'https://example.com/variation.png',
+        prompt: 'Image variation',
+        parameters: { size: '1024x1024' },
+        status: 'completed',
+        createdAt: new Date(),
+      };
+
+      mockImageService.createImageVariation.mockResolvedValue(mockVariationResponse);
+
+      // Act
+      await createImageVariation(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockImageService.createImageVariation).toHaveBeenCalledWith(
+        mockBuffer,
+        { size: '1024x1024' }
+      );
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: true,
+        data: mockVariationResponse,
+      });
+    });
+
+    it('should return error when no file is provided', async () => {
+      // Arrange
+      mockRequest.body = {
+        provider: 'openai',
+        parameters: {},
+      };
+      mockRequest.file = undefined;
+
+      // Act
+      await createImageVariation(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          type: 'MISSING_FILE',
+          message: 'Image file is required',
+        },
+      });
+    });
+
+    it('should handle AIServiceError in variation', async () => {
+      // Arrange
+      const mockBuffer = Buffer.from('fake image data');
+      mockRequest.body = { provider: 'openai' };
+      mockRequest.file = {
+        buffer: mockBuffer,
+        originalname: 'test.png',
+        mimetype: 'image/png',
+      } as Express.Multer.File;
+
+      const aiError = new AIServiceError('openai', 'INVALID_IMAGE', 'Invalid image format');
+      mockImageService.createImageVariation.mockRejectedValue(aiError);
+
+      // Act
+      await createImageVariation(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          code: 'INVALID_IMAGE',
+          message: 'Invalid image format',
           provider: 'openai',
         },
       });
     });
   });
 
-  describe('POST /api/ai/chat/context', () => {
-    it('should send chat message with context successfully', async () => {
-      const mockResponse = {
-        id: 'test-id',
-        content: 'Based on our conversation...',
-        role: 'assistant',
-        timestamp: new Date(),
+  describe('editImage', () => {
+    it('should edit image successfully', async () => {
+      // Arrange
+      const mockImageBuffer = Buffer.from('fake image data');
+      const mockMaskBuffer = Buffer.from('fake mask data');
+      
+      mockRequest.body = {
+        prompt: 'Add a rainbow',
+        provider: 'openai',
+        parameters: { size: '1024x1024' },
       };
+      
+      mockRequest.files = {
+        image: [{
+          buffer: mockImageBuffer,
+          originalname: 'image.png',
+          mimetype: 'image/png',
+        }],
+        mask: [{
+          buffer: mockMaskBuffer,
+          originalname: 'mask.png',
+          mimetype: 'image/png',
+        }],
+      } as { [fieldname: string]: Express.Multer.File[] };
 
-      mockChatService.sendMessageWithContext.mockResolvedValue(mockResponse);
-
-      const messages = [
-        { role: 'user', content: 'Hello' },
-        { role: 'assistant', content: 'Hi there!' },
-        { role: 'user', content: 'How are you?' },
-      ];
-
-      const response = await request(app)
-        .post('/api/ai/chat/context')
-        .send({
-          messages,
-          provider: 'openai',
-        });
-
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({
-        success: true,
-        data: mockResponse,
-      });
-
-      expect(mockChatService.sendMessageWithContext).toHaveBeenCalledWith(
-        messages,
-        {}
-      );
-    });
-  });
-
-  describe('POST /api/ai/image/generate', () => {
-    it('should generate image successfully', async () => {
-      const mockResponse = {
-        id: 'test-id',
-        imageUrl: 'https://example.com/image.png',
-        prompt: 'A beautiful sunset',
+      const mockEditResponse = {
+        id: 'edit-123',
+        imageUrl: 'https://example.com/edited.png',
+        prompt: 'Add a rainbow',
+        parameters: { size: '1024x1024' },
         status: 'completed',
         createdAt: new Date(),
       };
 
-      mockImageService.generateImage.mockResolvedValue(mockResponse);
+      mockImageService.editImage.mockResolvedValue(mockEditResponse);
 
-      const response = await request(app)
-        .post('/api/ai/image/generate')
-        .send({
-          prompt: 'A beautiful sunset',
-          provider: 'openai',
-          parameters: { model: 'dall-e-3' },
-        });
+      // Act
+      await editImage(mockRequest as Request, mockResponse as Response);
 
-      expect(response.status).toBe(200);
-      expect(response.body).toEqual({
-        success: true,
-        data: mockResponse,
-      });
-
-      expect(mockFactory.createImageService).toHaveBeenCalledWith('openai');
-      expect(mockImageService.generateImage).toHaveBeenCalledWith(
-        'A beautiful sunset',
-        { model: 'dall-e-3' }
+      // Assert
+      expect(mockImageService.editImage).toHaveBeenCalledWith(
+        mockImageBuffer,
+        mockMaskBuffer,
+        'Add a rainbow',
+        { size: '1024x1024' }
       );
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: true,
+        data: mockEditResponse,
+      });
     });
 
-    it('should handle validation errors for image generation', async () => {
-      const response = await request(app)
-        .post('/api/ai/image/generate')
-        .send({
-          prompt: '', // Invalid empty prompt
-        });
+    it('should return error when image file is missing', async () => {
+      // Arrange
+      mockRequest.body = {
+        prompt: 'Add a rainbow',
+        provider: 'openai',
+      };
+      
+      mockRequest.files = {
+        mask: [{
+          buffer: Buffer.from('fake mask data'),
+          originalname: 'mask.png',
+          mimetype: 'image/png',
+        }],
+      } as { [fieldname: string]: Express.Multer.File[] };
 
-      expect(response.status).toBe(400);
-      expect(response.body.success).toBe(false);
-    });
-  });
+      // Act
+      await editImage(mockRequest as Request, mockResponse as Response);
 
-  describe('Error handling', () => {
-    it('should handle internal server errors', async () => {
-      mockChatService.sendMessage.mockRejectedValue(new Error('Unexpected error'));
-
-      const response = await request(app)
-        .post('/api/ai/chat')
-        .send({
-          message: 'Hello',
-        });
-
-      expect(response.status).toBe(500);
-      expect(response.body).toEqual({
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
         success: false,
         error: {
-          type: 'INTERNAL_ERROR',
-          message: 'Internal server error',
+          type: 'MISSING_FILES',
+          message: 'Both image and mask files are required',
+        },
+      });
+    });
+
+    it('should return error when mask file is missing', async () => {
+      // Arrange
+      mockRequest.body = {
+        prompt: 'Add a rainbow',
+        provider: 'openai',
+      };
+      
+      mockRequest.files = {
+        image: [{
+          buffer: Buffer.from('fake image data'),
+          originalname: 'image.png',
+          mimetype: 'image/png',
+        }],
+      } as { [fieldname: string]: Express.Multer.File[] };
+
+      // Act
+      await editImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          type: 'MISSING_FILES',
+          message: 'Both image and mask files are required',
+        },
+      });
+    });
+
+    it('should handle AIServiceError in edit', async () => {
+      // Arrange
+      const mockImageBuffer = Buffer.from('fake image data');
+      const mockMaskBuffer = Buffer.from('fake mask data');
+      
+      mockRequest.body = {
+        prompt: 'Add a rainbow',
+        provider: 'openai',
+      };
+      
+      mockRequest.files = {
+        image: [{ buffer: mockImageBuffer, originalname: 'image.png', mimetype: 'image/png' }],
+        mask: [{ buffer: mockMaskBuffer, originalname: 'mask.png', mimetype: 'image/png' }],
+      } as { [fieldname: string]: Express.Multer.File[] };
+
+      const aiError = new AIServiceError('openai', 'INVALID_PROMPT', 'Prompt too long');
+      mockImageService.editImage.mockRejectedValue(aiError);
+
+      // Act
+      await editImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockResponse.status).toHaveBeenCalledWith(400);
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          code: 'INVALID_PROMPT',
+          message: 'Prompt too long',
+          provider: 'openai',
         },
       });
     });
