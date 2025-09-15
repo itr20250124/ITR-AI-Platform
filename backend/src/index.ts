@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import { ServerConfig } from './types';
+import apiRoutes from './routes';
 
 // 載入環境變量
 dotenv.config();
@@ -41,20 +42,8 @@ app.get('/health', (req, res) => {
   });
 });
 
-// API路由佔位符
-app.get('/api', (req, res) => {
-  res.json({
-    message: '多功能AI平台 API',
-    version: '1.0.0',
-    endpoints: {
-      auth: '/api/auth',
-      chat: '/api/chat',
-      image: '/api/image',
-      video: '/api/video',
-      user: '/api/user',
-    },
-  });
-});
+// API路由
+app.use('/api', apiRoutes);
 
 // 404處理
 app.use('*', (req, res) => {

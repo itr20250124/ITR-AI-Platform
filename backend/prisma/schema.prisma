@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 用戶偏好設定
+  preferences UserPreferences?
+
+  // 關聯的對話
+  conversations Conversation[]
+
+  // 生成的圖片
+  generatedImages GeneratedImage[]
+
+  // 生成的影片
+  generatedVideos GeneratedVideo[]
+
+  @@map("users")
+}
+
+model UserPreferences {
+  id                String @id @default(cuid())
+  userId            String @unique
+  theme             String @default("light") // 'light' | 'dark'
+  defaultAIProvider String @default("openai")
+  defaultParameters Json   @default("{}")
+  language          String @default("zh-TW")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // 關聯用戶
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model Conversation {
+  id         String   @id @default(cuid())
+  userId     String
+  title      String
+  aiProvider String
+  parameters Json     @default("{}")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // 關聯用戶
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 對話中的訊息
+  messages Message[]
+
+  @@map("conversations")
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  conversationId String
+  role           String   // 'user' | 'assistant'
+  content        String
+  timestamp      DateTime @default(now())
+  metadata       Json?
+
+  // 關聯對話
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+model GeneratedImage {
+  id         String   @id @default(cuid())
+  userId     String
+  prompt     String
+  provider   String
+  parameters Json     @default("{}")
+  imageUrl   String
+  status     String   @default("pending") // 'pending' | 'completed' | 'failed'
+  createdAt  DateTime @default(now())
+
+  // 關聯用戶
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("generated_images")
+}
+
+model GeneratedVideo {
+  id           String   @id @default(cuid())
+  userId       String
+  prompt       String
+  provider     String
+  parameters   Json     @default("{}")
+  videoUrl     String?
+  thumbnailUrl String?
+  status       String   @default("pending") // 'pending' | 'processing' | 'completed' | 'failed'
+  progress     Int      @default(0)
+  createdAt    DateTime @default(now())
+
+  // 關聯用戶
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("generated_videos")
+}
+
+model AIProviderConfig {
+  id                   String @id @default(cuid())
+  name                 String @unique
+  type                 String // 'chat' | 'image' | 'video'
+  apiEndpoint          String
+  apiKeyRequired       Boolean @default(true)
+  supportedParameters  Json    @default("[]")
+  rateLimits          Json    @default("[]")
+  enabled             Boolean @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("ai_provider_configs")
+}
