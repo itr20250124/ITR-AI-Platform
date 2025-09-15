@@ -3,7 +3,7 @@ import { ImageService, ImageResponse, ImageHistory as ImageHistoryType } from '.
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { ImagePreview } from './ImagePreview';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface ImageHistoryProps {
   onImageSelect?: (image: ImageResponse) => void;
@@ -33,7 +33,8 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({
         ...(type && type !== 'all' && { type: type as any }),
       };
 
-      const result = await ImageService.getImageHistory(options);
+      const imageService = new ImageService();
+      const result = await imageService.getImageHistory(options);
       setHistory(result);
     } catch (error) {
       console.error('載入圖片歷史失敗:', error);

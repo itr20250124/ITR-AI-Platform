@@ -3,7 +3,7 @@ import { ImageService, ImageVariationRequest, ImageEditRequest, ImageResponse } 
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { ImagePreview } from './ImagePreview';
-import { toast } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 interface ImageEditorProps {
   onImageProcessed?: (image: ImageResponse) => void;
@@ -89,7 +89,8 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         },
       };
 
-      const result = await ImageService.createImageVariation(request);
+      const imageService = new ImageService();
+      const result = await imageService.createImageVariation(request);
       setProcessedImage(result);
       onImageProcessed?.(result);
       toast.success('圖片變體生成成功！');
@@ -133,7 +134,8 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({
         },
       };
 
-      const result = await ImageService.editImage(request);
+      const imageService = new ImageService();
+      const result = await imageService.editImage(request);
       setProcessedImage(result);
       onImageProcessed?.(result);
       toast.success('圖片編輯成功！');
