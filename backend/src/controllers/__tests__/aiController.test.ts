@@ -252,13 +252,19 @@ describe('AI Controller - Image Functions', () => {
           buffer: mockImageBuffer,
           originalname: 'image.png',
           mimetype: 'image/png',
+          fieldname: 'image',
+          encoding: '7bit',
+          size: mockImageBuffer.length,
         }],
         mask: [{
           buffer: mockMaskBuffer,
           originalname: 'mask.png',
           mimetype: 'image/png',
+          fieldname: 'mask',
+          encoding: '7bit',
+          size: mockMaskBuffer.length,
         }],
-      } as { [fieldname: string]: Express.Multer.File[] };
+      } as any;
 
       const mockEditResponse = {
         id: 'edit-123',
@@ -299,8 +305,11 @@ describe('AI Controller - Image Functions', () => {
           buffer: Buffer.from('fake mask data'),
           originalname: 'mask.png',
           mimetype: 'image/png',
+          fieldname: 'mask',
+          encoding: '7bit',
+          size: Buffer.from('fake mask data').length,
         }],
-      } as { [fieldname: string]: Express.Multer.File[] };
+      } as any;
 
       // Act
       await editImage(mockRequest as Request, mockResponse as Response);
@@ -328,8 +337,11 @@ describe('AI Controller - Image Functions', () => {
           buffer: Buffer.from('fake image data'),
           originalname: 'image.png',
           mimetype: 'image/png',
+          fieldname: 'image',
+          encoding: '7bit',
+          size: Buffer.from('fake image data').length,
         }],
-      } as { [fieldname: string]: Express.Multer.File[] };
+      } as any;
 
       // Act
       await editImage(mockRequest as Request, mockResponse as Response);
@@ -356,9 +368,23 @@ describe('AI Controller - Image Functions', () => {
       };
       
       mockRequest.files = {
-        image: [{ buffer: mockImageBuffer, originalname: 'image.png', mimetype: 'image/png' }],
-        mask: [{ buffer: mockMaskBuffer, originalname: 'mask.png', mimetype: 'image/png' }],
-      } as { [fieldname: string]: Express.Multer.File[] };
+        image: [{ 
+          buffer: mockImageBuffer, 
+          originalname: 'image.png', 
+          mimetype: 'image/png',
+          fieldname: 'image',
+          encoding: '7bit',
+          size: mockImageBuffer.length,
+        }],
+        mask: [{ 
+          buffer: mockMaskBuffer, 
+          originalname: 'mask.png', 
+          mimetype: 'image/png',
+          fieldname: 'mask',
+          encoding: '7bit',
+          size: mockMaskBuffer.length,
+        }],
+      } as any;
 
       const aiError = new AIServiceError('openai', 'INVALID_PROMPT', 'Prompt too long');
       mockImageService.editImage.mockRejectedValue(aiError);

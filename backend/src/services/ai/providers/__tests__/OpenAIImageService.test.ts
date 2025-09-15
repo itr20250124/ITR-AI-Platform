@@ -1,5 +1,5 @@
 import { OpenAIImageService } from '../OpenAIImageService';
-import { ImageParameters } from '../interfaces/AIServiceInterface';
+import { ImageParameters } from '../../../../shared/types';
 import OpenAI from 'openai';
 
 // Mock OpenAI
