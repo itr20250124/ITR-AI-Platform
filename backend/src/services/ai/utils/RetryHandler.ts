@@ -39,13 +39,13 @@ export class RetryHandler {
     context: string = 'operation'
   ): Promise<T> {
     let lastError: Error;
-    
+
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error as Error;
-        
+
         // 檢查是否應該重試
         if (!this.shouldRetry(error as Error, attempt)) {
           throw error;
@@ -53,10 +53,10 @@ export class RetryHandler {
 
         // 計算延遲時間
         const delay = this.calculateDelay(attempt);
-        
+
         console.warn(
           `${context} failed (attempt ${attempt + 1}/${this.config.maxRetries + 1}), ` +
-          `retrying in ${delay}ms:`,
+            `retrying in ${delay}ms:`,
           error
         );
 
@@ -87,9 +87,11 @@ export class RetryHandler {
     }
 
     // 檢查網路錯誤
-    if (error.message.includes('ECONNREFUSED') || 
-        error.message.includes('ENOTFOUND') ||
-        error.message.includes('timeout')) {
+    if (
+      error.message.includes('ECONNREFUSED') ||
+      error.message.includes('ENOTFOUND') ||
+      error.message.includes('timeout')
+    ) {
       return true;
     }
 
@@ -134,7 +136,9 @@ export class RetryHandler {
 /**
  * 創建預設重試處理器
  */
-export function createRetryHandler(config?: Partial<RetryConfig>): RetryHandler {
+export function createRetryHandler(
+  config?: Partial<RetryConfig>
+): RetryHandler {
   return new RetryHandler(config);
 }
 
@@ -146,7 +150,7 @@ export function withRetry<T extends any[], R>(
   config?: Partial<RetryConfig>
 ): (...args: T) => Promise<R> {
   const retryHandler = new RetryHandler(config);
-  
+
   return async (...args: T): Promise<R> => {
     return retryHandler.execute(() => fn(...args), fn.name);
   };

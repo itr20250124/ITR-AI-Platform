@@ -10,6 +10,4 @@ export type {
   UpdateConversationData,
 } from './ConversationService';
 
-export type {
-  ConversationContext,
-} from './ConversationContextManager';
+export type { ConversationContext } from './ConversationContextManager';

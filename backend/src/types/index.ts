@@ -21,7 +21,10 @@ export interface UserService {
   createUser(userData: CreateUserData): Promise<User>;
   getUserById(id: string): Promise<User | null>;
   getUserByEmail(email: string): Promise<User | null>;
-  updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<User>;
+  updateUserPreferences(
+    userId: string,
+    preferences: Partial<UserPreferences>
+  ): Promise<User>;
   deleteUser(userId: string): Promise<void>;
 }
 
@@ -33,9 +36,16 @@ export interface ChatService {
     userId: string,
     conversationId?: string
   ): Promise<ChatResponse>;
-  
-  getConversationHistory(conversationId: string, userId: string): Promise<Message[]>;
-  createConversation(userId: string, title: string, provider: string): Promise<Conversation>;
+
+  getConversationHistory(
+    conversationId: string,
+    userId: string
+  ): Promise<Message[]>;
+  createConversation(
+    userId: string,
+    title: string,
+    provider: string
+  ): Promise<Conversation>;
   deleteConversation(conversationId: string, userId: string): Promise<void>;
 }
 
@@ -46,7 +56,7 @@ export interface ImageService {
     parameters: ImageParameters,
     userId: string
   ): Promise<ImageResponse>;
-  
+
   getImageStatus(imageId: string, userId: string): Promise<GeneratedImage>;
   getUserImages(userId: string): Promise<GeneratedImage[]>;
   deleteImage(imageId: string, userId: string): Promise<void>;
@@ -59,7 +69,7 @@ export interface VideoService {
     parameters: VideoParameters,
     userId: string
   ): Promise<VideoResponse>;
-  
+
   getVideoStatus(videoId: string, userId: string): Promise<GeneratedVideo>;
   getUserVideos(userId: string): Promise<GeneratedVideo[]>;
   deleteVideo(videoId: string, userId: string): Promise<void>;
@@ -164,11 +174,11 @@ export interface AIServiceFactory {
   createVideoService(provider: string): VideoServiceInterface;
 }
 
-import { 
-  User, 
-  UserPreferences, 
-  ChatParameters, 
-  ImageParameters, 
+import {
+  User,
+  UserPreferences,
+  ChatParameters,
+  ImageParameters,
   VideoParameters,
   ChatResponse,
   ImageResponse,
@@ -182,5 +192,5 @@ import {
   ValidationError,
   ChatServiceInterface,
   ImageServiceInterface,
-  VideoServiceInterface
+  VideoServiceInterface,
 } from '../../../shared/types';

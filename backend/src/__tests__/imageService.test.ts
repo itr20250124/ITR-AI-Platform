@@ -26,7 +26,13 @@ describe('Image Service Tests', () => {
     });
 
     it('should validate image parameters', () => {
-      const validSizes = ['256x256', '512x512', '1024x1024', '1792x1024', '1024x1792'];
+      const validSizes = [
+        '256x256',
+        '512x512',
+        '1024x1024',
+        '1792x1024',
+        '1024x1792',
+      ];
       const testSize = '1024x1024';
 
       expect(validSizes).toContain(testSize);
@@ -35,7 +41,12 @@ describe('Image Service Tests', () => {
 
   describe('Image Validation', () => {
     it('should validate image file types', () => {
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      const allowedTypes = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp',
+      ];
       const testType = 'image/png';
 
       expect(allowedTypes).toContain(testType);
@@ -71,13 +82,13 @@ describe('Image Service Tests', () => {
 
     it('should handle different image statuses', () => {
       const statuses = ['pending', 'completed', 'failed'];
-      
+
       statuses.forEach(status => {
         const response = {
           id: 'test',
           status,
         };
-        
+
         expect(['pending', 'completed', 'failed']).toContain(response.status);
       });
     });

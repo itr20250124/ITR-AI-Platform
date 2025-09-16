@@ -24,12 +24,16 @@ export const chatMessageSchema = Joi.object({
  * 聊天上下文訊息驗證架構
  */
 export const chatContextSchema = Joi.object({
-  messages: Joi.array().items(
-    Joi.object({
-      role: Joi.string().valid('user', 'assistant', 'system').required(),
-      content: Joi.string().required().min(1).max(10000),
-    })
-  ).required().min(1).max(50),
+  messages: Joi.array()
+    .items(
+      Joi.object({
+        role: Joi.string().valid('user', 'assistant', 'system').required(),
+        content: Joi.string().required().min(1).max(10000),
+      })
+    )
+    .required()
+    .min(1)
+    .max(50),
   provider: Joi.string().valid('openai', 'gemini').default('openai'),
   parameters: Joi.object({
     // OpenAI parameters
@@ -54,8 +58,11 @@ export const imageGenerationSchema = Joi.object({
   parameters: Joi.object({
     model: Joi.string().valid('dall-e-2', 'dall-e-3'),
     size: Joi.string().valid(
-      '256x256', '512x512', '1024x1024', 
-      '1792x1024', '1024x1792'
+      '256x256',
+      '512x512',
+      '1024x1024',
+      '1792x1024',
+      '1024x1792'
     ),
     quality: Joi.string().valid('standard', 'hd'),
     style: Joi.string().valid('vivid', 'natural'),

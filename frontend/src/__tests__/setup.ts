@@ -1,4 +1,4 @@
-import '@testing-library/jest-dom';
+import '@testing-library/jest-dom'
 
 // Mock IntersectionObserver
 global.IntersectionObserver = class IntersectionObserver {
@@ -6,7 +6,7 @@ global.IntersectionObserver = class IntersectionObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-};
+}
 
 // Mock ResizeObserver
 global.ResizeObserver = class ResizeObserver {
@@ -14,7 +14,7 @@ global.ResizeObserver = class ResizeObserver {
   disconnect() {}
   observe() {}
   unobserve() {}
-};
+}
 
 // Mock matchMedia
 Object.defineProperty(window, 'matchMedia', {
@@ -29,35 +29,35 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
-});
+})
 
 // Mock scrollTo
 Object.defineProperty(window, 'scrollTo', {
   writable: true,
   value: jest.fn(),
-});
+})
 
 // Mock scrollIntoView
-Element.prototype.scrollIntoView = jest.fn();
+Element.prototype.scrollIntoView = jest.fn()
 
 // Mock fetch
-global.fetch = jest.fn();
+global.fetch = jest.fn()
 
 // Mock File constructor
 global.File = class File extends Blob {
-  name: string;
-  lastModified: number;
+  name: string
+  lastModified: number
 
   constructor(chunks: BlobPart[], filename: string, options?: FilePropertyBag) {
-    super(chunks, options);
-    this.name = filename;
-    this.lastModified = options?.lastModified || Date.now();
+    super(chunks, options)
+    this.name = filename
+    this.lastModified = options?.lastModified || Date.now()
   }
-};
+}
 
 // Mock URL.createObjectURL and revokeObjectURL
-global.URL.createObjectURL = jest.fn(() => 'mocked-url');
-global.URL.revokeObjectURL = jest.fn();
+global.URL.createObjectURL = jest.fn(() => 'mocked-url')
+global.URL.revokeObjectURL = jest.fn()
 
 // Mock canvas methods
 HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
@@ -67,38 +67,38 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     height: 1024,
     toDataURL: jest.fn(() => 'data:image/jpeg;base64,mock-canvas-data'),
   },
-})) as any;
+})) as any
 
-HTMLCanvasElement.prototype.toBlob = jest.fn((callback) => {
-  callback(new Blob(['mock'], { type: 'image/jpeg' }));
-});
+HTMLCanvasElement.prototype.toBlob = jest.fn(callback => {
+  callback(new Blob(['mock'], { type: 'image/jpeg' }))
+})
 
 // Mock Image constructor
 global.Image = class MockImage {
-  width = 1024;
-  height = 1024;
-  onload: (() => void) | null = null;
-  onerror: (() => void) | null = null;
-  
+  width = 1024
+  height = 1024
+  onload: (() => void) | null = null
+  onerror: (() => void) | null = null
+
   constructor() {
     setTimeout(() => {
       if (this.onload) {
-        this.onload();
+        this.onload()
       }
-    }, 0);
+    }, 0)
   }
-  
+
   set src(value: string) {
     // Trigger onload after setting src
     setTimeout(() => {
       if (this.onload) {
-        this.onload();
+        this.onload()
       }
-    }, 0);
+    }, 0)
   }
-} as any;
+} as any
 
 // Clean up after each test
 afterEach(() => {
-  jest.clearAllMocks();
-});
+  jest.clearAllMocks()
+})

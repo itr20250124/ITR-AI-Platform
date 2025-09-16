@@ -1,9 +1,9 @@
 import OpenAI from 'openai';
 import { BaseAIService } from '../BaseAIService';
-import { 
-  ChatServiceInterface, 
-  ChatParameters, 
-  ChatResponse 
+import {
+  ChatServiceInterface,
+  ChatParameters,
+  ChatResponse,
 } from '../interfaces/AIServiceInterface';
 import { ParameterDefinition } from '../../../types';
 import { createRetryHandler } from '../utils/RetryHandler';
@@ -11,7 +11,10 @@ import { createRetryHandler } from '../utils/RetryHandler';
 /**
  * OpenAI聊天服務
  */
-export class OpenAIChatService extends BaseAIService implements ChatServiceInterface {
+export class OpenAIChatService
+  extends BaseAIService
+  implements ChatServiceInterface
+{
   public provider = 'openai';
   public supportedParameters: ParameterDefinition[] = [
     {
@@ -125,11 +128,13 @@ export class OpenAIChatService extends BaseAIService implements ChatServiceInter
         content: choice.message.content || '',
         role: 'assistant',
         timestamp: new Date(),
-        usage: response.usage ? {
-          promptTokens: response.usage.prompt_tokens,
-          completionTokens: response.usage.completion_tokens,
-          totalTokens: response.usage.total_tokens,
-        } : undefined,
+        usage: response.usage
+          ? {
+              promptTokens: response.usage.prompt_tokens,
+              completionTokens: response.usage.completion_tokens,
+              totalTokens: response.usage.total_tokens,
+            }
+          : undefined,
         metadata: {
           model: mergedParams.model,
           finishReason: choice.finish_reason,
@@ -177,11 +182,13 @@ export class OpenAIChatService extends BaseAIService implements ChatServiceInter
         content: choice.message.content || '',
         role: 'assistant',
         timestamp: new Date(),
-        usage: response.usage ? {
-          promptTokens: response.usage.prompt_tokens,
-          completionTokens: response.usage.completion_tokens,
-          totalTokens: response.usage.total_tokens,
-        } : undefined,
+        usage: response.usage
+          ? {
+              promptTokens: response.usage.prompt_tokens,
+              completionTokens: response.usage.completion_tokens,
+              totalTokens: response.usage.total_tokens,
+            }
+          : undefined,
         metadata: {
           model: mergedParams.model,
           finishReason: choice.finish_reason,
@@ -250,7 +257,7 @@ export class OpenAIChatService extends BaseAIService implements ChatServiceInter
     if (typeof input === 'string') {
       return this.sendMessage(input, parameters);
     }
-    
+
     if (Array.isArray(input)) {
       return this.sendMessageWithContext(input, parameters);
     }

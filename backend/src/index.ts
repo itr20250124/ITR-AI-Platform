@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import { ServerConfig } from './types';
 import apiRoutes from './routes';
 import { AIServiceFactory } from './services/ai/AIServiceFactory';
-import { rateLimiterManager } from './services/ai/utils/RateLimiter';
+// import { rateLimiterManager } from './services/ai/utils/RateLimiter';
 
 // 載入環境變量
 dotenv.config();
@@ -62,19 +62,27 @@ app.use('*', (req, res) => {
 });
 
 // 全域錯誤處理
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error('Unhandled error:', err);
-  
-  res.status(500).json({
-    success: false,
-    error: {
-      code: 'INTERNAL_SERVER_ERROR',
-      message: process.env.NODE_ENV === 'production' 
-        ? '服務器內部錯誤' 
-        : err.message,
-    },
-  });
-});
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error('Unhandled error:', err);
+
+    res.status(500).json({
+      success: false,
+      error: {
+        code: 'INTERNAL_SERVER_ERROR',
+        message:
+          process.env.NODE_ENV === 'production'
+            ? '服務器內部錯誤'
+            : err.message,
+      },
+    });
+  }
+);
 
 // 啟動服務器
 app.listen(config.port, () => {

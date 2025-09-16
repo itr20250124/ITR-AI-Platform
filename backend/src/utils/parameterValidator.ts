@@ -167,7 +167,11 @@ export class ParameterValidator {
     // 驗證已知參數
     for (const definition of definitions) {
       const value = parameters[definition.key];
-      const paramErrors = this.validateParameter(definition.key, value, definition);
+      const paramErrors = this.validateParameter(
+        definition.key,
+        value,
+        definition
+      );
       errors.push(...paramErrors);
     }
 

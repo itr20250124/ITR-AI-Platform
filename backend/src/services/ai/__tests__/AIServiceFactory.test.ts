@@ -14,7 +14,7 @@ describe('AIServiceFactory', () => {
     (AIServiceFactory as any).chatServices = new Map();
     (AIServiceFactory as any).imageServices = new Map();
     (AIServiceFactory as any).videoServices = new Map();
-    
+
     jest.clearAllMocks();
   });
 
@@ -38,7 +38,9 @@ describe('AIServiceFactory', () => {
       AIServiceFactory.initialize();
 
       // Assert
-      expect(consoleSpy).toHaveBeenCalledWith('Initializing AI service providers...');
+      expect(consoleSpy).toHaveBeenCalledWith(
+        'Initializing AI service providers...'
+      );
       expect(consoleSpy).toHaveBeenCalledWith('Registered 2 chat services');
       expect(consoleSpy).toHaveBeenCalledWith('Registered 2 image services');
       expect(consoleSpy).toHaveBeenCalledWith('Registered 0 video services');
@@ -148,7 +150,9 @@ describe('AIServiceFactory', () => {
 
       // Assert
       expect(AIServiceFactory.getAvailableImageProviders()).toContain('custom');
-      expect(AIServiceFactory.isProviderAvailable('custom', 'image')).toBe(true);
+      expect(AIServiceFactory.isProviderAvailable('custom', 'image')).toBe(
+        true
+      );
     });
   });
 
@@ -163,7 +167,9 @@ describe('AIServiceFactory', () => {
 
       // Assert
       expect(AIServiceFactory.getAvailableVideoProviders()).toContain('custom');
-      expect(AIServiceFactory.isProviderAvailable('custom', 'video')).toBe(true);
+      expect(AIServiceFactory.isProviderAvailable('custom', 'video')).toBe(
+        true
+      );
     });
   });
 
@@ -210,20 +216,32 @@ describe('AIServiceFactory', () => {
 
     it('should return true for available image providers', () => {
       // Act & Assert
-      expect(AIServiceFactory.isProviderAvailable('openai', 'image')).toBe(true);
-      expect(AIServiceFactory.isProviderAvailable('dall-e', 'image')).toBe(true);
+      expect(AIServiceFactory.isProviderAvailable('openai', 'image')).toBe(
+        true
+      );
+      expect(AIServiceFactory.isProviderAvailable('dall-e', 'image')).toBe(
+        true
+      );
     });
 
     it('should return false for unavailable providers', () => {
       // Act & Assert
-      expect(AIServiceFactory.isProviderAvailable('unknown', 'chat')).toBe(false);
-      expect(AIServiceFactory.isProviderAvailable('unknown', 'image')).toBe(false);
-      expect(AIServiceFactory.isProviderAvailable('unknown', 'video')).toBe(false);
+      expect(AIServiceFactory.isProviderAvailable('unknown', 'chat')).toBe(
+        false
+      );
+      expect(AIServiceFactory.isProviderAvailable('unknown', 'image')).toBe(
+        false
+      );
+      expect(AIServiceFactory.isProviderAvailable('unknown', 'video')).toBe(
+        false
+      );
     });
 
     it('should return false for invalid service type', () => {
       // Act & Assert
-      expect(AIServiceFactory.isProviderAvailable('openai', 'invalid' as any)).toBe(false);
+      expect(
+        AIServiceFactory.isProviderAvailable('openai', 'invalid' as any)
+      ).toBe(false);
     });
   });
 });

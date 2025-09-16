@@ -23,7 +23,7 @@ describe('OpenAI Services', () => {
     test('should have correct supported parameters', () => {
       const service = new OpenAIChatService();
       const parameterKeys = service.supportedParameters.map(p => p.key);
-      
+
       expect(parameterKeys).toContain('model');
       expect(parameterKeys).toContain('temperature');
       expect(parameterKeys).toContain('maxTokens');
@@ -34,7 +34,7 @@ describe('OpenAI Services', () => {
 
     test('should throw error when API key is missing', () => {
       delete process.env.OPENAI_API_KEY;
-      
+
       expect(() => {
         new OpenAIChatService();
       }).toThrow('API key for openai is not configured');
@@ -42,7 +42,7 @@ describe('OpenAI Services', () => {
 
     test('should validate parameters correctly', () => {
       const service = new OpenAIChatService();
-      
+
       // Valid parameters should not throw
       expect(() => {
         service['validateParameters']({
@@ -69,7 +69,7 @@ describe('OpenAI Services', () => {
     test('should have correct supported parameters', () => {
       const service = new OpenAIImageService();
       const parameterKeys = service.supportedParameters.map(p => p.key);
-      
+
       expect(parameterKeys).toContain('model');
       expect(parameterKeys).toContain('size');
       expect(parameterKeys).toContain('quality');
@@ -79,7 +79,7 @@ describe('OpenAI Services', () => {
 
     test('should validate parameter combinations', () => {
       const service = new OpenAIImageService();
-      
+
       // Valid DALL-E 3 parameters
       expect(() => {
         service['validateParameterCombination']({

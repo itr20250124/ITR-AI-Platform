@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import { 
-  register, 
-  login, 
-  logout, 
-  getProfile, 
-  updatePreferences 
+import {
+  register,
+  login,
+  logout,
+  getProfile,
+  updatePreferences,
 } from '../controllers/authController';
 import { authenticateToken } from '../middleware/auth';
-import { 
-  validateBody, 
-  registerSchema, 
-  loginSchema, 
-  userPreferencesSchema 
+import {
+  validateBody,
+  registerSchema,
+  loginSchema,
+  userPreferencesSchema,
 } from '../middleware/validation';
 
 const router = Router();
@@ -49,6 +49,11 @@ router.get('/profile', authenticateToken, getProfile);
  * @desc 更新用戶偏好設定
  * @access Private
  */
-router.put('/preferences', authenticateToken, validateBody(userPreferencesSchema), updatePreferences);
+router.put(
+  '/preferences',
+  authenticateToken,
+  validateBody(userPreferencesSchema),
+  updatePreferences
+);
 
 export default router;

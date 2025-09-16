@@ -1,12 +1,12 @@
-﻿import React, { useEffect, useRef, useState } from 'react';
-import { Button } from '../ui/Button';
+﻿import React, { useEffect, useRef, useState } from 'react'
+import { Button } from '../ui/Button'
 
 interface ChatInputProps {
-  onSendMessage: (message: string) => void;
-  disabled?: boolean;
-  placeholder?: string;
-  maxLength?: number;
-  className?: string;
+  onSendMessage: (message: string) => void
+  disabled?: boolean
+  placeholder?: string
+  maxLength?: number
+  className?: string
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -16,70 +16,70 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   maxLength = 10000,
   className = '',
 }) => {
-  const [message, setMessage] = useState('');
-  const [isComposing, setIsComposing] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [message, setMessage] = useState('')
+  const [isComposing, setIsComposing] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const adjustTextareaHeight = () => {
-    const textarea = textareaRef.current;
-    if (!textarea) return;
+    const textarea = textareaRef.current
+    if (!textarea) return
 
-    textarea.style.height = 'auto';
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
-  };
+    textarea.style.height = 'auto'
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`
+  }
 
   useEffect(() => {
-    adjustTextareaHeight();
-  }, [message]);
+    adjustTextareaHeight()
+  }, [message])
 
   const handleSend = () => {
-    const trimmed = message.trim();
+    const trimmed = message.trim()
     if (!trimmed || disabled) {
-      return;
+      return
     }
 
-    onSendMessage(trimmed);
-    setMessage('');
+    onSendMessage(trimmed)
+    setMessage('')
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = 'auto'
     }
-  };
+  }
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey && !isComposing) {
-      event.preventDefault();
-      handleSend();
+      event.preventDefault()
+      handleSend()
     }
-  };
+  }
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value;
+    const value = event.target.value
     if (value.length <= maxLength) {
-      setMessage(value);
+      setMessage(value)
     }
-  };
+  }
 
   const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const pasted = event.clipboardData.getData('text');
-    const next = message + pasted;
+    const pasted = event.clipboardData.getData('text')
+    const next = message + pasted
 
     if (next.length > maxLength) {
-      event.preventDefault();
-      const remaining = maxLength - message.length;
+      event.preventDefault()
+      const remaining = maxLength - message.length
       if (remaining > 0) {
-        setMessage(message + pasted.slice(0, remaining));
+        setMessage(message + pasted.slice(0, remaining))
       }
     }
-  };
+  }
 
-  const characterCount = message.length;
-  const isNearLimit = characterCount > maxLength * 0.8;
-  const canSend = message.trim().length > 0 && !disabled;
+  const characterCount = message.length
+  const isNearLimit = characterCount > maxLength * 0.8
+  const canSend = message.trim().length > 0 && !disabled
 
   return (
     <div className={`p-4 ${className}`}>
-      <div className="flex items-end space-x-3">
-        <div className="flex-1 relative">
+      <div className='flex items-end space-x-3'>
+        <div className='flex-1 relative'>
           <textarea
             ref={textareaRef}
             value={message}
@@ -120,25 +120,30 @@ export const ChatInput: React.FC<ChatInputProps> = ({
           `}
         >
           {disabled ? (
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+            <div className='flex items-center space-x-2'>
+              <div className='w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin' />
               <span>傳送中</span>
             </div>
           ) : (
-            <div className="flex items-center space-x-2">
+            <div className='flex items-center space-x-2'>
               <span>傳送</span>
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              <svg className='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth={2}
+                  d='M12 19l9 2-9-18-9 18 9-2zm0 0v-8'
+                />
               </svg>
             </div>
           )}
         </Button>
       </div>
 
-      <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+      <div className='flex justify-between items-center mt-2 text-xs text-gray-500'>
         <span>按 Enter 傳送，Shift + Enter 換行</span>
         {!isNearLimit && <span>{characterCount} 字符</span>}
       </div>
     </div>
-  );
-};
+  )
+}

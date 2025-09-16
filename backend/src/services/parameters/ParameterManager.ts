@@ -1,5 +1,8 @@
 import { ParameterDefinition } from '../../types';
-import { ParameterValidator, ValidationResult } from '../../utils/parameterValidator';
+import {
+  ParameterValidator,
+  ValidationResult,
+} from '../../utils/parameterValidator';
 
 /**
  * 參數預設值管理器
@@ -10,7 +13,10 @@ export class ParameterDefaultsManager {
   /**
    * 設置提供商的預設參數
    */
-  static setProviderDefaults(provider: string, defaults: Record<string, any>): void {
+  static setProviderDefaults(
+    provider: string,
+    defaults: Record<string, any>
+  ): void {
     this.defaults.set(provider, { ...defaults });
   }
 
@@ -24,7 +30,11 @@ export class ParameterDefaultsManager {
   /**
    * 更新提供商的特定參數預設值
    */
-  static updateProviderDefault(provider: string, key: string, value: any): void {
+  static updateProviderDefault(
+    provider: string,
+    key: string,
+    value: any
+  ): void {
     const current = this.getProviderDefaults(provider);
     current[key] = value;
     this.setProviderDefaults(provider, current);
@@ -138,7 +148,10 @@ export class ParameterConverter {
   /**
    * 將字串轉換為適當的類型
    */
-  static convertFromString(value: string, definition: ParameterDefinition): any {
+  static convertFromString(
+    value: string,
+    definition: ParameterDefinition
+  ): any {
     switch (definition.type) {
       case 'number':
         const num = parseFloat(value);
@@ -284,11 +297,15 @@ export class ParameterManager {
     parameters: Record<string, any>
   ): Record<string, any> {
     const definitions = this.getProviderDefinitions(provider);
-    const providerDefaults = ParameterDefaultsManager.getProviderDefaults(provider);
-    
+    const providerDefaults =
+      ParameterDefaultsManager.getProviderDefaults(provider);
+
     // 首先合併定義中的預設值
-    const merged = ParameterValidator.mergeWithDefaults(parameters, definitions);
-    
+    const merged = ParameterValidator.mergeWithDefaults(
+      parameters,
+      definitions
+    );
+
     // 然後合併提供商特定的預設值
     for (const [key, value] of Object.entries(providerDefaults)) {
       if (merged[key] === undefined) {
@@ -332,7 +349,10 @@ export class ParameterManager {
   /**
    * 獲取參數定義的詳細信息
    */
-  getParameterDetails(provider: string, parameterKey: string): ParameterDefinition | null {
+  getParameterDetails(
+    provider: string,
+    parameterKey: string
+  ): ParameterDefinition | null {
     const definitions = this.getProviderDefinitions(provider);
     return definitions.find(def => def.key === parameterKey) || null;
   }
@@ -354,10 +374,10 @@ export class ParameterManager {
     switch (definition.type) {
       case 'select':
         return definition.options || [];
-      
+
       case 'boolean':
         return [true, false];
-      
+
       case 'number':
         const suggestions: number[] = [];
         if (definition.defaultValue !== undefined) {
@@ -370,9 +390,11 @@ export class ParameterManager {
           suggestions.push(definition.max);
         }
         return suggestions;
-      
+
       default:
-        return definition.defaultValue !== undefined ? [definition.defaultValue] : [];
+        return definition.defaultValue !== undefined
+          ? [definition.defaultValue]
+          : [];
     }
   }
 }

@@ -1,11 +1,16 @@
-import { hashPassword, verifyPassword, generateToken, verifyToken } from '../utils/auth';
+import {
+  hashPassword,
+  verifyPassword,
+  generateToken,
+  verifyToken,
+} from '../utils/auth';
 
 describe('Auth Utils', () => {
   describe('Password hashing', () => {
     test('should hash password correctly', async () => {
       const password = 'TestPassword123';
       const hashedPassword = await hashPassword(password);
-      
+
       expect(hashedPassword).toBeDefined();
       expect(hashedPassword).not.toBe(password);
       expect(hashedPassword.length).toBeGreaterThan(50);
@@ -14,10 +19,10 @@ describe('Auth Utils', () => {
     test('should verify password correctly', async () => {
       const password = 'TestPassword123';
       const hashedPassword = await hashPassword(password);
-      
+
       const isValid = await verifyPassword(password, hashedPassword);
       expect(isValid).toBe(true);
-      
+
       const isInvalid = await verifyPassword('WrongPassword', hashedPassword);
       expect(isInvalid).toBe(false);
     });

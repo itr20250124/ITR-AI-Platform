@@ -56,7 +56,7 @@ describe('OpenAIChatService', () => {
     it('should have supported parameters defined', () => {
       expect(service.supportedParameters).toBeDefined();
       expect(service.supportedParameters.length).toBeGreaterThan(0);
-      
+
       const parameterKeys = service.supportedParameters.map(p => p.key);
       expect(parameterKeys).toContain('model');
       expect(parameterKeys).toContain('temperature');
@@ -65,7 +65,7 @@ describe('OpenAIChatService', () => {
 
     it('should throw error if API key is missing', () => {
       process.env.OPENAI_API_KEY = '';
-      
+
       expect(() => {
         new OpenAIChatService();
       }).toThrow();
@@ -76,12 +76,14 @@ describe('OpenAIChatService', () => {
     it('should send message successfully', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: {
-            content: 'Hello! How can I help you today?',
+        choices: [
+          {
+            message: {
+              content: 'Hello! How can I help you today?',
+            },
+            finish_reason: 'stop',
           },
-          finish_reason: 'stop',
-        }],
+        ],
         usage: {
           prompt_tokens: 10,
           completion_tokens: 15,
@@ -100,10 +102,12 @@ describe('OpenAIChatService', () => {
       // Assert
       expect(mockOpenAI.chat.completions.create).toHaveBeenCalledWith({
         model: 'gpt-3.5-turbo',
-        messages: [{
-          role: 'user',
-          content: 'Hello',
-        }],
+        messages: [
+          {
+            role: 'user',
+            content: 'Hello',
+          },
+        ],
         temperature: 0.7,
         max_tokens: 100,
         top_p: 1,
@@ -127,12 +131,14 @@ describe('OpenAIChatService', () => {
     it('should use default parameters when none provided', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: {
-            content: 'Response with defaults',
+        choices: [
+          {
+            message: {
+              content: 'Response with defaults',
+            },
+            finish_reason: 'stop',
           },
-          finish_reason: 'stop',
-        }],
+        ],
       };
 
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
@@ -143,10 +149,12 @@ describe('OpenAIChatService', () => {
       // Assert
       expect(mockOpenAI.chat.completions.create).toHaveBeenCalledWith({
         model: 'gpt-3.5-turbo',
-        messages: [{
-          role: 'user',
-          content: 'Test message',
-        }],
+        messages: [
+          {
+            role: 'user',
+            content: 'Test message',
+          },
+        ],
         temperature: 0.7,
         max_tokens: 1000,
         top_p: 1,
@@ -171,7 +179,9 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockRejectedValue(apiError);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(AIServiceError);
+      await expect(service.sendMessage('Hello')).rejects.toThrow(
+        AIServiceError
+      );
     });
 
     it('should throw error when no response from OpenAI', async () => {
@@ -183,18 +193,22 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow('No response from OpenAI');
+      await expect(service.sendMessage('Hello')).rejects.toThrow(
+        'No response from OpenAI'
+      );
     });
 
     it('should include conversation ID in metadata', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: {
-            content: 'Response with conversation ID',
+        choices: [
+          {
+            message: {
+              content: 'Response with conversation ID',
+            },
+            finish_reason: 'stop',
           },
-          finish_reason: 'stop',
-        }],
+        ],
       };
 
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
@@ -211,12 +225,14 @@ describe('OpenAIChatService', () => {
     it('should send message with context successfully', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: {
-            content: 'Response with context',
+        choices: [
+          {
+            message: {
+              content: 'Response with context',
+            },
+            finish_reason: 'stop',
           },
-          finish_reason: 'stop',
-        }],
+        ],
         usage: {
           prompt_tokens: 30,
           completion_tokens: 20,
@@ -266,12 +282,14 @@ describe('OpenAIChatService', () => {
     it('should handle system messages in context', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: {
-            content: 'Response with system context',
+        choices: [
+          {
+            message: {
+              content: 'Response with system context',
+            },
+            finish_reason: 'stop',
           },
-          finish_reason: 'stop',
-        }],
+        ],
       };
 
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
@@ -299,28 +317,34 @@ describe('OpenAIChatService', () => {
   describe('makeRequest', () => {
     it('should call sendMessage for string input', async () => {
       // Arrange
-      const sendMessageSpy = jest.spyOn(service, 'sendMessage').mockResolvedValue({
-        id: 'test',
-        content: 'response',
-        role: 'assistant',
-        timestamp: new Date(),
-      });
+      const sendMessageSpy = jest
+        .spyOn(service, 'sendMessage')
+        .mockResolvedValue({
+          id: 'test',
+          content: 'response',
+          role: 'assistant',
+          timestamp: new Date(),
+        });
 
       // Act
       await service.makeRequest('Hello', { temperature: 0.7 });
 
       // Assert
-      expect(sendMessageSpy).toHaveBeenCalledWith('Hello', { temperature: 0.7 });
+      expect(sendMessageSpy).toHaveBeenCalledWith('Hello', {
+        temperature: 0.7,
+      });
     });
 
     it('should call sendMessageWithContext for array input', async () => {
       // Arrange
-      const sendMessageWithContextSpy = jest.spyOn(service, 'sendMessageWithContext').mockResolvedValue({
-        id: 'test',
-        content: 'response',
-        role: 'assistant',
-        timestamp: new Date(),
-      });
+      const sendMessageWithContextSpy = jest
+        .spyOn(service, 'sendMessageWithContext')
+        .mockResolvedValue({
+          id: 'test',
+          content: 'response',
+          role: 'assistant',
+          timestamp: new Date(),
+        });
 
       const messages = [{ role: 'user' as const, content: 'Hello' }];
 
@@ -328,14 +352,16 @@ describe('OpenAIChatService', () => {
       await service.makeRequest(messages, { temperature: 0.7 });
 
       // Assert
-      expect(sendMessageWithContextSpy).toHaveBeenCalledWith(messages, { temperature: 0.7 });
+      expect(sendMessageWithContextSpy).toHaveBeenCalledWith(messages, {
+        temperature: 0.7,
+      });
     });
 
     it('should throw error for invalid input format', async () => {
       // Act & Assert
-      await expect(service.makeRequest({ invalid: 'input' }, {})).rejects.toThrow(
-        'Invalid input format for OpenAI chat service'
-      );
+      await expect(
+        service.makeRequest({ invalid: 'input' }, {})
+      ).rejects.toThrow('Invalid input format for OpenAI chat service');
     });
   });
 
@@ -343,32 +369,42 @@ describe('OpenAIChatService', () => {
     it('should validate temperature parameter', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: { content: 'test' },
-          finish_reason: 'stop',
-        }],
+        choices: [
+          {
+            message: { content: 'test' },
+            finish_reason: 'stop',
+          },
+        ],
       };
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert - should not throw for valid temperature
-      await expect(service.sendMessage('test', { temperature: 1.5 })).resolves.toBeDefined();
+      await expect(
+        service.sendMessage('test', { temperature: 1.5 })
+      ).resolves.toBeDefined();
 
       // Should handle invalid temperature gracefully (parameter validation in base class)
-      await expect(service.sendMessage('test', { temperature: 3 })).resolves.toBeDefined();
+      await expect(
+        service.sendMessage('test', { temperature: 3 })
+      ).resolves.toBeDefined();
     });
 
     it('should validate maxTokens parameter', async () => {
       // Arrange
       const mockResponse = {
-        choices: [{
-          message: { content: 'test' },
-          finish_reason: 'stop',
-        }],
+        choices: [
+          {
+            message: { content: 'test' },
+            finish_reason: 'stop',
+          },
+        ],
       };
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert
-      await expect(service.sendMessage('test', { maxTokens: 2000 })).resolves.toBeDefined();
+      await expect(
+        service.sendMessage('test', { maxTokens: 2000 })
+      ).resolves.toBeDefined();
     });
   });
 });

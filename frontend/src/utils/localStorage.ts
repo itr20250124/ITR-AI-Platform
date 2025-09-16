@@ -7,10 +7,10 @@ export class LocalStorage {
    */
   static setItem<T>(key: string, value: T): void {
     try {
-      const serializedValue = JSON.stringify(value);
-      localStorage.setItem(key, serializedValue);
+      const serializedValue = JSON.stringify(value)
+      localStorage.setItem(key, serializedValue)
     } catch (error) {
-      console.error(`Error saving to localStorage key "${key}":`, error);
+      console.error(`Error saving to localStorage key "${key}":`, error)
     }
   }
 
@@ -19,11 +19,11 @@ export class LocalStorage {
    */
   static getItem<T>(key: string): T | null {
     try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
+      const item = localStorage.getItem(key)
+      return item ? JSON.parse(item) : null
     } catch (error) {
-      console.error(`Error reading from localStorage key "${key}":`, error);
-      return null;
+      console.error(`Error reading from localStorage key "${key}":`, error)
+      return null
     }
   }
 
@@ -32,9 +32,9 @@ export class LocalStorage {
    */
   static removeItem(key: string): void {
     try {
-      localStorage.removeItem(key);
+      localStorage.removeItem(key)
     } catch (error) {
-      console.error(`Error removing from localStorage key "${key}":`, error);
+      console.error(`Error removing from localStorage key "${key}":`, error)
     }
   }
 
@@ -43,9 +43,9 @@ export class LocalStorage {
    */
   static clear(): void {
     try {
-      localStorage.clear();
+      localStorage.clear()
     } catch (error) {
-      console.error('Error clearing localStorage:', error);
+      console.error('Error clearing localStorage:', error)
     }
   }
 
@@ -54,12 +54,12 @@ export class LocalStorage {
    */
   static isSupported(): boolean {
     try {
-      const testKey = '__localStorage_test__';
-      localStorage.setItem(testKey, 'test');
-      localStorage.removeItem(testKey);
-      return true;
+      const testKey = '__localStorage_test__'
+      localStorage.setItem(testKey, 'test')
+      localStorage.removeItem(testKey)
+      return true
     } catch {
-      return false;
+      return false
     }
   }
 }
@@ -69,48 +69,48 @@ export class LocalStorage {
  */
 export const themeStorage = {
   getTheme: (): 'light' | 'dark' | null => {
-    return LocalStorage.getItem<'light' | 'dark'>('theme');
+    return LocalStorage.getItem<'light' | 'dark'>('theme')
   },
-  
+
   setTheme: (theme: 'light' | 'dark'): void => {
-    LocalStorage.setItem('theme', theme);
+    LocalStorage.setItem('theme', theme)
   },
-  
+
   removeTheme: (): void => {
-    LocalStorage.removeItem('theme');
+    LocalStorage.removeItem('theme')
   },
-};
+}
 
 /**
  * 用戶偏好設定的本地存儲
  */
 export const userPreferencesStorage = {
   getPreferences: () => {
-    return LocalStorage.getItem('userPreferences');
+    return LocalStorage.getItem('userPreferences')
   },
-  
+
   setPreferences: (preferences: any): void => {
-    LocalStorage.setItem('userPreferences', preferences);
+    LocalStorage.setItem('userPreferences', preferences)
   },
-  
+
   removePreferences: (): void => {
-    LocalStorage.removeItem('userPreferences');
+    LocalStorage.removeItem('userPreferences')
   },
-};
+}
 
 /**
  * 認證token的本地存儲
  */
 export const authStorage = {
   getToken: (): string | null => {
-    return LocalStorage.getItem<string>('authToken');
+    return LocalStorage.getItem<string>('authToken')
   },
-  
+
   setToken: (token: string): void => {
-    LocalStorage.setItem('authToken', token);
+    LocalStorage.setItem('authToken', token)
   },
-  
+
   removeToken: (): void => {
-    LocalStorage.removeItem('authToken');
+    LocalStorage.removeItem('authToken')
   },
-};
+}

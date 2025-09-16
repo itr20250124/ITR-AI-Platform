@@ -1,21 +1,21 @@
 import { Router } from 'express';
 import multer from 'multer';
-import { 
+import {
   sendChatMessage,
   sendChatMessageWithContext,
   generateImage,
   createImageVariation,
-  editImage
+  editImage,
 } from '../controllers/aiController';
 import { streamChat } from '../controllers/streamingChatController';
 import { authenticateToken } from '../middleware/auth';
 import { validateBody } from '../middleware/validation';
-import { 
+import {
   chatMessageSchema,
   chatContextSchema,
   imageGenerationSchema,
   imageVariationSchema,
-  imageEditSchema
+  imageEditSchema,
 } from '../middleware/validation/schemas/aiSchemas';
 
 // 配置multer用於文件上傳
@@ -40,38 +40,59 @@ const router = Router();
  * @route POST /api/ai/chat
  * @access Private
  */
-router.post('/chat', authenticateToken, validateBody(chatMessageSchema), sendChatMessage);
+router.post(
+  '/chat',
+  authenticateToken,
+  validateBody(chatMessageSchema),
+  sendChatMessage
+);
 
 /**
  * 發送帶上下文的聊天訊息
  * @route POST /api/ai/chat/context
  * @access Private
  */
-router.post('/chat/context', authenticateToken, validateBody(chatContextSchema), sendChatMessageWithContext);
+router.post(
+  '/chat/context',
+  authenticateToken,
+  validateBody(chatContextSchema),
+  sendChatMessageWithContext
+);
 
 /**
  * 串流聊天
  * @route POST /api/ai/chat/stream
  * @access Private
  */
-router.post('/chat/stream', authenticateToken, validateBody(chatContextSchema), streamChat);
+router.post(
+  '/chat/stream',
+  authenticateToken,
+  validateBody(chatContextSchema),
+  streamChat
+);
 
 /**
  * 生成圖片
  * @route POST /api/ai/image/generate
  * @access Private
  */
-router.post('/image/generate', authenticateToken, validateBody(imageGenerationSchema), generateImage);
+router.post(
+  '/image/generate',
+  authenticateToken,
+  validateBody(imageGenerationSchema),
+  generateImage
+);
 
 /**
  * 創建圖片變體
  * @route POST /api/ai/image/variation
  * @access Private
  */
-router.post('/image/variation', 
-  authenticateToken, 
-  upload.single('image'), 
-  validateBody(imageVariationSchema), 
+router.post(
+  '/image/variation',
+  authenticateToken,
+  upload.single('image'),
+  validateBody(imageVariationSchema),
   createImageVariation
 );
 
@@ -80,13 +101,14 @@ router.post('/image/variation',
  * @route POST /api/ai/image/edit
  * @access Private
  */
-router.post('/image/edit', 
-  authenticateToken, 
+router.post(
+  '/image/edit',
+  authenticateToken,
   upload.fields([
     { name: 'image', maxCount: 1 },
-    { name: 'mask', maxCount: 1 }
-  ]), 
-  validateBody(imageEditSchema), 
+    { name: 'mask', maxCount: 1 },
+  ]),
+  validateBody(imageEditSchema),
   editImage
 );
 

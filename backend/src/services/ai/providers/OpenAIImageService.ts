@@ -1,9 +1,9 @@
 import OpenAI from 'openai';
 import { BaseAIService } from '../BaseAIService';
-import { 
-  ImageServiceInterface, 
-  ImageParameters, 
-  ImageResponse 
+import {
+  ImageServiceInterface,
+  ImageParameters,
+  ImageResponse,
 } from '../interfaces/AIServiceInterface';
 import { ParameterDefinition } from '../../../types';
 import { createRetryHandler } from '../utils/RetryHandler';
@@ -11,7 +11,10 @@ import { createRetryHandler } from '../utils/RetryHandler';
 /**
  * OpenAI圖片生成服務 (DALL-E)
  */
-export class OpenAIImageService extends BaseAIService implements ImageServiceInterface {
+export class OpenAIImageService
+  extends BaseAIService
+  implements ImageServiceInterface
+{
   public provider = 'openai';
   public supportedParameters: ParameterDefinition[] = [
     {
@@ -154,8 +157,10 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
 
       const response = await this.retryHandler.execute(async () => {
         // 將Buffer轉換為File對象
-        const imageFile = new File([new Uint8Array(imageBuffer)], 'image.png', { type: 'image/png' });
-        
+        const imageFile = new File([new Uint8Array(imageBuffer)], 'image.png', {
+          type: 'image/png',
+        });
+
         return await this.openai.images.createVariation({
           image: imageFile,
           n: mergedParams.n || 1,
@@ -203,9 +208,13 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
 
       const response = await this.retryHandler.execute(async () => {
         // 將Buffer轉換為File對象
-        const imageFile = new File([new Uint8Array(imageBuffer)], 'image.png', { type: 'image/png' });
-        const maskFile = new File([new Uint8Array(maskBuffer)], 'mask.png', { type: 'image/png' });
-        
+        const imageFile = new File([new Uint8Array(imageBuffer)], 'image.png', {
+          type: 'image/png',
+        });
+        const maskFile = new File([new Uint8Array(maskBuffer)], 'mask.png', {
+          type: 'image/png',
+        });
+
         return await this.openai.images.edit({
           image: imageFile,
           mask: maskFile,
@@ -256,7 +265,9 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
         throw new Error('DALL-E 2 does not support style parameter');
       }
       if (!['256x256', '512x512', '1024x1024'].includes(size)) {
-        throw new Error('DALL-E 2 only supports 256x256, 512x512, or 1024x1024 sizes');
+        throw new Error(
+          'DALL-E 2 only supports 256x256, 512x512, or 1024x1024 sizes'
+        );
       }
     }
 
@@ -266,7 +277,9 @@ export class OpenAIImageService extends BaseAIService implements ImageServiceInt
         throw new Error('DALL-E 3 only supports generating 1 image at a time');
       }
       if (!['1024x1024', '1792x1024', '1024x1792'].includes(size)) {
-        throw new Error('DALL-E 3 only supports 1024x1024, 1792x1024, or 1024x1792 sizes');
+        throw new Error(
+          'DALL-E 3 only supports 1024x1024, 1792x1024, or 1024x1792 sizes'
+        );
       }
     }
   }

@@ -1,8 +1,22 @@
 import { ParameterDefinition } from '../../types';
-import { ParameterValidator, ValidationResult } from '../../utils/parameterValidator';
-import { ParameterManager, ParameterDefaultsManager, globalParameterManager } from './ParameterManager';
-import { ParameterPresetsManager, ParameterPreset, globalPresetsManager } from './ParameterPresets';
-import { AdvancedParameterValidator, globalAdvancedValidator } from './ParameterValidationRules';
+import {
+  ParameterValidator,
+  ValidationResult,
+} from '../../utils/parameterValidator';
+import {
+  ParameterManager,
+  ParameterDefaultsManager,
+  globalParameterManager,
+} from './ParameterManager';
+import {
+  ParameterPresetsManager,
+  ParameterPreset,
+  globalPresetsManager,
+} from './ParameterPresets';
+import {
+  AdvancedParameterValidator,
+  globalAdvancedValidator,
+} from './ParameterValidationRules';
 
 /**
  * 參數驗證選項
@@ -83,10 +97,13 @@ export class ParameterService {
     options: ValidationOptions = {}
   ): CompleteValidationResult {
     const definitions = this.getProviderDefinitions(provider);
-    
+
     // 基本驗證
-    const basicResult = ParameterValidator.validateParameters(parameters, definitions);
-    
+    const basicResult = ParameterValidator.validateParameters(
+      parameters,
+      definitions
+    );
+
     const result: CompleteValidationResult = {
       ...basicResult,
       suggestions: [],
@@ -99,9 +116,9 @@ export class ParameterService {
         parameters,
         definitions
       );
-      
+
       result.isValid = result.isValid && advancedResult.valid;
-      
+
       // 轉換字符串錯誤為ValidationError對象
       const advancedErrors = advancedResult.errors.map(errorMsg => ({
         field: 'advanced',
@@ -109,7 +126,7 @@ export class ParameterService {
         message: errorMsg,
       }));
       result.errors.push(...advancedErrors);
-      
+
       result.dependencyErrors = advancedResult.dependencyErrors;
       result.exclusionErrors = advancedResult.exclusionErrors;
       result.customRuleErrors = advancedResult.customRuleErrors;
@@ -117,7 +134,10 @@ export class ParameterService {
 
     // 生成建議
     if (options.includeWarnings) {
-      result.suggestions = this.generateParameterSuggestions(provider, parameters);
+      result.suggestions = this.generateParameterSuggestions(
+        provider,
+        parameters
+      );
     }
 
     return result;
@@ -130,7 +150,10 @@ export class ParameterService {
     provider: string,
     parameters: Record<string, any>
   ): Record<string, any> {
-    return this.parameterManager.mergeWithProviderDefaults(provider, parameters);
+    return this.parameterManager.mergeWithProviderDefaults(
+      provider,
+      parameters
+    );
   }
 
   /**
@@ -150,13 +173,19 @@ export class ParameterService {
     provider: string,
     parameters: Record<string, any>
   ): Record<string, any> {
-    return this.parameterManager.convertProviderParameters(provider, parameters);
+    return this.parameterManager.convertProviderParameters(
+      provider,
+      parameters
+    );
   }
 
   /**
    * 獲取參數詳細信息
    */
-  getParameterDetails(provider: string, parameterKey: string): ParameterDefinition | null {
+  getParameterDetails(
+    provider: string,
+    parameterKey: string
+  ): ParameterDefinition | null {
     return this.parameterManager.getParameterDetails(provider, parameterKey);
   }
 
@@ -171,7 +200,10 @@ export class ParameterService {
    * 獲取參數建議值
    */
   getParameterSuggestions(provider: string, parameterKey: string): any[] {
-    return this.parameterManager.getParameterSuggestions(provider, parameterKey);
+    return this.parameterManager.getParameterSuggestions(
+      provider,
+      parameterKey
+    );
   }
 
   /**
@@ -186,23 +218,34 @@ export class ParameterService {
 
     for (const definition of definitions) {
       const value = parameters[definition.key];
-      
+
       if (value === undefined && definition.defaultValue !== undefined) {
-        suggestions.push(`Consider setting ${definition.key} to ${definition.defaultValue} (default)`);
+        suggestions.push(
+          `Consider setting ${definition.key} to ${definition.defaultValue} (default)`
+        );
       }
 
       if (definition.type === 'number' && typeof value === 'number') {
         if (definition.key === 'temperature') {
           if (value < 0.3) {
-            suggestions.push('Low temperature may produce repetitive responses');
+            suggestions.push(
+              'Low temperature may produce repetitive responses'
+            );
           } else if (value > 1.2) {
-            suggestions.push('High temperature may produce incoherent responses');
+            suggestions.push(
+              'High temperature may produce incoherent responses'
+            );
           }
         }
 
-        if (definition.key === 'maxTokens' || definition.key === 'maxOutputTokens') {
+        if (
+          definition.key === 'maxTokens' ||
+          definition.key === 'maxOutputTokens'
+        ) {
           if (value > 2000) {
-            suggestions.push('High token limit may result in expensive API calls');
+            suggestions.push(
+              'High token limit may result in expensive API calls'
+            );
           }
         }
       }
@@ -368,13 +411,13 @@ export class ParameterService {
   } {
     // 1. 轉換參數類型
     const convertedParams = this.convertParameters(provider, inputParameters);
-    
+
     // 2. 清理未知參數
     const cleanedParams = this.cleanParameters(provider, convertedParams);
-    
+
     // 3. 合併預設值
     const mergedParams = this.mergeWithDefaults(provider, cleanedParams);
-    
+
     // 4. 驗證參數
     const validation = this.validateParameters(provider, mergedParams, options);
 

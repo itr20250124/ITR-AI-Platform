@@ -22,7 +22,7 @@ describe('Gemini Services', () => {
     test('should have correct supported parameters', () => {
       const service = new GeminiChatService();
       const parameterKeys = service.supportedParameters.map(p => p.key);
-      
+
       expect(parameterKeys).toContain('model');
       expect(parameterKeys).toContain('temperature');
       expect(parameterKeys).toContain('maxOutputTokens');
@@ -32,7 +32,7 @@ describe('Gemini Services', () => {
 
     test('should throw error when API key is missing', () => {
       delete process.env.GEMINI_API_KEY;
-      
+
       expect(() => {
         new GeminiChatService();
       }).toThrow('API key for gemini is not configured');
@@ -40,7 +40,7 @@ describe('Gemini Services', () => {
 
     test('should validate parameters correctly', () => {
       const service = new GeminiChatService();
-      
+
       // Valid parameters should not throw
       expect(() => {
         service['validateParameters']({
@@ -66,14 +66,14 @@ describe('Gemini Services', () => {
       ];
 
       const converted = service['convertMessagesToGeminiFormat'](messages);
-      
+
       // System messages should be filtered out
       expect(converted).toHaveLength(2);
-      
+
       // Roles should be converted
       expect(converted[0].role).toBe('user');
       expect(converted[1].role).toBe('model');
-      
+
       // Content should be in parts format
       expect(converted[0].parts[0].text).toBe('Hello');
       expect(converted[1].parts[0].text).toBe('Hi there!');

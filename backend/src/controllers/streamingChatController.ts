@@ -5,7 +5,10 @@ import { AIServiceFactory } from '../services/ai/AIServiceFactory';
 /**
  * 串流聊天端點
  */
-export const streamChat = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const streamChat = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { messages, provider = 'openai', parameters = {} } = req.body;
     const userId = req.user?.id;
@@ -36,19 +39,22 @@ export const streamChat = async (req: AuthenticatedRequest, res: Response): Prom
     res.writeHead(200, {
       'Content-Type': 'text/event-stream',
       'Cache-Control': 'no-cache',
-      'Connection': 'keep-alive',
+      Connection: 'keep-alive',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Headers': 'Cache-Control',
     });
 
     try {
       const chatService = AIServiceFactory.createChatService(provider);
-      
+
       // 檢查服務是否支持串流
       if (typeof chatService.sendMessageStream === 'function') {
         // 使用串流方法
         const lastMessage = messages[messages.length - 1];
-        const streamGenerator = chatService.sendMessageStream(lastMessage.content, parameters);
+        const streamGenerator = chatService.sendMessageStream(
+          lastMessage.content,
+          parameters
+        );
 
         // 發送開始事件
         res.write('data: {"type": "start"}\n\n');
@@ -70,14 +76,17 @@ export const streamChat = async (req: AuthenticatedRequest, res: Response): Prom
         res.write('data: [DONE]\n\n');
       } else {
         // 如果不支持串流，使用普通方法並模擬串流
-        const response = await chatService.sendMessageWithContext(messages, parameters);
-        
+        const response = await chatService.sendMessageWithContext(
+          messages,
+          parameters
+        );
+
         // 模擬串流效果，將回應分塊發送
         const content = response.content;
         const chunkSize = 10; // 每次發送10個字符
-        
+
         res.write('data: {"type": "start"}\n\n');
-        
+
         for (let i = 0; i < content.length; i += chunkSize) {
           const chunk = content.slice(i, i + chunkSize);
           const data = JSON.stringify({
@@ -85,17 +94,17 @@ export const streamChat = async (req: AuthenticatedRequest, res: Response): Prom
             content: chunk,
           });
           res.write(`data: ${data}\n\n`);
-          
+
           // 添加小延遲以模擬串流效果
           await new Promise(resolve => setTimeout(resolve, 50));
         }
-        
+
         res.write('data: {"type": "end"}\n\n');
         res.write('data: [DONE]\n\n');
       }
     } catch (error) {
       console.error('Streaming chat error:', error);
-      
+
       const errorData = JSON.stringify({
         type: 'error',
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -106,7 +115,7 @@ export const streamChat = async (req: AuthenticatedRequest, res: Response): Prom
     res.end();
   } catch (error) {
     console.error('Stream setup error:', error);
-    
+
     if (!res.headersSent) {
       res.status(500).json({
         success: false,

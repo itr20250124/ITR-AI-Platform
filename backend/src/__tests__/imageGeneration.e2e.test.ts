@@ -18,8 +18,8 @@ app.post('/api/auth/register', (req, res) => {
     success: true,
     data: {
       user: { id: 'test-user-id', email: req.body.email },
-      token: 'test-token'
-    }
+      token: 'test-token',
+    },
   });
 });
 
@@ -27,8 +27,8 @@ app.post('/api/auth/login', (req, res) => {
   res.json({
     success: true,
     data: {
-      token: 'test-token'
-    }
+      token: 'test-token',
+    },
   });
 });
 
@@ -37,32 +37,32 @@ app.post('/api/ai/image/generate', (req, res) => {
   if (!req.body.prompt || req.body.prompt.trim() === '') {
     return res.status(400).json({
       success: false,
-      message: '輸入驗證失敗'
+      message: '輸入驗證失敗',
     });
   }
-  
+
   if (!req.headers.authorization) {
     return res.status(401).json({
       success: false,
-      message: '需要認證token'
+      message: '需要認證token',
     });
   }
-  
+
   if (req.body.provider === 'invalid-provider') {
     return res.status(400).json({
       success: false,
-      message: '不支援的AI服務提供商'
+      message: '不支援的AI服務提供商',
     });
   }
-  
+
   res.json({
     success: true,
     data: {
       id: 'test-image-id',
       imageUrl: 'https://example.com/test.jpg',
       prompt: req.body.prompt,
-      status: 'completed'
-    }
+      status: 'completed',
+    },
   });
 });
 
@@ -70,26 +70,28 @@ app.get('/api/ai/image/history', (req, res) => {
   res.json({
     success: true,
     data: {
-      images: [{
-        id: 'test-image-id',
-        prompt: 'A simple red circle on white background'
-      }],
-      total: 1
-    }
+      images: [
+        {
+          id: 'test-image-id',
+          prompt: 'A simple red circle on white background',
+        },
+      ],
+      total: 1,
+    },
   });
 });
 
 app.delete('/api/ai/image/:id', (req, res) => {
   res.json({
     success: true,
-    message: '圖片已刪除'
+    message: '圖片已刪除',
   });
 });
 
 app.delete('/api/ai/image/batch', (req, res) => {
   res.json({
     success: true,
-    deletedCount: req.body.imageIds.length
+    deletedCount: req.body.imageIds.length,
   });
 });
 
@@ -108,22 +110,18 @@ describe('Image Generation E2E Tests', () => {
     AIServiceFactory.initialize();
 
     // Create test user and get auth token
-    const userResponse = await request(app)
-      .post('/api/auth/register')
-      .send({
-        email: 'test@example.com',
-        username: 'testuser',
-        password: 'testpassword123',
-      });
+    const userResponse = await request(app).post('/api/auth/register').send({
+      email: 'test@example.com',
+      username: 'testuser',
+      password: 'testpassword123',
+    });
 
     userId = userResponse.body.data.user.id;
 
-    const loginResponse = await request(app)
-      .post('/api/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'testpassword123',
-      });
+    const loginResponse = await request(app).post('/api/auth/login').send({
+      email: 'test@example.com',
+      password: 'testpassword123',
+    });
 
     authToken = loginResponse.body.data.token;
   });
@@ -133,7 +131,7 @@ describe('Image Generation E2E Tests', () => {
     await prisma.generatedImage.deleteMany({
       where: { userId },
     });
-    
+
     await prisma.user.delete({
       where: { id: userId },
     });
@@ -145,7 +143,9 @@ describe('Image Generation E2E Tests', () => {
     it('should complete full image generation workflow', async () => {
       // Skip if no API key is available or in CI
       if (!process.env.OPENAI_API_KEY || process.env.CI) {
-        console.log('Skipping E2E test: No OpenAI API key provided or running in CI');
+        console.log(
+          'Skipping E2E test: No OpenAI API key provided or running in CI'
+        );
         return;
       }
 
@@ -249,17 +249,17 @@ describe('Image Generation E2E Tests', () => {
       );
 
       const responses = await Promise.allSettled(requests);
-      
+
       // At least one request should succeed
       const successfulResponses = responses.filter(
-        (result) => result.status === 'fulfilled' && result.value.status === 200
+        result => result.status === 'fulfilled' && result.value.status === 200
       );
-      
+
       expect(successfulResponses.length).toBeGreaterThan(0);
 
       // Some requests might be rate limited
       const rateLimitedResponses = responses.filter(
-        (result) => result.status === 'fulfilled' && result.value.status === 429
+        result => result.status === 'fulfilled' && result.value.status === 429
       );
 
       // Clean up any successful generations
@@ -289,12 +289,10 @@ describe('Image Generation E2E Tests', () => {
     });
 
     it('should handle unauthorized requests', async () => {
-      const response = await request(app)
-        .post('/api/ai/image/generate')
-        .send({
-          prompt: 'Test prompt',
-          provider: 'openai',
-        });
+      const response = await request(app).post('/api/ai/image/generate').send({
+        prompt: 'Test prompt',
+        provider: 'openai',
+      });
 
       expect(response.status).toBe(401);
     });

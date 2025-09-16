@@ -3,7 +3,9 @@ import { PrismaClient } from '@prisma/client';
 
 // Mock Prisma Client
 jest.mock('@prisma/client');
-const MockedPrismaClient = PrismaClient as jest.MockedClass<typeof PrismaClient>;
+const MockedPrismaClient = PrismaClient as jest.MockedClass<
+  typeof PrismaClient
+>;
 
 describe('ConversationService', () => {
   let mockPrisma: jest.Mocked<PrismaClient>;
@@ -127,7 +129,11 @@ describe('ConversationService', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           messages: [],
-          user: { id: 'user-1', username: 'testuser', email: 'test@example.com' },
+          user: {
+            id: 'user-1',
+            username: 'testuser',
+            email: 'test@example.com',
+          },
         },
       ];
 
@@ -208,7 +214,10 @@ describe('ConversationService', () => {
 
       mockPrisma.conversation.findFirst.mockResolvedValue(mockConversation);
 
-      const result = await ConversationService.getConversationById('conv-1', 'user-1');
+      const result = await ConversationService.getConversationById(
+        'conv-1',
+        'user-1'
+      );
 
       expect(result).toEqual(mockConversation);
       expect(mockPrisma.conversation.findFirst).toHaveBeenCalledWith({
@@ -234,7 +243,10 @@ describe('ConversationService', () => {
     it('should return null if conversation not found', async () => {
       mockPrisma.conversation.findFirst.mockResolvedValue(null);
 
-      const result = await ConversationService.getConversationById('conv-1', 'user-1');
+      const result = await ConversationService.getConversationById(
+        'conv-1',
+        'user-1'
+      );
 
       expect(result).toBeNull();
     });
@@ -252,7 +264,9 @@ describe('ConversationService', () => {
         metadata: {},
       };
 
-      mockPrisma.conversation.findUnique.mockResolvedValue(mockConversation as any);
+      mockPrisma.conversation.findUnique.mockResolvedValue(
+        mockConversation as any
+      );
       mockPrisma.message.create.mockResolvedValue(mockMessage);
       mockPrisma.conversation.update.mockResolvedValue({} as any);
 
@@ -294,7 +308,10 @@ describe('ConversationService', () => {
     it('should delete conversation successfully', async () => {
       mockPrisma.conversation.deleteMany.mockResolvedValue({ count: 1 });
 
-      const result = await ConversationService.deleteConversation('conv-1', 'user-1');
+      const result = await ConversationService.deleteConversation(
+        'conv-1',
+        'user-1'
+      );
 
       expect(result).toBe(true);
       expect(mockPrisma.conversation.deleteMany).toHaveBeenCalledWith({
@@ -308,7 +325,10 @@ describe('ConversationService', () => {
     it('should return false if conversation not found', async () => {
       mockPrisma.conversation.deleteMany.mockResolvedValue({ count: 0 });
 
-      const result = await ConversationService.deleteConversation('conv-1', 'user-1');
+      const result = await ConversationService.deleteConversation(
+        'conv-1',
+        'user-1'
+      );
 
       expect(result).toBe(false);
     });
@@ -326,14 +346,21 @@ describe('ConversationService', () => {
           createdAt: new Date(),
           updatedAt: new Date(),
           messages: [],
-          user: { id: 'user-1', username: 'testuser', email: 'test@example.com' },
+          user: {
+            id: 'user-1',
+            username: 'testuser',
+            email: 'test@example.com',
+          },
         },
       ];
 
       mockPrisma.conversation.findMany.mockResolvedValue(mockConversations);
       mockPrisma.conversation.count.mockResolvedValue(1);
 
-      const result = await ConversationService.searchConversations('user-1', 'AI');
+      const result = await ConversationService.searchConversations(
+        'user-1',
+        'AI'
+      );
 
       expect(result.conversations).toHaveLength(1);
       expect(result.total).toBe(1);

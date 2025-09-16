@@ -14,10 +14,7 @@ export class UserService {
     // 檢查用戶是否已存在
     const existingUser = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email },
-          { username },
-        ],
+        OR: [{ email }, { username }],
       },
     });
 
@@ -110,7 +107,9 @@ export class UserService {
    */
   async updateUserPreferences(
     userId: string,
-    preferences: Partial<Omit<UserPreferences, 'id' | 'userId' | 'createdAt' | 'updatedAt'>>
+    preferences: Partial<
+      Omit<UserPreferences, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+    >
   ): Promise<User> {
     const user = await prisma.user.update({
       where: { id: userId },

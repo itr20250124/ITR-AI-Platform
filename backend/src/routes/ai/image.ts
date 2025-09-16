@@ -134,10 +134,7 @@ imageRoutes.post(
       .isString()
       .isLength({ min: 1, max: 1000 })
       .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
-    body('provider')
-      .optional()
-      .isString()
-      .withMessage('提供的 AI 服務不正確'),
+    body('provider').optional().isString().withMessage('提供的 AI 服務不正確'),
     parametersValidator,
   ],
   async (req: AuthenticatedRequest, res: Response) => {
@@ -193,7 +190,8 @@ imageRoutes.post(
       console.error('Generate image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message:
+          error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }
@@ -205,10 +203,7 @@ imageRoutes.post(
   rateLimiter(8, 15 * 60 * 1000),
   upload.single('image'),
   [
-    body('provider')
-      .optional()
-      .isString()
-      .withMessage('提供的 AI 服務不正確'),
+    body('provider').optional().isString().withMessage('提供的 AI 服務不正確'),
     parametersValidator,
   ],
   async (req: AuthenticatedRequest, res: Response) => {
@@ -240,7 +235,10 @@ imageRoutes.post(
         return;
       }
 
-      const result = await aiService.createImageVariation(req.file.buffer, parameters);
+      const result = await aiService.createImageVariation(
+        req.file.buffer,
+        parameters
+      );
       const metadata = {
         type: 'variation',
         originalFileName: req.file.originalname,
@@ -268,7 +266,8 @@ imageRoutes.post(
       console.error('Create variation error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message:
+          error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }
@@ -287,10 +286,7 @@ imageRoutes.post(
       .isString()
       .isLength({ min: 1, max: 1000 })
       .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
-    body('provider')
-      .optional()
-      .isString()
-      .withMessage('提供的 AI 服務不正確'),
+    body('provider').optional().isString().withMessage('提供的 AI 服務不正確'),
     parametersValidator,
   ],
   async (req: AuthenticatedRequest, res: Response) => {
@@ -298,7 +294,9 @@ imageRoutes.post(
       return;
     }
 
-    const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+    const files = req.files as
+      | Record<string, Express.Multer.File[]>
+      | undefined;
     const imageFile = files?.image?.[0];
     const maskFile = files?.mask?.[0];
 
@@ -338,7 +336,7 @@ imageRoutes.post(
         imageFile.buffer,
         maskFile.buffer,
         req.body.prompt,
-        parameters,
+        parameters
       );
 
       const metadata = {
@@ -369,7 +367,8 @@ imageRoutes.post(
       console.error('Edit image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message:
+          error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }

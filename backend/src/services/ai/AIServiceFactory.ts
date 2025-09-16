@@ -1,7 +1,7 @@
-import { 
-  ChatServiceInterface, 
-  ImageServiceInterface, 
-  VideoServiceInterface 
+import {
+  ChatServiceInterface,
+  ImageServiceInterface,
+  VideoServiceInterface,
 } from './interfaces/AIServiceInterface';
 import { OpenAIChatService } from './providers/OpenAIChatService';
 import { OpenAIImageService } from './providers/OpenAIImageService';
@@ -11,16 +11,19 @@ import { GeminiChatService } from './providers/GeminiChatService';
  * AI服務工廠類
  */
 export class AIServiceFactory {
-  private static chatServices: Map<string, () => ChatServiceInterface> = new Map();
-  private static imageServices: Map<string, () => ImageServiceInterface> = new Map();
-  private static videoServices: Map<string, () => VideoServiceInterface> = new Map();
+  private static chatServices: Map<string, () => ChatServiceInterface> =
+    new Map();
+  private static imageServices: Map<string, () => ImageServiceInterface> =
+    new Map();
+  private static videoServices: Map<string, () => VideoServiceInterface> =
+    new Map();
 
   /**
    * 初始化所有服務提供商
    */
   static initialize() {
     console.log('Initializing AI service providers...');
-    
+
     // 註冊聊天服務
     this.registerChatService('openai', () => new OpenAIChatService());
     this.registerChatService('gemini', () => new GeminiChatService());
@@ -31,7 +34,7 @@ export class AIServiceFactory {
 
     // 註冊影片生成服務 (暫時為空，未來擴展)
     // this.registerVideoService('provider', () => new ProviderVideoService());
-    
+
     console.log(`Registered ${this.chatServices.size} chat services`);
     console.log(`Registered ${this.imageServices.size} image services`);
     console.log(`Registered ${this.videoServices.size} video services`);
@@ -40,21 +43,30 @@ export class AIServiceFactory {
   /**
    * 註冊聊天服務
    */
-  static registerChatService(provider: string, factory: () => ChatServiceInterface) {
+  static registerChatService(
+    provider: string,
+    factory: () => ChatServiceInterface
+  ) {
     this.chatServices.set(provider, factory);
   }
 
   /**
    * 註冊圖片生成服務
    */
-  static registerImageService(provider: string, factory: () => ImageServiceInterface) {
+  static registerImageService(
+    provider: string,
+    factory: () => ImageServiceInterface
+  ) {
     this.imageServices.set(provider, factory);
   }
 
   /**
    * 註冊影片生成服務
    */
-  static registerVideoService(provider: string, factory: () => VideoServiceInterface) {
+  static registerVideoService(
+    provider: string,
+    factory: () => VideoServiceInterface
+  ) {
     this.videoServices.set(provider, factory);
   }
 
@@ -115,7 +127,10 @@ export class AIServiceFactory {
   /**
    * 檢查服務提供商是否可用
    */
-  static isProviderAvailable(provider: string, type: 'chat' | 'image' | 'video'): boolean {
+  static isProviderAvailable(
+    provider: string,
+    type: 'chat' | 'image' | 'video'
+  ): boolean {
     switch (type) {
       case 'chat':
         return this.chatServices.has(provider);

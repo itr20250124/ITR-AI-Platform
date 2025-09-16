@@ -18,7 +18,7 @@ export interface ChatServiceInterface extends AIServiceInterface {
     parameters: ChatParameters,
     conversationId?: string
   ): Promise<ChatResponse>;
-  
+
   sendMessageWithContext(
     messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>,
     parameters: ChatParameters
@@ -33,12 +33,12 @@ export interface ImageServiceInterface extends AIServiceInterface {
     prompt: string,
     parameters: ImageParameters
   ): Promise<ImageResponse>;
-  
+
   createImageVariation(
     imageBuffer: Buffer,
     parameters: ImageParameters
   ): Promise<ImageResponse>;
-  
+
   editImage(
     imageBuffer: Buffer,
     maskBuffer: Buffer,

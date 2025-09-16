@@ -26,8 +26,12 @@ import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
 import { imageRoutes } from '../ai/image';
 import { authenticateToken } from '../../middleware/auth';
 
-const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
-const mockAuthenticateToken = authenticateToken as jest.MockedFunction<typeof authenticateToken>;
+const mockAIServiceFactory = AIServiceFactory as jest.Mocked<
+  typeof AIServiceFactory
+>;
+const mockAuthenticateToken = authenticateToken as jest.MockedFunction<
+  typeof authenticateToken
+>;
 
 describe('Image Routes Integration Tests', () => {
   let app: express.Application;
@@ -121,12 +125,10 @@ describe('Image Routes Integration Tests', () => {
 
     it('should return 400 for invalid prompt', async () => {
       // Act
-      const response = await request(app)
-        .post('/generate')
-        .send({
-          prompt: '', // Empty prompt
-          provider: 'openai',
-        });
+      const response = await request(app).post('/generate').send({
+        prompt: '', // Empty prompt
+        provider: 'openai',
+      });
 
       // Assert
       expect(response.status).toBe(400);
@@ -136,12 +138,10 @@ describe('Image Routes Integration Tests', () => {
 
     it('should return 400 for unsupported provider', async () => {
       // Act
-      const response = await request(app)
-        .post('/generate')
-        .send({
-          prompt: 'A beautiful sunset',
-          provider: 'unsupported-provider',
-        });
+      const response = await request(app).post('/generate').send({
+        prompt: 'A beautiful sunset',
+        provider: 'unsupported-provider',
+      });
 
       // Assert
       expect(response.status).toBe(400);
@@ -150,15 +150,15 @@ describe('Image Routes Integration Tests', () => {
 
     it('should handle service errors', async () => {
       // Arrange
-      mockImageService.generateImage.mockRejectedValue(new Error('Service unavailable'));
+      mockImageService.generateImage.mockRejectedValue(
+        new Error('Service unavailable')
+      );
 
       // Act
-      const response = await request(app)
-        .post('/generate')
-        .send({
-          prompt: 'A beautiful sunset',
-          provider: 'openai',
-        });
+      const response = await request(app).post('/generate').send({
+        prompt: 'A beautiful sunset',
+        provider: 'openai',
+      });
 
       // Assert
       expect(response.status).toBe(500);
@@ -186,7 +186,9 @@ describe('Image Routes Integration Tests', () => {
         }),
       };
 
-      mockImageService.createImageVariation.mockResolvedValue(mockVariationResponse);
+      mockImageService.createImageVariation.mockResolvedValue(
+        mockVariationResponse
+      );
       mockPrisma.generatedImage.create.mockResolvedValue(mockDbResponse);
 
       // Act
@@ -204,11 +206,9 @@ describe('Image Routes Integration Tests', () => {
 
     it('should return 400 when no image file provided', async () => {
       // Act
-      const response = await request(app)
-        .post('/variation')
-        .send({
-          provider: 'openai',
-        });
+      const response = await request(app).post('/variation').send({
+        provider: 'openai',
+      });
 
       // Assert
       expect(response.status).toBe(400);
@@ -358,8 +358,7 @@ describe('Image Routes Integration Tests', () => {
       mockPrisma.generatedImage.delete.mockResolvedValue(mockImage);
 
       // Act
-      const response = await request(app)
-        .delete('/img-123');
+      const response = await request(app).delete('/img-123');
 
       // Assert
       expect(response.status).toBe(200);
@@ -372,8 +371,7 @@ describe('Image Routes Integration Tests', () => {
       mockPrisma.generatedImage.findFirst.mockResolvedValue(null);
 
       // Act
-      const response = await request(app)
-        .delete('/non-existent');
+      const response = await request(app).delete('/non-existent');
 
       // Assert
       expect(response.status).toBe(404);
@@ -403,11 +401,9 @@ describe('Image Routes Integration Tests', () => {
 
     it('should return 400 for empty image IDs array', async () => {
       // Act
-      const response = await request(app)
-        .delete('/batch')
-        .send({
-          imageIds: [],
-        });
+      const response = await request(app).delete('/batch').send({
+        imageIds: [],
+      });
 
       // Assert
       expect(response.status).toBe(400);

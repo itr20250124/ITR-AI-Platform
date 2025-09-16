@@ -25,10 +25,10 @@ describe('OpenAI Integration', () => {
     it('should create Gemini chat service', () => {
       // Set up Gemini API key for this test
       process.env.GEMINI_API_KEY = 'test-gemini-key';
-      
+
       const chatService = factory.createChatService('gemini');
       expect(chatService.provider).toBe('gemini');
-      
+
       delete process.env.GEMINI_API_KEY;
     });
 
@@ -61,7 +61,7 @@ describe('OpenAI Integration', () => {
     it('should have correct chat parameters', () => {
       const chatService = factory.createChatService('openai');
       const parameters = chatService.supportedParameters;
-      
+
       expect(parameters).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -88,7 +88,7 @@ describe('OpenAI Integration', () => {
     it('should have correct image parameters', () => {
       const imageService = factory.createImageService('openai');
       const parameters = imageService.supportedParameters;
-      
+
       expect(parameters).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

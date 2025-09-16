@@ -25,7 +25,12 @@ const router = Router();
  * @route POST /api/conversations
  * @access Private
  */
-router.post('/', authenticateToken, validateBody(createConversationSchema), createConversation);
+router.post(
+  '/',
+  authenticateToken,
+  validateBody(createConversationSchema),
+  createConversation
+);
 
 /**
  * 獲取用戶的所有對話
@@ -60,7 +65,12 @@ router.get('/:conversationId', authenticateToken, getConversationById);
  * @route PUT /api/conversations/:conversationId
  * @access Private
  */
-router.put('/:conversationId', authenticateToken, validateBody(updateConversationSchema), updateConversation);
+router.put(
+  '/:conversationId',
+  authenticateToken,
+  validateBody(updateConversationSchema),
+  updateConversation
+);
 
 /**
  * 刪除對話
@@ -74,13 +84,22 @@ router.delete('/:conversationId', authenticateToken, deleteConversation);
  * @route POST /api/conversations/:conversationId/messages
  * @access Private
  */
-router.post('/:conversationId/messages', authenticateToken, validateBody(addMessageSchema), addMessage);
+router.post(
+  '/:conversationId/messages',
+  authenticateToken,
+  validateBody(addMessageSchema),
+  addMessage
+);
 
 /**
  * 獲取對話的訊息歷史
  * @route GET /api/conversations/:conversationId/messages
  * @access Private
  */
-router.get('/:conversationId/messages', authenticateToken, getConversationMessages);
+router.get(
+  '/:conversationId/messages',
+  authenticateToken,
+  getConversationMessages
+);
 
 export default router;

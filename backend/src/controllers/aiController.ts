@@ -18,7 +18,7 @@ export const sendChatMessage = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Chat message error:', error);
-    
+
     if (error instanceof AIServiceError) {
       return res.status(400).json({
         success: false,
@@ -43,12 +43,18 @@ export const sendChatMessage = async (req: Request, res: Response) => {
 /**
  * 發送帶上下文的聊天訊息
  */
-export const sendChatMessageWithContext = async (req: Request, res: Response) => {
+export const sendChatMessageWithContext = async (
+  req: Request,
+  res: Response
+) => {
   try {
     const { messages, provider = 'openai', parameters = {} } = req.body;
 
     const chatService = AIServiceFactory.createChatService(provider);
-    const response = await chatService.sendMessageWithContext(messages, parameters);
+    const response = await chatService.sendMessageWithContext(
+      messages,
+      parameters
+    );
 
     res.json({
       success: true,
@@ -56,7 +62,7 @@ export const sendChatMessageWithContext = async (req: Request, res: Response) =>
     });
   } catch (error) {
     console.error('Chat context message error:', error);
-    
+
     if (error instanceof AIServiceError) {
       return res.status(400).json({
         success: false,
@@ -94,7 +100,7 @@ export const generateImage = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Image generation error:', error);
-    
+
     if (error instanceof AIServiceError) {
       return res.status(400).json({
         success: false,
@@ -135,8 +141,11 @@ export const createImageVariation = async (req: Request, res: Response) => {
     }
 
     const imageService = AIServiceFactory.createImageService(provider);
-    
-    const response = await imageService.createImageVariation(imageFile.buffer, parameters);
+
+    const response = await imageService.createImageVariation(
+      imageFile.buffer,
+      parameters
+    );
 
     res.json({
       success: true,
@@ -144,7 +153,7 @@ export const createImageVariation = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Image variation error:', error);
-    
+
     if (error instanceof AIServiceError) {
       return res.status(400).json({
         success: false,
@@ -188,8 +197,13 @@ export const editImage = async (req: Request, res: Response) => {
     const maskFile = files.mask[0];
 
     const imageService = AIServiceFactory.createImageService(provider);
-    
-    const response = await imageService.editImage(imageFile.buffer, maskFile.buffer, prompt, parameters);
+
+    const response = await imageService.editImage(
+      imageFile.buffer,
+      maskFile.buffer,
+      prompt,
+      parameters
+    );
 
     res.json({
       success: true,
@@ -197,7 +211,7 @@ export const editImage = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error('Image edit error:', error);
-    
+
     if (error instanceof AIServiceError) {
       return res.status(400).json({
         success: false,

@@ -31,7 +31,7 @@ export class AIConfigManager {
    */
   static async getConfigsByType(type: 'chat' | 'image' | 'video') {
     return prisma.aIProviderConfig.findMany({
-      where: { 
+      where: {
         type,
         enabled: true,
       },
@@ -103,7 +103,7 @@ export class AIConfigManager {
 
     for (const [key, value] of Object.entries(parameters)) {
       const definition = parameterDefinitions.find(def => def.key === key);
-      
+
       if (!definition) {
         errors.push(`Unknown parameter: ${key}`);
         continue;
@@ -138,7 +138,9 @@ export class AIConfigManager {
 
         case 'select':
           if (definition.options && !definition.options.includes(value)) {
-            errors.push(`Parameter ${key} must be one of: ${definition.options.join(', ')}`);
+            errors.push(
+              `Parameter ${key} must be one of: ${definition.options.join(', ')}`
+            );
           }
           break;
       }

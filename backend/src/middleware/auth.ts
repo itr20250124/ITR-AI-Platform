@@ -5,10 +5,14 @@ import { AuthenticatedRequest } from '../types';
 /**
  * JWT認證中間件
  */
-export function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export function authenticateToken(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const token = extractTokenFromHeader(req.headers.authorization);
-    
+
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -36,15 +40,19 @@ export function authenticateToken(req: AuthenticatedRequest, res: Response, next
 /**
  * 可選認證中間件 - token存在時驗證，不存在時繼續
  */
-export function optionalAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+export function optionalAuth(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) {
   try {
     const token = extractTokenFromHeader(req.headers.authorization);
-    
+
     if (token) {
       const payload = verifyToken(token);
       req.user = payload;
     }
-    
+
     next();
   } catch (error) {
     // 如果token無效，繼續執行但不設置user

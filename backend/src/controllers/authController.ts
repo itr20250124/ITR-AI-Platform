@@ -8,12 +8,15 @@ const userService = new UserService();
 /**
  * 用戶註冊
  */
-export async function register(req: AuthenticatedRequest, res: Response): Promise<void> {
+export async function register(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
   try {
     const userData: CreateUserData = req.body;
-    
+
     const user = await userService.createUser(userData);
-    
+
     // 生成JWT token
     const token = generateToken({
       userId: user.id,
@@ -34,7 +37,7 @@ export async function register(req: AuthenticatedRequest, res: Response): Promis
     });
   } catch (error) {
     console.error('Registration error:', error);
-    
+
     res.status(400).json({
       success: false,
       error: {
@@ -48,12 +51,15 @@ export async function register(req: AuthenticatedRequest, res: Response): Promis
 /**
  * 用戶登入
  */
-export async function login(req: AuthenticatedRequest, res: Response): Promise<void> {
+export async function login(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
   try {
     const loginData: LoginData = req.body;
-    
+
     const user = await userService.authenticateUser(loginData);
-    
+
     // 生成JWT token
     const token = generateToken({
       userId: user.id,
@@ -74,7 +80,7 @@ export async function login(req: AuthenticatedRequest, res: Response): Promise<v
     });
   } catch (error) {
     console.error('Login error:', error);
-    
+
     res.status(401).json({
       success: false,
       error: {
@@ -88,7 +94,10 @@ export async function login(req: AuthenticatedRequest, res: Response): Promise<v
 /**
  * 獲取當前用戶信息
  */
-export async function getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
+export async function getProfile(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
   try {
     if (!req.user) {
       return res.status(401).json({
@@ -101,7 +110,7 @@ export async function getProfile(req: AuthenticatedRequest, res: Response): Prom
     }
 
     const user = await userService.getUserById(req.user.userId);
-    
+
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -127,7 +136,7 @@ export async function getProfile(req: AuthenticatedRequest, res: Response): Prom
     });
   } catch (error) {
     console.error('Get profile error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -141,7 +150,10 @@ export async function getProfile(req: AuthenticatedRequest, res: Response): Prom
 /**
  * 更新用戶偏好設定
  */
-export async function updatePreferences(req: AuthenticatedRequest, res: Response): Promise<void> {
+export async function updatePreferences(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
   try {
     if (!req.user) {
       return res.status(401).json({
@@ -154,7 +166,10 @@ export async function updatePreferences(req: AuthenticatedRequest, res: Response
     }
 
     const preferences = req.body;
-    const user = await userService.updateUserPreferences(req.user.userId, preferences);
+    const user = await userService.updateUserPreferences(
+      req.user.userId,
+      preferences
+    );
 
     // 移除密碼字段
     const { password, ...userWithoutPassword } = user;
@@ -168,7 +183,7 @@ export async function updatePreferences(req: AuthenticatedRequest, res: Response
     });
   } catch (error) {
     console.error('Update preferences error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -182,7 +197,10 @@ export async function updatePreferences(req: AuthenticatedRequest, res: Response
 /**
  * 用戶登出 (客戶端處理token清除)
  */
-export async function logout(req: AuthenticatedRequest, res: Response): Promise<void> {
+export async function logout(
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> {
   res.json({
     success: true,
     message: '登出成功',

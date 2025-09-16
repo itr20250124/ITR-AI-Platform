@@ -5,7 +5,10 @@ import { ConversationService } from '../services/conversation/ConversationServic
 /**
  * 創建新對話
  */
-export const createConversation = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const createConversation = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { title, aiProvider, parameters } = req.body;
     const userId = req.user?.id;
@@ -46,7 +49,7 @@ export const createConversation = async (req: AuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.error('Create conversation error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -60,7 +63,10 @@ export const createConversation = async (req: AuthenticatedRequest, res: Respons
 /**
  * 獲取用戶的所有對話
  */
-export const getUserConversations = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getUserConversations = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const userId = req.user?.id;
     const { limit, offset, orderBy, order } = req.query;
@@ -83,7 +89,10 @@ export const getUserConversations = async (req: AuthenticatedRequest, res: Respo
       order: order as 'asc' | 'desc' | undefined,
     };
 
-    const result = await ConversationService.getUserConversations(userId, options);
+    const result = await ConversationService.getUserConversations(
+      userId,
+      options
+    );
 
     res.json({
       success: true,
@@ -91,7 +100,7 @@ export const getUserConversations = async (req: AuthenticatedRequest, res: Respo
     });
   } catch (error) {
     console.error('Get user conversations error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -105,7 +114,10 @@ export const getUserConversations = async (req: AuthenticatedRequest, res: Respo
 /**
  * 根據ID獲取對話詳情
  */
-export const getConversationById = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getConversationById = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const userId = req.user?.id;
@@ -121,7 +133,10 @@ export const getConversationById = async (req: AuthenticatedRequest, res: Respon
       return;
     }
 
-    const conversation = await ConversationService.getConversationById(conversationId, userId);
+    const conversation = await ConversationService.getConversationById(
+      conversationId,
+      userId
+    );
 
     if (!conversation) {
       res.status(404).json({
@@ -140,7 +155,7 @@ export const getConversationById = async (req: AuthenticatedRequest, res: Respon
     });
   } catch (error) {
     console.error('Get conversation by id error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -154,7 +169,10 @@ export const getConversationById = async (req: AuthenticatedRequest, res: Respon
 /**
  * 更新對話
  */
-export const updateConversation = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const updateConversation = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const { title, aiProvider, parameters } = req.body;
@@ -195,7 +213,7 @@ export const updateConversation = async (req: AuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.error('Update conversation error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -209,7 +227,10 @@ export const updateConversation = async (req: AuthenticatedRequest, res: Respons
 /**
  * 刪除對話
  */
-export const deleteConversation = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const deleteConversation = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const userId = req.user?.id;
@@ -225,7 +246,10 @@ export const deleteConversation = async (req: AuthenticatedRequest, res: Respons
       return;
     }
 
-    const success = await ConversationService.deleteConversation(conversationId, userId);
+    const success = await ConversationService.deleteConversation(
+      conversationId,
+      userId
+    );
 
     if (!success) {
       res.status(404).json({
@@ -244,7 +268,7 @@ export const deleteConversation = async (req: AuthenticatedRequest, res: Respons
     });
   } catch (error) {
     console.error('Delete conversation error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -258,7 +282,10 @@ export const deleteConversation = async (req: AuthenticatedRequest, res: Respons
 /**
  * 添加訊息到對話
  */
-export const addMessage = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const addMessage = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const { role, content, metadata } = req.body;
@@ -298,7 +325,10 @@ export const addMessage = async (req: AuthenticatedRequest, res: Response): Prom
     }
 
     // 驗證用戶是否有權限訪問此對話
-    const conversation = await ConversationService.getConversationById(conversationId, userId);
+    const conversation = await ConversationService.getConversationById(
+      conversationId,
+      userId
+    );
     if (!conversation) {
       res.status(404).json({
         success: false,
@@ -324,7 +354,7 @@ export const addMessage = async (req: AuthenticatedRequest, res: Response): Prom
     });
   } catch (error) {
     console.error('Add message error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -338,7 +368,10 @@ export const addMessage = async (req: AuthenticatedRequest, res: Response): Prom
 /**
  * 獲取對話的訊息歷史
  */
-export const getConversationMessages = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getConversationMessages = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const { limit, offset, before, after } = req.query;
@@ -374,7 +407,7 @@ export const getConversationMessages = async (req: AuthenticatedRequest, res: Re
     });
   } catch (error) {
     console.error('Get conversation messages error:', error);
-    
+
     if (error instanceof Error && error.message.includes('not found')) {
       res.status(404).json({
         success: false,
@@ -385,7 +418,7 @@ export const getConversationMessages = async (req: AuthenticatedRequest, res: Re
       });
       return;
     }
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -399,7 +432,10 @@ export const getConversationMessages = async (req: AuthenticatedRequest, res: Re
 /**
  * 搜索對話
  */
-export const searchConversations = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const searchConversations = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const { q: query, limit, offset } = req.query;
     const userId = req.user?.id;
@@ -431,7 +467,11 @@ export const searchConversations = async (req: AuthenticatedRequest, res: Respon
       offset: offset ? parseInt(offset as string) : undefined,
     };
 
-    const result = await ConversationService.searchConversations(userId, query, options);
+    const result = await ConversationService.searchConversations(
+      userId,
+      query,
+      options
+    );
 
     res.json({
       success: true,
@@ -439,7 +479,7 @@ export const searchConversations = async (req: AuthenticatedRequest, res: Respon
     });
   } catch (error) {
     console.error('Search conversations error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
@@ -453,7 +493,10 @@ export const searchConversations = async (req: AuthenticatedRequest, res: Respon
 /**
  * 獲取對話統計
  */
-export const getConversationStats = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+export const getConversationStats = async (
+  req: AuthenticatedRequest,
+  res: Response
+): Promise<void> => {
   try {
     const userId = req.user?.id;
 
@@ -476,7 +519,7 @@ export const getConversationStats = async (req: AuthenticatedRequest, res: Respo
     });
   } catch (error) {
     console.error('Get conversation stats error:', error);
-    
+
     res.status(500).json({
       success: false,
       error: {
