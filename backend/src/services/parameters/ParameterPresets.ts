@@ -1,5 +1,3 @@
-import { ParameterDefinition } from '../../types';
-
 /**
  * 參數預設配置
  */

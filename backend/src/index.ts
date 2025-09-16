@@ -62,9 +62,10 @@ app.use('*', (req, res) => {
 });
 
 // 全域錯誤處理
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Unhandled error:', err);
 
+  void _next;
   res.status(500).json({
     success: false,
     error: {

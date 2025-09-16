@@ -9,6 +9,8 @@ import {
   getConversationMessages,
   searchConversations,
   getConversationStats,
+  sendConversationMessage,
+  streamConversationMessage,
 } from '../controllers/conversationController';
 import { authenticateToken } from '../middleware/auth';
 import { validateBody } from '../middleware/validation';
@@ -16,6 +18,8 @@ import {
   createConversationSchema,
   updateConversationSchema,
   addMessageSchema,
+  sendConversationMessageSchema,
+  streamConversationMessageSchema,
 } from '../middleware/validation/schemas/conversationSchemas';
 
 const router = Router();
@@ -84,6 +88,20 @@ router.post(
   authenticateToken,
   validateBody(addMessageSchema),
   addMessage
+);
+
+router.post(
+  '/:conversationId/messages/send',
+  authenticateToken,
+  validateBody(sendConversationMessageSchema),
+  sendConversationMessage
+);
+
+router.post(
+  '/:conversationId/messages/stream',
+  authenticateToken,
+  validateBody(streamConversationMessageSchema),
+  streamConversationMessage
 );
 
 /**

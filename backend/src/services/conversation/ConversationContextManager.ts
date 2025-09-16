@@ -72,6 +72,7 @@ export class ConversationContextManager {
     maxTokens: number,
     preserveSystemMessage: boolean = true
   ): Message[] {
+    void preserveSystemMessage;
     if (messages.length === 0) {
       return [];
     }

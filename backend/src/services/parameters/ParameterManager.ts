@@ -140,9 +140,10 @@ export class ParameterConverter {
    */
   static convertFromString(value: string, definition: ParameterDefinition): any {
     switch (definition.type) {
-      case 'number':
+      case 'number': {
         const num = parseFloat(value);
-        return isNaN(num) ? value : num;
+        return Number.isNaN(num) ? value : num;
+      }
 
       case 'boolean':
         if (value.toLowerCase() === 'true') return true;
@@ -349,7 +350,7 @@ export class ParameterManager {
       case 'boolean':
         return [true, false];
 
-      case 'number':
+      case 'number': {
         const suggestions: number[] = [];
         if (definition.defaultValue !== undefined) {
           suggestions.push(definition.defaultValue);
@@ -361,6 +362,7 @@ export class ParameterManager {
           suggestions.push(definition.max);
         }
         return suggestions;
+      }
 
       default:
         return definition.defaultValue !== undefined ? [definition.defaultValue] : [];

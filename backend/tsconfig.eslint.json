@@ -1,0 +1,16 @@
+﻿{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx",
+    "__tests__/**/*.ts",
+    "prisma/**/*.ts",
+    "jest.config.ts",
+    "jest.config.js",
+    "*.config.ts",
+    "*.config.js"
+  ],
+  "exclude": []
+}

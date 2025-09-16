@@ -1,7 +1,7 @@
 // 後端特定類型定義
 export * from '../../../shared/types';
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 // Express擴展類型
 export interface AuthenticatedRequest extends Request {
@@ -98,15 +98,15 @@ export interface GenerateVideoData {
 
 // 中間件類型
 export interface AuthMiddleware {
-  (req: AuthenticatedRequest, res: Response, next: Function): Promise<void>;
+  (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void>;
 }
 
 export interface ValidationMiddleware {
-  (req: Request, res: Response, next: Function): void;
+  (req: Request, res: Response, next: NextFunction): void;
 }
 
 export interface RateLimitMiddleware {
-  (req: AuthenticatedRequest, res: Response, next: Function): Promise<void>;
+  (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void>;
 }
 
 // 配置類型

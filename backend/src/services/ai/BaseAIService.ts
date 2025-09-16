@@ -1,6 +1,5 @@
 import { AIServiceInterface } from './interfaces/AIServiceInterface';
 import { ParameterDefinition, AIServiceError } from '../../types';
-import { AIConfigManager } from './AIConfigManager';
 import { globalParameterService } from '../parameters/ParameterService';
 
 /**

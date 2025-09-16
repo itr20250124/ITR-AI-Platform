@@ -22,7 +22,8 @@ export async function register(req: AuthenticatedRequest, res: Response): Promis
     });
 
     // 移除密碼字段
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
+    void _password;
 
     res.status(201).json({
       success: true,
@@ -62,7 +63,8 @@ export async function login(req: AuthenticatedRequest, res: Response): Promise<v
     });
 
     // 移除密碼字段
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
+    void _password;
 
     res.json({
       success: true,
@@ -116,7 +118,8 @@ export async function getProfile(req: AuthenticatedRequest, res: Response): Prom
     const stats = await userService.getUserStats(user.id);
 
     // 移除密碼字段
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
+    void _password;
 
     res.json({
       success: true,
@@ -157,7 +160,8 @@ export async function updatePreferences(req: AuthenticatedRequest, res: Response
     const user = await userService.updateUserPreferences(req.user.userId, preferences);
 
     // 移除密碼字段
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
+    void _password;
 
     res.json({
       success: true,

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { verifyToken, extractTokenFromHeader } from '../utils/auth';
 import { AuthenticatedRequest } from '../types';
 

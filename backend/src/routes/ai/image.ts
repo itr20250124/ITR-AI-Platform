@@ -2,6 +2,7 @@ import { Router, Response } from 'express';
 import multer from 'multer';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'crypto';
+import { body, validationResult } from 'express-validator';
 
 import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
 import { authenticateToken } from '../../middleware/auth';
@@ -9,8 +10,6 @@ import { rateLimiter } from '../../middleware/rateLimiter';
 import { AuthenticatedRequest } from '../../types';
 
 const prisma = new PrismaClient();
-
-const { body, validationResult } = require('express-validator');
 
 const imageRoutes = Router();
 
@@ -24,12 +23,25 @@ const upload = multer({
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('僅支援 JPG、PNG 或 WebP 圖片'));
+      cb(new Error('?�支??JPG?�PNG ??WebP ?��?'));
     }
   },
 });
 
 const SUPPORTED_PROVIDERS = new Set(['openai']);
+
+
+function requireUserId(req: AuthenticatedRequest, res: Response): string | null {
+  const userId = req.user?.id;
+  if (!userId) {
+    res.status(401).json({
+      success: false,
+      message: '請�??�入後�??�使?�此?�能',
+    });
+    return null;
+  }
+  return userId;
+}
 
 const parametersValidator = body('parameters')
   .optional()
@@ -38,16 +50,16 @@ const parametersValidator = body('parameters')
       try {
         const parsed = JSON.parse(value);
         if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-          throw new Error();
+        throw new Error('?�數?��?必�???JSON ?�件');
         }
       } catch {
-        throw new Error('參數格式必須為 JSON 物件');
+      throw new Error('?�數?��?必�??�物�?);
       }
       return true;
     }
 
     if (!value || typeof value !== 'object' || Array.isArray(value)) {
-      throw new Error('參數格式必須為物件');
+      throw new Error('?�數?��?必�??�物�?);
     }
 
     return true;
@@ -81,7 +93,7 @@ function sendValidationErrors(req: AuthenticatedRequest, res: Response) {
   if (!errors.isEmpty()) {
     res.status(400).json({
       success: false,
-      message: '輸入驗證失敗',
+      message: '?�詨?�撽�??��??',
       errors: errors.array(),
     });
     return true;
@@ -94,7 +106,7 @@ function ensureProvider(provider: string | undefined, res: Response) {
   if (!SUPPORTED_PROVIDERS.has(current)) {
     res.status(400).json({
       success: false,
-      message: '不支援的 AI 服務提供者',
+      message: '?��???�? AI ????????,
     });
     return null;
   }
@@ -133,8 +145,8 @@ imageRoutes.post(
     body('prompt')
       .isString()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
-    body('provider').optional().isString().withMessage('提供的 AI 服務不正確'),
+      .withMessage('??�內?????�漲?�??��?�?1 ??1000 ?��????),
+    body('provider').optional().isString().withMessage('?????AI ????��?迤蝣?),
     parametersValidator,
   ],
   async (req: AuthenticatedRequest, res: Response) => {
@@ -148,13 +160,18 @@ imageRoutes.post(
       return;
     }
 
+    const userId = requireUserId(req, res);
+    if (!userId) {
+      return;
+    }
+
     try {
       const parameters = parseParameters(req.body.parameters);
       const aiService = AIServiceFactory.createImageService(resolvedProvider);
       if (!aiService) {
         res.status(400).json({
           success: false,
-          message: '不支援的 AI 服務提供者',
+          message: '?��???�? AI ????????,
         });
         return;
       }
@@ -172,7 +189,7 @@ imageRoutes.post(
       const record = await prisma.generatedImage.create({
         data: {
           id: randomUUID(),
-          userId: req.user?.id ?? null,
+          userId,
           prompt,
           provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
@@ -190,7 +207,7 @@ imageRoutes.post(
       console.error('Generate image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message: error instanceof Error ? error.message : '?�?????????????',
       });
     }
   }
@@ -201,7 +218,7 @@ imageRoutes.post(
   authenticateToken,
   rateLimiter(8, 15 * 60 * 1000),
   upload.single('image'),
-  [body('provider').optional().isString().withMessage('提供的 AI 服務不正確'), parametersValidator],
+  [body('provider').optional().isString().withMessage('?????AI ????��?迤蝣?), parametersValidator],
   async (req: AuthenticatedRequest, res: Response) => {
     if (sendValidationErrors(req, res)) {
       return;
@@ -210,7 +227,7 @@ imageRoutes.post(
     if (!req.file) {
       res.status(400).json({
         success: false,
-        message: '請上傳原始圖片',
+        message: '?��??????��????,
       });
       return;
     }
@@ -220,13 +237,18 @@ imageRoutes.post(
       return;
     }
 
+    const userId = requireUserId(req, res);
+    if (!userId) {
+      return;
+    }
+
     try {
       const parameters = parseParameters(req.body.parameters);
       const aiService = AIServiceFactory.createImageService(resolvedProvider);
       if (!aiService) {
         res.status(400).json({
           success: false,
-          message: '不支援的 AI 服務提供者',
+          message: '?��???�? AI ????????,
         });
         return;
       }
@@ -241,7 +263,7 @@ imageRoutes.post(
       const record = await prisma.generatedImage.create({
         data: {
           id: randomUUID(),
-          userId: req.user?.id ?? null,
+          userId,
           prompt: 'Image variation',
           provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
@@ -259,7 +281,7 @@ imageRoutes.post(
       console.error('Create variation error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message: error instanceof Error ? error.message : '?�?????????????',
       });
     }
   }
@@ -277,8 +299,8 @@ imageRoutes.post(
     body('prompt')
       .isString()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
-    body('provider').optional().isString().withMessage('提供的 AI 服務不正確'),
+      .withMessage('??�內?????�漲?�??��?�?1 ??1000 ?��????),
+    body('provider').optional().isString().withMessage('?????AI ????��?迤蝣?),
     parametersValidator,
   ],
   async (req: AuthenticatedRequest, res: Response) => {
@@ -293,7 +315,7 @@ imageRoutes.post(
     if (!imageFile) {
       res.status(400).json({
         success: false,
-        message: '請上傳原始圖片',
+        message: '?��??????��????,
       });
       return;
     }
@@ -301,7 +323,7 @@ imageRoutes.post(
     if (!maskFile) {
       res.status(400).json({
         success: false,
-        message: '請上傳遮罩圖片',
+        message: '?��????��??��????,
       });
       return;
     }
@@ -311,13 +333,18 @@ imageRoutes.post(
       return;
     }
 
+    const userId = requireUserId(req, res);
+    if (!userId) {
+      return;
+    }
+
     try {
       const parameters = parseParameters(req.body.parameters);
       const aiService = AIServiceFactory.createImageService(resolvedProvider);
       if (!aiService) {
         res.status(400).json({
           success: false,
-          message: '不支援的 AI 服務提供者',
+          message: '?��???�? AI ????????,
         });
         return;
       }
@@ -339,7 +366,7 @@ imageRoutes.post(
       const record = await prisma.generatedImage.create({
         data: {
           id: randomUUID(),
-          userId: req.user?.id ?? null,
+          userId,
           prompt: req.body.prompt,
           provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
@@ -357,7 +384,7 @@ imageRoutes.post(
       console.error('Edit image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
+        message: error instanceof Error ? error.message : '?�?????????????',
       });
     }
   }
@@ -372,7 +399,7 @@ imageRoutes.get(
     if (!userId) {
       res.status(401).json({
         success: false,
-        message: '未授權的請求',
+        message: '????��???��??',
       });
       return;
     }
@@ -397,12 +424,12 @@ imageRoutes.get(
 
       const [records, total] = await Promise.all([
         prisma.generatedImage.findMany({
-          where,
+          where: { ...where, userId },
           orderBy: { createdAt: 'desc' },
           take: limit,
           skip: offset,
         }),
-        prisma.generatedImage.count({ where }),
+        prisma.generatedImage.count({ where: { ...where, userId } }),
       ]);
 
       res.json({
@@ -416,7 +443,7 @@ imageRoutes.get(
       console.error('Fetch image history error:', error);
       res.status(500).json({
         success: false,
-        message: '圖片歷史查詢失敗',
+        message: '?�??��???亥岷?��??',
       });
     }
   }
@@ -430,8 +457,13 @@ imageRoutes.delete(
     if (!Array.isArray(imageIds) || imageIds.length === 0) {
       res.status(400).json({
         success: false,
-        message: '請提供要刪除的圖片 ID 列表',
+        message: '?��???��????��??????ID ?�?,
       });
+      return;
+    }
+
+    const userId = requireUserId(req, res);
+    if (!userId) {
       return;
     }
 
@@ -439,20 +471,20 @@ imageRoutes.delete(
       const result = await prisma.generatedImage.deleteMany({
         where: {
           id: { in: imageIds },
-          userId: req.user?.id ?? undefined,
+          userId,
         },
       });
 
       res.json({
         success: true,
-        message: `已刪除 ${result.count} 張圖片`,
+        message: `?�脣???${result.count} ?��?????
         deletedCount: result.count,
       });
     } catch (error) {
       console.error('Batch delete image error:', error);
       res.status(500).json({
         success: false,
-        message: '圖片刪除失敗',
+        message: '?�???��??��??',
       });
     }
   }
@@ -464,18 +496,23 @@ imageRoutes.delete(
   async (req: AuthenticatedRequest, res: Response) => {
     const { imageId } = req.params;
 
+    const userId = requireUserId(req, res);
+    if (!userId) {
+      return;
+    }
+
     try {
       const existing = await prisma.generatedImage.findFirst({
         where: {
           id: imageId,
-          userId: req.user?.id ?? undefined,
+          userId,
         },
       });
 
       if (!existing) {
         res.status(404).json({
           success: false,
-          message: '圖片不存在或無權刪除',
+          message: '?�??��??????????��?',
         });
         return;
       }
@@ -486,13 +523,13 @@ imageRoutes.delete(
 
       res.json({
         success: true,
-        message: '圖片已刪除',
+        message: '?�??�脣???,
       });
     } catch (error) {
       console.error('Delete image error:', error);
       res.status(500).json({
         success: false,
-        message: '圖片刪除失敗',
+        message: '?�???��??��??',
       });
     }
   }
@@ -500,3 +537,5 @@ imageRoutes.delete(
 
 export { imageRoutes };
 export default imageRoutes;
+
+

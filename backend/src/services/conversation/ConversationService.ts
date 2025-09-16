@@ -253,6 +253,36 @@ export class ConversationService {
   }
 
   /**
+   * 取得最新的對話訊息
+   */
+  static async getRecentMessages(
+    conversationId: string,
+    userId: string,
+    limit: number = 20
+  ): Promise<Message[]> {
+    // 確認使用者是否擁有該對話
+    const conversation = await prisma.conversation.findFirst({
+      where: {
+        id: conversationId,
+        userId,
+      },
+      select: { id: true },
+    });
+
+    if (!conversation) {
+      throw new Error('Conversation not found or access denied');
+    }
+
+    const messages = await prisma.message.findMany({
+      where: { conversationId },
+      orderBy: { timestamp: 'desc' },
+      take: limit,
+    });
+
+    return messages.reverse().map(this.formatMessage);
+  }
+
+  /**
    * 搜索對話
    */
   static async searchConversations(
