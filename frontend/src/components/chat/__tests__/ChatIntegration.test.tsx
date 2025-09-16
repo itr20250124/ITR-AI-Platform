@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ChatPage } from '../../../pages/ChatPage';
@@ -48,6 +48,7 @@ describe('Chat Integration', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    console.log('is mock', jest.isMockFunction(MockedChatService.getConversation));
     
     // Setup default mocks
     MockedChatService.getConversations.mockResolvedValue({
@@ -74,6 +75,10 @@ describe('Chat Integration', () => {
     mockedToast.error = jest.fn();
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   const renderChatPage = () => {
     return render(
       <BrowserRouter>
@@ -85,6 +90,7 @@ describe('Chat Integration', () => {
   describe('Chat Page Loading', () => {
     it('should load conversation and messages on mount', async () => {
       renderChatPage();
+      console.log('mock results', MockedChatService.getConversation.mock.results);
 
       await waitFor(() => {
         expect(MockedChatService.getConversation).toHaveBeenCalledWith('test-conv-1');
@@ -103,7 +109,7 @@ describe('Chat Integration', () => {
         expect(MockedChatService.getConversations).toHaveBeenCalled();
       });
 
-      expect(screen.getByText('對話')).toBeInTheDocument();
+      expect(screen.getByText('傳送')).toBeInTheDocument();
     });
   });
 
@@ -125,13 +131,14 @@ describe('Chat Integration', () => {
       await waitFor(() => {
         expect(screen.getByText('Test Conversation')).toBeInTheDocument();
       });
+      console.log('mock results', MockedChatService.getConversation.mock.results);
 
       // Find and fill the input
       const input = screen.getByPlaceholderText(/向.*發送訊息/);
       fireEvent.change(input, { target: { value: 'What is AI?' } });
 
       // Send the message
-      const sendButton = screen.getByText('發送');
+      const sendButton = screen.getByText('傳送');
       fireEvent.click(sendButton);
 
       await waitFor(() => {
@@ -158,11 +165,11 @@ describe('Chat Integration', () => {
       const input = screen.getByPlaceholderText(/向.*發送訊息/);
       fireEvent.change(input, { target: { value: 'Test message' } });
 
-      const sendButton = screen.getByText('發送');
+      const sendButton = screen.getByText('傳送');
       fireEvent.click(sendButton);
 
       await waitFor(() => {
-        expect(mockedToast.error).toHaveBeenCalledWith('發送訊息失敗');
+        expect(mockedToast.error).toHaveBeenCalledWith('\u50b3\u9001\u8a0a\u606f\u5931\u6557');
       });
     });
   });
@@ -172,14 +179,14 @@ describe('Chat Integration', () => {
       const newConversation = {
         ...mockConversation,
         id: 'new-conv-1',
-        title: '新對話',
+        title: '\u65b0\u7684\u5c0d\u8a71',
       };
 
       MockedChatService.createConversation.mockResolvedValue(newConversation);
 
       renderChatPage();
 
-      const newChatButton = screen.getByText('新建對話');
+      const newChatButton = screen.getByText('\u65b0\u5efa\u5c0d\u8a71');
       fireEvent.click(newChatButton);
 
       await waitFor(() => {
@@ -228,11 +235,11 @@ describe('Chat Integration', () => {
       });
 
       // Open more menu
-      const moreButton = screen.getByTitle('更多操作');
+      const moreButton = screen.getByTitle('????');
       fireEvent.click(moreButton);
 
       // Click delete
-      const deleteButton = screen.getByText('刪除對話');
+      const deleteButton = screen.getByText('\u65b0\u5efa\u5c0d\u8a71');
       fireEvent.click(deleteButton);
 
       // Confirm deletion (assuming there's a confirmation dialog)
@@ -286,11 +293,11 @@ describe('Chat Integration', () => {
 
       renderChatPage();
 
-      const searchInput = screen.getByPlaceholderText('搜索對話...');
+      const searchInput = screen.getByPlaceholderText('????...');
       fireEvent.change(searchInput, { target: { value: 'test' } });
 
       await waitFor(() => {
-        expect(MockedChatService.searchConversations).toHaveBeenCalledWith('test', {});
+        expect(MockedChatService.searchConversations).toHaveBeenCalledWith('test', expect.objectContaining({ limit: expect.any(Number) }));
       });
     });
   });
@@ -309,9 +316,23 @@ describe('Chat Integration', () => {
         download: '',
         click: jest.fn(),
       };
-      jest.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
-      jest.spyOn(document.body, 'appendChild').mockImplementation();
-      jest.spyOn(document.body, 'removeChild').mockImplementation();
+      const originalCreateElement = document.createElement.bind(document);
+      jest.spyOn(document, 'createElement').mockImplementation(((tagName: string, ...args: any[]) => {
+        if (tagName.toLowerCase() === 'a') {
+          return mockLink as any;
+        }
+        return originalCreateElement(tagName, ...args);
+      }) as any);
+      const originalAppendChild = document.body.appendChild.bind(document.body);
+      jest.spyOn(document.body, 'appendChild').mockImplementation(((node: any) => {
+        originalAppendChild(node);
+        return node;
+      }) as any);
+      const originalRemoveChild = document.body.removeChild.bind(document.body);
+      jest.spyOn(document.body, 'removeChild').mockImplementation(((node: any) => {
+        originalRemoveChild(node);
+        return node;
+      }) as any);
 
       renderChatPage();
 
@@ -319,7 +340,7 @@ describe('Chat Integration', () => {
         expect(screen.getByText('Test Conversation')).toBeInTheDocument();
       });
 
-      const exportButton = screen.getByText('導出對話');
+      const exportButton = screen.getByText('撠撠店');
       fireEvent.click(exportButton);
 
       await waitFor(() => {

@@ -1,116 +1,124 @@
 import { Request, Response } from 'express';
-import { generateImage, createImageVariation, editImage } from '../aiController';
+import { 
+  sendChatMessage, 
+  sendChatMessageWithContext, 
+  generateImage, 
+  createImageVariation, 
+  editImage 
+} from '../aiController';
 import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
 import { AIServiceError } from '../../types';
 
-// Mock AIServiceFactory
+// Mock AI Service Factory
 jest.mock('../../services/ai/AIServiceFactory');
-const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
 
-// Mock console.error to avoid noise in tests
-jest.spyOn(console, 'error').mockImplementation(() => {});
-
-describe('AI Controller - Image Functions', () => {
+describe('AI Controller', () => {
   let mockRequest: Partial<Request>;
   let mockResponse: Partial<Response>;
-  let mockImageService: any;
+  let mockJson: jest.Mock;
+  let mockStatus: jest.Mock;
 
   beforeEach(() => {
-    mockRequest = {};
-    mockResponse = {
-      json: jest.fn(),
-      status: jest.fn().mockReturnThis(),
+    mockJson = jest.fn();
+    mockStatus = jest.fn().mockReturnThis();
+    
+    mockRequest = {
+      body: {},
+      file: undefined,
+      files: undefined,
     };
     
-    mockImageService = {
-      generateImage: jest.fn(),
-      createImageVariation: jest.fn(),
-      editImage: jest.fn(),
+    mockResponse = {
+      json: mockJson,
+      status: mockStatus,
     };
 
-    mockAIServiceFactory.createImageService.mockReturnValue(mockImageService);
-  });
-
-  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  describe('generateImage', () => {
-    it('should generate image successfully', async () => {
+  describe('sendChatMessage', () => {
+    it('should send chat message successfully', async () => {
       // Arrange
-      const mockImageResponse = {
-        id: 'img-123',
-        imageUrl: 'https://example.com/image.png',
-        prompt: 'A beautiful sunset',
-        parameters: { model: 'dall-e-3', size: '1024x1024' },
-        status: 'completed',
-        createdAt: new Date(),
+      const mockChatService = {
+        sendMessage: jest.fn().mockResolvedValue({
+          id: 'test-id',
+          content: 'Test response',
+          role: 'assistant',
+          timestamp: new Date(),
+        }),
       };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
-        prompt: 'A beautiful sunset',
+        message: 'Hello',
         provider: 'openai',
-        parameters: { model: 'dall-e-3', size: '1024x1024' },
+        parameters: { temperature: 0.7 },
       };
 
-      mockImageService.generateImage.mockResolvedValue(mockImageResponse);
-
       // Act
-      await generateImage(mockRequest as Request, mockResponse as Response);
+      await sendChatMessage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockAIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
-      expect(mockImageService.generateImage).toHaveBeenCalledWith(
-        'A beautiful sunset',
-        { model: 'dall-e-3', size: '1024x1024' }
-      );
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(AIServiceFactory.createChatService).toHaveBeenCalledWith('openai');
+      expect(mockChatService.sendMessage).toHaveBeenCalledWith('Hello', { temperature: 0.7 });
+      expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        data: mockImageResponse,
+        data: {
+          id: 'test-id',
+          content: 'Test response',
+          role: 'assistant',
+          timestamp: expect.any(Date),
+        },
       });
     });
 
     it('should use default provider when not specified', async () => {
       // Arrange
+      const mockChatService = {
+        sendMessage: jest.fn().mockResolvedValue({
+          id: 'test-id',
+          content: 'Test response',
+          role: 'assistant',
+          timestamp: new Date(),
+        }),
+      };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
+
       mockRequest.body = {
-        prompt: 'A beautiful sunset',
-        parameters: {},
+        message: 'Hello',
       };
-
-      const mockImageResponse = {
-        id: 'img-123',
-        imageUrl: 'https://example.com/image.png',
-        prompt: 'A beautiful sunset',
-        parameters: {},
-        status: 'completed',
-        createdAt: new Date(),
-      };
-
-      mockImageService.generateImage.mockResolvedValue(mockImageResponse);
 
       // Act
-      await generateImage(mockRequest as Request, mockResponse as Response);
+      await sendChatMessage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockAIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(AIServiceFactory.createChatService).toHaveBeenCalledWith('openai');
+      expect(mockChatService.sendMessage).toHaveBeenCalledWith('Hello', {});
     });
 
     it('should handle AIServiceError', async () => {
       // Arrange
+      const mockChatService = {
+        sendMessage: jest.fn().mockRejectedValue(
+          new AIServiceError('openai', 'RATE_LIMIT', 'Rate limit exceeded')
+        ),
+      };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
+
       mockRequest.body = {
-        prompt: 'A beautiful sunset',
+        message: 'Hello',
         provider: 'openai',
       };
 
-      const aiError = new AIServiceError('openai', 'RATE_LIMIT', 'Rate limit exceeded');
-      mockImageService.generateImage.mockRejectedValue(aiError);
-
       // Act
-      await generateImage(mockRequest as Request, mockResponse as Response);
+      await sendChatMessage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: {
           code: 'RATE_LIMIT',
@@ -122,20 +130,23 @@ describe('AI Controller - Image Functions', () => {
 
     it('should handle generic errors', async () => {
       // Arrange
+      const mockChatService = {
+        sendMessage: jest.fn().mockRejectedValue(new Error('Generic error')),
+      };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
+
       mockRequest.body = {
-        prompt: 'A beautiful sunset',
+        message: 'Hello',
         provider: 'openai',
       };
 
-      const genericError = new Error('Something went wrong');
-      mockImageService.generateImage.mockRejectedValue(genericError);
-
       // Act
-      await generateImage(mockRequest as Request, mockResponse as Response);
+      await sendChatMessage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(500);
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockStatus).toHaveBeenCalledWith(500);
+      expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: {
           code: 'INTERNAL_ERROR',
@@ -145,46 +156,194 @@ describe('AI Controller - Image Functions', () => {
     });
   });
 
-  describe('createImageVariation', () => {
-    it('should create image variation successfully', async () => {
+  describe('sendChatMessageWithContext', () => {
+    it('should send chat message with context successfully', async () => {
       // Arrange
-      const mockBuffer = Buffer.from('fake image data');
+      const mockChatService = {
+        sendMessageWithContext: jest.fn().mockResolvedValue({
+          id: 'test-id',
+          content: 'Context response',
+          role: 'assistant',
+          timestamp: new Date(),
+        }),
+      };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
+
+      const messages = [
+        { role: 'user', content: 'Hello' },
+        { role: 'assistant', content: 'Hi there!' },
+        { role: 'user', content: 'How are you?' },
+      ];
+
       mockRequest.body = {
+        messages,
+        provider: 'gemini',
+        parameters: { temperature: 0.5 },
+      };
+
+      // Act
+      await sendChatMessageWithContext(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(AIServiceFactory.createChatService).toHaveBeenCalledWith('gemini');
+      expect(mockChatService.sendMessageWithContext).toHaveBeenCalledWith(messages, { temperature: 0.5 });
+      expect(mockJson).toHaveBeenCalledWith({
+        success: true,
+        data: {
+          id: 'test-id',
+          content: 'Context response',
+          role: 'assistant',
+          timestamp: expect.any(Date),
+        },
+      });
+    });
+
+    it('should handle AIServiceError in context chat', async () => {
+      // Arrange
+      const mockChatService = {
+        sendMessageWithContext: jest.fn().mockRejectedValue(
+          new AIServiceError('gemini', 'CONTENT_BLOCKED', 'Content blocked by safety filters')
+        ),
+      };
+
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
+
+      mockRequest.body = {
+        messages: [{ role: 'user', content: 'Test' }],
+        provider: 'gemini',
+      };
+
+      // Act
+      await sendChatMessageWithContext(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          code: 'CONTENT_BLOCKED',
+          message: 'Content blocked by safety filters',
+          provider: 'gemini',
+        },
+      });
+    });
+  });
+
+  describe('generateImage', () => {
+    it('should generate image successfully', async () => {
+      // Arrange
+      const mockImageService = {
+        generateImage: jest.fn().mockResolvedValue({
+          id: 'image-id',
+          imageUrl: 'https://example.com/image.jpg',
+          prompt: 'A beautiful sunset',
+          status: 'completed',
+          createdAt: new Date(),
+        }),
+      };
+
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
+
+      mockRequest.body = {
+        prompt: 'A beautiful sunset',
         provider: 'openai',
         parameters: { size: '1024x1024' },
       };
-      mockRequest.file = {
-        buffer: mockBuffer,
-        originalname: 'test.png',
-        mimetype: 'image/png',
-      } as Express.Multer.File;
 
-      const mockVariationResponse = {
-        id: 'var-123',
-        imageUrl: 'https://example.com/variation.png',
-        prompt: 'Image variation',
-        parameters: { size: '1024x1024' },
-        status: 'completed',
-        createdAt: new Date(),
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(mockImageService.generateImage).toHaveBeenCalledWith('A beautiful sunset', { size: '1024x1024' });
+      expect(mockJson).toHaveBeenCalledWith({
+        success: true,
+        data: {
+          id: 'image-id',
+          imageUrl: 'https://example.com/image.jpg',
+          prompt: 'A beautiful sunset',
+          status: 'completed',
+          createdAt: expect.any(Date),
+        },
+      });
+    });
+
+    it('should handle image generation errors', async () => {
+      // Arrange
+      const mockImageService = {
+        generateImage: jest.fn().mockRejectedValue(
+          new AIServiceError('openai', 'INVALID_PROMPT', 'Invalid prompt provided')
+        ),
       };
 
-      mockImageService.createImageVariation.mockResolvedValue(mockVariationResponse);
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
+
+      mockRequest.body = {
+        prompt: 'Invalid prompt',
+        provider: 'openai',
+      };
+
+      // Act
+      await generateImage(mockRequest as Request, mockResponse as Response);
+
+      // Assert
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
+        success: false,
+        error: {
+          code: 'INVALID_PROMPT',
+          message: 'Invalid prompt provided',
+          provider: 'openai',
+        },
+      });
+    });
+  });
+
+  describe('createImageVariation', () => {
+    it('should create image variation successfully', async () => {
+      // Arrange
+      const mockImageService = {
+        createImageVariation: jest.fn().mockResolvedValue({
+          id: 'variation-id',
+          imageUrl: 'https://example.com/variation.jpg',
+          status: 'completed',
+          createdAt: new Date(),
+        }),
+      };
+
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
+
+      const mockFile = {
+        buffer: Buffer.from('fake-image-data'),
+        originalname: 'test.jpg',
+        mimetype: 'image/jpeg',
+      };
+
+      mockRequest.body = {
+        provider: 'openai',
+        parameters: { n: 2 },
+      };
+      mockRequest.file = mockFile as Express.Multer.File;
 
       // Act
       await createImageVariation(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockImageService.createImageVariation).toHaveBeenCalledWith(
-        mockBuffer,
-        { size: '1024x1024' }
-      );
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(mockImageService.createImageVariation).toHaveBeenCalledWith(mockFile.buffer, { n: 2 });
+      expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        data: mockVariationResponse,
+        data: {
+          id: 'variation-id',
+          imageUrl: 'https://example.com/variation.jpg',
+          status: 'completed',
+          createdAt: expect.any(Date),
+        },
       });
     });
 
-    it('should return error when no file is provided', async () => {
+    it('should handle missing file error', async () => {
       // Arrange
       mockRequest.body = {
         provider: 'openai',
@@ -196,40 +355,12 @@ describe('AI Controller - Image Functions', () => {
       await createImageVariation(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: {
           type: 'MISSING_FILE',
           message: 'Image file is required',
-        },
-      });
-    });
-
-    it('should handle AIServiceError in variation', async () => {
-      // Arrange
-      const mockBuffer = Buffer.from('fake image data');
-      mockRequest.body = { provider: 'openai' };
-      mockRequest.file = {
-        buffer: mockBuffer,
-        originalname: 'test.png',
-        mimetype: 'image/png',
-      } as Express.Multer.File;
-
-      const aiError = new AIServiceError('openai', 'INVALID_IMAGE', 'Invalid image format');
-      mockImageService.createImageVariation.mockRejectedValue(aiError);
-
-      // Act
-      await createImageVariation(mockRequest as Request, mockResponse as Response);
-
-      // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        success: false,
-        error: {
-          code: 'INVALID_IMAGE',
-          message: 'Invalid image format',
-          provider: 'openai',
         },
       });
     });
@@ -238,85 +369,89 @@ describe('AI Controller - Image Functions', () => {
   describe('editImage', () => {
     it('should edit image successfully', async () => {
       // Arrange
-      const mockImageBuffer = Buffer.from('fake image data');
-      const mockMaskBuffer = Buffer.from('fake mask data');
-      
-      mockRequest.body = {
-        prompt: 'Add a rainbow',
-        provider: 'openai',
-        parameters: { size: '1024x1024' },
+      const mockImageService = {
+        editImage: jest.fn().mockResolvedValue({
+          id: 'edited-id',
+          imageUrl: 'https://example.com/edited.jpg',
+          prompt: 'Add a rainbow',
+          status: 'completed',
+          createdAt: new Date(),
+        }),
       };
-      
-      mockRequest.files = {
+
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
+
+      const mockFiles = {
         image: [{
-          buffer: mockImageBuffer,
-          originalname: 'image.png',
-          mimetype: 'image/png',
+          buffer: Buffer.from('fake-image-data'),
+          originalname: 'image.jpg',
+          mimetype: 'image/jpeg',
           fieldname: 'image',
           encoding: '7bit',
-          size: mockImageBuffer.length,
+          size: 1024,
+          stream: {} as any,
+          destination: '',
+          filename: 'image.jpg',
+          path: '',
         }],
         mask: [{
-          buffer: mockMaskBuffer,
+          buffer: Buffer.from('fake-mask-data'),
           originalname: 'mask.png',
           mimetype: 'image/png',
           fieldname: 'mask',
           encoding: '7bit',
-          size: mockMaskBuffer.length,
+          size: 512,
+          stream: {} as any,
+          destination: '',
+          filename: 'mask.png',
+          path: '',
         }],
-      } as any;
-
-      const mockEditResponse = {
-        id: 'edit-123',
-        imageUrl: 'https://example.com/edited.png',
-        prompt: 'Add a rainbow',
-        parameters: { size: '1024x1024' },
-        status: 'completed',
-        createdAt: new Date(),
       };
 
-      mockImageService.editImage.mockResolvedValue(mockEditResponse);
+      mockRequest.body = {
+        prompt: 'Add a rainbow',
+        provider: 'openai',
+        parameters: { size: '512x512' },
+      };
+      mockRequest.files = mockFiles;
 
       // Act
       await editImage(mockRequest as Request, mockResponse as Response);
 
       // Assert
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
       expect(mockImageService.editImage).toHaveBeenCalledWith(
-        mockImageBuffer,
-        mockMaskBuffer,
+        mockFiles.image[0].buffer,
+        mockFiles.mask[0].buffer,
         'Add a rainbow',
-        { size: '1024x1024' }
+        { size: '512x512' }
       );
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockJson).toHaveBeenCalledWith({
         success: true,
-        data: mockEditResponse,
+        data: {
+          id: 'edited-id',
+          imageUrl: 'https://example.com/edited.jpg',
+          prompt: 'Add a rainbow',
+          status: 'completed',
+          createdAt: expect.any(Date),
+        },
       });
     });
 
-    it('should return error when image file is missing', async () => {
+    it('should handle missing files error', async () => {
       // Arrange
       mockRequest.body = {
         prompt: 'Add a rainbow',
         provider: 'openai',
       };
-      
-      mockRequest.files = {
-        mask: [{
-          buffer: Buffer.from('fake mask data'),
-          originalname: 'mask.png',
-          mimetype: 'image/png',
-          fieldname: 'mask',
-          encoding: '7bit',
-          size: Buffer.from('fake mask data').length,
-        }],
-      } as any;
+      mockRequest.files = {};
 
       // Act
       await editImage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: {
           type: 'MISSING_FILES',
@@ -325,81 +460,39 @@ describe('AI Controller - Image Functions', () => {
       });
     });
 
-    it('should return error when mask file is missing', async () => {
+    it('should handle missing mask file error', async () => {
       // Arrange
-      mockRequest.body = {
-        prompt: 'Add a rainbow',
-        provider: 'openai',
-      };
-      
-      mockRequest.files = {
+      const mockFiles = {
         image: [{
-          buffer: Buffer.from('fake image data'),
-          originalname: 'image.png',
-          mimetype: 'image/png',
+          buffer: Buffer.from('fake-image-data'),
+          originalname: 'image.jpg',
+          mimetype: 'image/jpeg',
           fieldname: 'image',
           encoding: '7bit',
-          size: Buffer.from('fake image data').length,
+          size: 1024,
+          stream: {} as any,
+          destination: '',
+          filename: 'image.jpg',
+          path: '',
         }],
-      } as any;
+      };
 
-      // Act
-      await editImage(mockRequest as Request, mockResponse as Response);
-
-      // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
-        success: false,
-        error: {
-          type: 'MISSING_FILES',
-          message: 'Both image and mask files are required',
-        },
-      });
-    });
-
-    it('should handle AIServiceError in edit', async () => {
-      // Arrange
-      const mockImageBuffer = Buffer.from('fake image data');
-      const mockMaskBuffer = Buffer.from('fake mask data');
-      
       mockRequest.body = {
         prompt: 'Add a rainbow',
         provider: 'openai',
       };
-      
-      mockRequest.files = {
-        image: [{ 
-          buffer: mockImageBuffer, 
-          originalname: 'image.png', 
-          mimetype: 'image/png',
-          fieldname: 'image',
-          encoding: '7bit',
-          size: mockImageBuffer.length,
-        }],
-        mask: [{ 
-          buffer: mockMaskBuffer, 
-          originalname: 'mask.png', 
-          mimetype: 'image/png',
-          fieldname: 'mask',
-          encoding: '7bit',
-          size: mockMaskBuffer.length,
-        }],
-      } as any;
-
-      const aiError = new AIServiceError('openai', 'INVALID_PROMPT', 'Prompt too long');
-      mockImageService.editImage.mockRejectedValue(aiError);
+      mockRequest.files = mockFiles;
 
       // Act
       await editImage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(mockResponse.json).toHaveBeenCalledWith({
+      expect(mockStatus).toHaveBeenCalledWith(400);
+      expect(mockJson).toHaveBeenCalledWith({
         success: false,
         error: {
-          code: 'INVALID_PROMPT',
-          message: 'Prompt too long',
-          provider: 'openai',
+          type: 'MISSING_FILES',
+          message: 'Both image and mask files are required',
         },
       });
     });

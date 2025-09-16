@@ -1,0 +1,3245 @@
+
+> multi-ai-platform-frontend@0.0.0 test
+> jest --runInBand --bail
+
+FAIL src/components/chat/__tests__/ChatIntegration.test.tsx (7.729 s)
+  ● Console
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.error
+      Warning: `ReactDOMTestUtils.act` is deprecated in favor of `React.act`. Import `act` from `react` instead of `react-dom/test-utils`. See https://react.dev/warnings/react-dom-test-utils for more info.
+
+    [0m [90m 81 |[39m
+     [90m 82 |[39m   [36mconst[39m renderChatPage [33m=[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 83 |[39m     [36mreturn[39m render(
+     [90m    |[39m                  [31m[1m^[22m[39m
+     [90m 84 |[39m       [33m<[39m[33mBrowserRouter[39m[33m>[39m
+     [90m 85 |[39m         [33m<[39m[33mChatPage[39m [33m/[39m[33m>[39m
+     [90m 86 |[39m       [33m<[39m[33m/[39m[33mBrowserRouter[39m[33m>[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:71:30)
+      at error (node_modules/react-dom/cjs/react-dom-test-utils.development.js:45:7)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1736:7)
+      at node_modules/@testing-library/react/dist/act-compat.js:63:25
+      at renderRoot (node_modules/@testing-library/react/dist/pure.js:159:26)
+      at render (node_modules/@testing-library/react/dist/pure.js:246:10)
+      at renderChatPage (src/components/chat/__tests__/ChatIntegration.test.tsx:83:18)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:92:7)
+
+    console.warn
+      ⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.
+
+    [0m [90m 81 |[39m
+     [90m 82 |[39m   [36mconst[39m renderChatPage [33m=[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 83 |[39m     [36mreturn[39m render(
+     [90m    |[39m                  [31m[1m^[22m[39m
+     [90m 84 |[39m       [33m<[39m[33mBrowserRouter[39m[33m>[39m
+     [90m 85 |[39m         [33m<[39m[33mChatPage[39m [33m/[39m[33m>[39m
+     [90m 86 |[39m       [33m<[39m[33m/[39m[33mBrowserRouter[39m[33m>[39m[0m
+
+      at warn (node_modules/react-router/lib/deprecations.ts:9:13)
+      at warnOnce (node_modules/react-router/lib/deprecations.ts:14:3)
+      at Object.logDeprecation [as UNSAFE_logV6DeprecationWarnings] (node_modules/react-router/lib/deprecations.ts:26:5)
+      at logV6DeprecationWarnings (node_modules/react-router-dom/index.tsx:816:25)
+      at commitHookEffectListMount (node_modules/react-dom/cjs/react-dom.development.js:23189:26)
+      at commitPassiveMountOnFiber (node_modules/react-dom/cjs/react-dom.development.js:24970:11)
+      at commitPassiveMountEffects_complete (node_modules/react-dom/cjs/react-dom.development.js:24930:9)
+      at commitPassiveMountEffects_begin (node_modules/react-dom/cjs/react-dom.development.js:24917:7)
+      at commitPassiveMountEffects (node_modules/react-dom/cjs/react-dom.development.js:24905:3)
+      at flushPassiveEffectsImpl (node_modules/react-dom/cjs/react-dom.development.js:27078:3)
+      at flushPassiveEffects (node_modules/react-dom/cjs/react-dom.development.js:27023:14)
+      at node_modules/react-dom/cjs/react-dom.development.js:26808:9
+      at flushActQueue (node_modules/react/cjs/react.development.js:2667:24)
+      at act (node_modules/react/cjs/react.development.js:2582:11)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1740:10)
+      at node_modules/@testing-library/react/dist/act-compat.js:63:25
+      at renderRoot (node_modules/@testing-library/react/dist/pure.js:159:26)
+      at render (node_modules/@testing-library/react/dist/pure.js:246:10)
+      at renderChatPage (src/components/chat/__tests__/ChatIntegration.test.tsx:83:18)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:92:7)
+
+    console.warn
+      ⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.
+
+    [0m [90m 81 |[39m
+     [90m 82 |[39m   [36mconst[39m renderChatPage [33m=[39m () [33m=>[39m {
+    [31m[1m>[22m[39m[90m 83 |[39m     [36mreturn[39m render(
+     [90m    |[39m                  [31m[1m^[22m[39m
+     [90m 84 |[39m       [33m<[39m[33mBrowserRouter[39m[33m>[39m
+     [90m 85 |[39m         [33m<[39m[33mChatPage[39m [33m/[39m[33m>[39m
+     [90m 86 |[39m       [33m<[39m[33m/[39m[33mBrowserRouter[39m[33m>[39m[0m
+
+      at warn (node_modules/react-router/lib/deprecations.ts:9:13)
+      at warnOnce (node_modules/react-router/lib/deprecations.ts:14:3)
+      at Object.logDeprecation [as UNSAFE_logV6DeprecationWarnings] (node_modules/react-router/lib/deprecations.ts:37:5)
+      at logV6DeprecationWarnings (node_modules/react-router-dom/index.tsx:816:25)
+      at commitHookEffectListMount (node_modules/react-dom/cjs/react-dom.development.js:23189:26)
+      at commitPassiveMountOnFiber (node_modules/react-dom/cjs/react-dom.development.js:24970:11)
+      at commitPassiveMountEffects_complete (node_modules/react-dom/cjs/react-dom.development.js:24930:9)
+      at commitPassiveMountEffects_begin (node_modules/react-dom/cjs/react-dom.development.js:24917:7)
+      at commitPassiveMountEffects (node_modules/react-dom/cjs/react-dom.development.js:24905:3)
+      at flushPassiveEffectsImpl (node_modules/react-dom/cjs/react-dom.development.js:27078:3)
+      at flushPassiveEffects (node_modules/react-dom/cjs/react-dom.development.js:27023:14)
+      at node_modules/react-dom/cjs/react-dom.development.js:26808:9
+      at flushActQueue (node_modules/react/cjs/react.development.js:2667:24)
+      at act (node_modules/react/cjs/react.development.js:2582:11)
+      at actWithWarning (node_modules/react-dom/cjs/react-dom-test-utils.development.js:1740:10)
+      at node_modules/@testing-library/react/dist/act-compat.js:63:25
+      at renderRoot (node_modules/@testing-library/react/dist/pure.js:159:26)
+      at render (node_modules/@testing-library/react/dist/pure.js:246:10)
+      at renderChatPage (src/components/chat/__tests__/ChatIntegration.test.tsx:83:18)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:92:7)
+
+    console.log
+      mock results [ { type: 'return', value: Promise { [Object] } } ]
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:93:15)
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 51 |[39m       ])[33m;[39m
+     [90m 52 |[39m
+    [31m[1m>[22m[39m[90m 53 |[39m       setConversation(conversationData)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:53:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 52 |[39m
+     [90m 53 |[39m       setConversation(conversationData)[33m;[39m
+    [31m[1m>[22m[39m[90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m
+     [90m 57 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:54:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 58 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 59 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 60 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 61 |[39m     }
+     [90m 62 |[39m   }[33m,[39m [autoLoadMessages])[33m;[39m
+     [90m 63 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:60:7
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 51 |[39m       ])[33m;[39m
+     [90m 52 |[39m
+    [31m[1m>[22m[39m[90m 53 |[39m       setConversation(conversationData)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:53:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 52 |[39m
+     [90m 53 |[39m       setConversation(conversationData)[33m;[39m
+    [31m[1m>[22m[39m[90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m
+     [90m 57 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:54:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 58 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 59 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 60 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 61 |[39m     }
+     [90m 62 |[39m   }[33m,[39m [autoLoadMessages])[33m;[39m
+     [90m 63 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:60:7
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 74 |[39m
+     [90m 75 |[39m       [36mif[39m (refresh) {
+    [31m[1m>[22m[39m[90m 76 |[39m         setConversations(response[33m.[39mconversations)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 77 |[39m         setOffset(response[33m.[39mconversations[33m.[39mlength)[33m;[39m
+     [90m 78 |[39m       } [36melse[39m {
+     [90m 79 |[39m         setConversations(prev [33m=>[39m [[33m...[39mprev[33m,[39m [33m...[39mresponse[33m.[39mconversations])[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:76:9
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 75 |[39m       [36mif[39m (refresh) {
+     [90m 76 |[39m         setConversations(response[33m.[39mconversations)[33m;[39m
+    [31m[1m>[22m[39m[90m 77 |[39m         setOffset(response[33m.[39mconversations[33m.[39mlength)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 78 |[39m       } [36melse[39m {
+     [90m 79 |[39m         setConversations(prev [33m=>[39m [[33m...[39mprev[33m,[39m [33m...[39mresponse[33m.[39mconversations])[33m;[39m
+     [90m 80 |[39m         setOffset(prev [33m=>[39m prev [33m+[39m response[33m.[39mconversations[33m.[39mlength)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:77:9
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 81 |[39m       }
+     [90m 82 |[39m
+    [31m[1m>[22m[39m[90m 83 |[39m       setTotal(response[33m.[39mtotal)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 84 |[39m       setHasMore(response[33m.[39mconversations[33m.[39mlength [33m===[39m limit [33m&&[39m offset [33m+[39m response[33m.[39mconversations[33m.[39mlength [33m<[39m response[33m.[39mtotal)[33m;[39m
+     [90m 85 |[39m     } [36mcatch[39m (err) {
+     [90m 86 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話列表失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:83:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 82 |[39m
+     [90m 83 |[39m       setTotal(response[33m.[39mtotal)[33m;[39m
+    [31m[1m>[22m[39m[90m 84 |[39m       setHasMore(response[33m.[39mconversations[33m.[39mlength [33m===[39m limit [33m&&[39m offset [33m+[39m response[33m.[39mconversations[33m.[39mlength [33m<[39m response[33m.[39mtotal)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 85 |[39m     } [36mcatch[39m (err) {
+     [90m 86 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話列表失敗'[39m[33m;[39m
+     [90m 87 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:84:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 88 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 89 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 90 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 91 |[39m     }
+     [90m 92 |[39m   }[33m,[39m [limit[33m,[39m orderBy[33m,[39m order[33m,[39m offset[33m,[39m searchQuery])[33m;[39m
+     [90m 93 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:90:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 184 |[39m     [36mtry[39m {
+     [90m 185 |[39m       [36mconst[39m statsData [33m=[39m [36mawait[39m [33mChatService[39m[33m.[39mgetConversationStats()[33m;[39m
+    [31m[1m>[22m[39m[90m 186 |[39m       setStats(statsData)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 187 |[39m     } [36mcatch[39m (err) {
+     [90m 188 |[39m       console[33m.[39merror([32m'載入統計信息失敗:'[39m[33m,[39m err)[33m;[39m
+     [90m 189 |[39m       [90m// 統計信息載入失敗不顯示錯誤提示，因為不是關鍵功能[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:186:7
+          at async Promise.all (index 1)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 51 |[39m       ])[33m;[39m
+     [90m 52 |[39m
+    [31m[1m>[22m[39m[90m 53 |[39m       setConversation(conversationData)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:53:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 52 |[39m
+     [90m 53 |[39m       setConversation(conversationData)[33m;[39m
+    [31m[1m>[22m[39m[90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m
+     [90m 57 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:54:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 58 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 59 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 60 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 61 |[39m     }
+     [90m 62 |[39m   }[33m,[39m [autoLoadMessages])[33m;[39m
+     [90m 63 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:60:7
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 74 |[39m
+     [90m 75 |[39m       [36mif[39m (refresh) {
+    [31m[1m>[22m[39m[90m 76 |[39m         setConversations(response[33m.[39mconversations)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 77 |[39m         setOffset(response[33m.[39mconversations[33m.[39mlength)[33m;[39m
+     [90m 78 |[39m       } [36melse[39m {
+     [90m 79 |[39m         setConversations(prev [33m=>[39m [[33m...[39mprev[33m,[39m [33m...[39mresponse[33m.[39mconversations])[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:76:9
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 75 |[39m       [36mif[39m (refresh) {
+     [90m 76 |[39m         setConversations(response[33m.[39mconversations)[33m;[39m
+    [31m[1m>[22m[39m[90m 77 |[39m         setOffset(response[33m.[39mconversations[33m.[39mlength)[33m;[39m
+     [90m    |[39m         [31m[1m^[22m[39m
+     [90m 78 |[39m       } [36melse[39m {
+     [90m 79 |[39m         setConversations(prev [33m=>[39m [[33m...[39mprev[33m,[39m [33m...[39mresponse[33m.[39mconversations])[33m;[39m
+     [90m 80 |[39m         setOffset(prev [33m=>[39m prev [33m+[39m response[33m.[39mconversations[33m.[39mlength)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:77:9
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 81 |[39m       }
+     [90m 82 |[39m
+    [31m[1m>[22m[39m[90m 83 |[39m       setTotal(response[33m.[39mtotal)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 84 |[39m       setHasMore(response[33m.[39mconversations[33m.[39mlength [33m===[39m limit [33m&&[39m offset [33m+[39m response[33m.[39mconversations[33m.[39mlength [33m<[39m response[33m.[39mtotal)[33m;[39m
+     [90m 85 |[39m     } [36mcatch[39m (err) {
+     [90m 86 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話列表失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:83:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 82 |[39m
+     [90m 83 |[39m       setTotal(response[33m.[39mtotal)[33m;[39m
+    [31m[1m>[22m[39m[90m 84 |[39m       setHasMore(response[33m.[39mconversations[33m.[39mlength [33m===[39m limit [33m&&[39m offset [33m+[39m response[33m.[39mconversations[33m.[39mlength [33m<[39m response[33m.[39mtotal)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 85 |[39m     } [36mcatch[39m (err) {
+     [90m 86 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話列表失敗'[39m[33m;[39m
+     [90m 87 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:84:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 88 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 89 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 90 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 91 |[39m     }
+     [90m 92 |[39m   }[33m,[39m [limit[33m,[39m orderBy[33m,[39m order[33m,[39m offset[33m,[39m searchQuery])[33m;[39m
+     [90m 93 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:90:7
+          at async Promise.all (index 0)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 184 |[39m     [36mtry[39m {
+     [90m 185 |[39m       [36mconst[39m statsData [33m=[39m [36mawait[39m [33mChatService[39m[33m.[39mgetConversationStats()[33m;[39m
+    [31m[1m>[22m[39m[90m 186 |[39m       setStats(statsData)[33m;[39m
+     [90m     |[39m       [31m[1m^[22m[39m
+     [90m 187 |[39m     } [36mcatch[39m (err) {
+     [90m 188 |[39m       console[33m.[39merror([32m'載入統計信息失敗:'[39m[33m,[39m err)[33m;[39m
+     [90m 189 |[39m       [90m// 統計信息載入失敗不顯示錯誤提示，因為不是關鍵功能[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useConversations.ts:186:7
+          at async Promise.all (index 1)
+      at src/hooks/useConversations.ts:203:5
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 51 |[39m       ])[33m;[39m
+     [90m 52 |[39m
+    [31m[1m>[22m[39m[90m 53 |[39m       setConversation(conversationData)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:53:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 52 |[39m
+     [90m 53 |[39m       setConversation(conversationData)[33m;[39m
+    [31m[1m>[22m[39m[90m 54 |[39m       setMessages(messagesData[33m.[39mmessages)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 55 |[39m     } [36mcatch[39m (err) {
+     [90m 56 |[39m       [36mconst[39m errorMessage [33m=[39m err [36minstanceof[39m [33mError[39m [33m?[39m err[33m.[39mmessage [33m:[39m [32m'載入對話失敗'[39m[33m;[39m
+     [90m 57 |[39m       setError(errorMessage)[33m;[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:54:7
+
+    console.error
+      Warning: An update to ChatPage inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://reactjs.org/link/wrap-tests-with-act
+          at ChatPage (D:\Git\ITR-AI\frontend\src\pages\ChatPage.tsx:30:49)
+          at basenameProp (D:\Git\ITR-AI\frontend\node_modules\react-router\lib\components.tsx:421:13)
+          at basename (D:\Git\ITR-AI\frontend\node_modules\react-router-dom\index.tsx:789:3)
+
+    [0m [90m 58 |[39m       toast[33m.[39merror(errorMessage)[33m;[39m
+     [90m 59 |[39m     } [36mfinally[39m {
+    [31m[1m>[22m[39m[90m 60 |[39m       setIsLoading([36mfalse[39m)[33m;[39m
+     [90m    |[39m       [31m[1m^[22m[39m
+     [90m 61 |[39m     }
+     [90m 62 |[39m   }[33m,[39m [autoLoadMessages])[33m;[39m
+     [90m 63 |[39m[0m
+
+      at printWarning (node_modules/react-dom/cjs/react-dom.development.js:86:30)
+      at error (node_modules/react-dom/cjs/react-dom.development.js:60:7)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-dom/cjs/react-dom.development.js:27628:9)
+      at scheduleUpdateOnFiber (node_modules/react-dom/cjs/react-dom.development.js:25547:5)
+      at dispatchSetState (node_modules/react-dom/cjs/react-dom.development.js:16708:7)
+      at src/hooks/useChat.ts:60:7
+
+    console.log
+      is mock true
+
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:51:13)
+
+    console.log
+      render header Test Conversation
+
+      at ChatHeader (src/components/chat/ChatHeader.tsx:57:13)
+
+  ● Chat Integration › Chat Page Loading › should load conversation and messages on mount
+
+    TestingLibraryElementError: Unable to find an element with the text: Test Conversation. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 overflow-y-auto"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"p-4 text-center text-gray-500"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"[39m
+                [36m/>[39m
+                [0m載入中...[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col min-w-0"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0mAI 對話中心[0m
+                [36m</h1>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            border border-gray-300 dark:border-gray-600
+            bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                [36m>[39m
+                  [0m新建對話[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-h-0"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center h-full "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-8 text-center max-w-md
+            "[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-6xl mb-4"[39m
+                  [36m>[39m
+                    [0m💬[0m
+                  [36m</div>[39m
+                  [36m<h2[39m
+                    [33mclass[39m=[32m"text-xl font-semibold text-gray-900 mb-2"[39m
+                  [36m>[39m
+                    [0m尚未選擇對話[0m
+                  [36m</h2>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"text-gray-600 mb-4"[39m
+                  [36m>[39m
+                    [0m請先建立一個 AI 對話，或從左側清單中選擇現有對話。[0m
+                  [36m</p>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"[39m
+                  [36m>[39m
+                    [0m新建對話[0m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+    [0m [90m  98 |[39m       })[33m;[39m
+     [90m  99 |[39m
+    [31m[1m>[22m[39m[90m 100 |[39m       expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m     |[39m                     [31m[1m^[22m[39m
+     [90m 101 |[39m       expect(screen[33m.[39mgetByText([32m'Hello, how are you?'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 102 |[39m       expect(screen[33m.[39mgetByText([32m'I am doing well, thank you for asking!'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 103 |[39m     })[33m;[39m[0m
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:100:21)
+
+  ● Chat Integration › Chat Page Loading › should load conversation list in sidebar
+
+    TestingLibraryElementError: Unable to find an element with the text: 傳送. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 overflow-y-auto"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"p-4 text-center text-gray-500"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"[39m
+                [36m/>[39m
+                [0m載入中...[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col min-w-0"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0mAI 對話中心[0m
+                [36m</h1>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            border border-gray-300 dark:border-gray-600
+            bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                [36m>[39m
+                  [0m新建對話[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-h-0"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center h-full "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-8 text-center max-w-md
+            "[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-6xl mb-4"[39m
+                  [36m>[39m
+                    [0m💬[0m
+                  [36m</div>[39m
+                  [36m<h2[39m
+                    [33mclass[39m=[32m"text-xl font-semibold text-gray-900 mb-2"[39m
+                  [36m>[39m
+                    [0m尚未選擇對話[0m
+                  [36m</h2>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"text-gray-600 mb-4"[39m
+                  [36m>[39m
+                    [0m請先建立一個 AI 對話，或從左側清單中選擇現有對話。[0m
+                  [36m</p>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"[39m
+                  [36m>[39m
+                    [0m新建對話[0m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+    [0m [90m 110 |[39m       })[33m;[39m
+     [90m 111 |[39m
+    [31m[1m>[22m[39m[90m 112 |[39m       expect(screen[33m.[39mgetByText([32m'傳送'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m     |[39m                     [31m[1m^[22m[39m
+     [90m 113 |[39m     })[33m;[39m
+     [90m 114 |[39m   })[33m;[39m
+     [90m 115 |[39m[0m
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:112:21)
+
+  ● Chat Integration › Sending Messages › should send a message and receive AI response
+
+    Found multiple elements with the text: Test Conversation
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<h3[39m
+      [33mclass[39m=[32m"font-medium text-gray-900 truncate"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</h3>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"text-left w-full truncate text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-3
+            "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-2 gap-4 text-center"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-2xl font-bold text-blue-600"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-xs text-gray-600"[39m
+                    [36m>[39m
+                      [0m對話[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                ...
+
+    [0m [90m 129 |[39m       renderChatPage()[33m;[39m
+     [90m 130 |[39m
+    [31m[1m>[22m[39m[90m 131 |[39m       [36mawait[39m waitFor(() [33m=>[39m {
+     [90m     |[39m                    [31m[1m^[22m[39m
+     [90m 132 |[39m         expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 133 |[39m       })[33m;[39m
+     [90m 134 |[39m       console[33m.[39mlog([32m'mock results'[39m[33m,[39m [33mMockedChatService[39m[33m.[39mgetConversation[33m.[39mmock[33m.[39mresults)[33m;[39m[0m
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:166:27)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:131:20)
+
+  ● Chat Integration › Sending Messages › should handle message sending errors
+
+    Found multiple elements with the text: Test Conversation
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<h3[39m
+      [33mclass[39m=[32m"font-medium text-gray-900 truncate"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</h3>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"text-left w-full truncate text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-3
+            "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-2 gap-4 text-center"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-2xl font-bold text-blue-600"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-xs text-gray-600"[39m
+                    [36m>[39m
+                      [0m對話[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                ...
+
+    [0m [90m 159 |[39m       renderChatPage()[33m;[39m
+     [90m 160 |[39m
+    [31m[1m>[22m[39m[90m 161 |[39m       [36mawait[39m waitFor(() [33m=>[39m {
+     [90m     |[39m                    [31m[1m^[22m[39m
+     [90m 162 |[39m         expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 163 |[39m       })[33m;[39m
+     [90m 164 |[39m[0m
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:166:27)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:161:20)
+
+  ● Chat Integration › Conversation Management › should create a new conversation
+
+    TestingLibraryElementError: Found multiple elements with the text: 新建對話
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+    [36m>[39m
+      [36m<svg[39m
+        [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+        [33mfill[39m=[32m"none"[39m
+        [33mstroke[39m=[32m"currentColor"[39m
+        [33mviewBox[39m=[32m"0 0 24 24"[39m
+      [36m>[39m
+        [36m<path[39m
+          [33md[39m=[32m"M12 4v16m8-8H4"[39m
+          [33mstroke-linecap[39m=[32m"round"[39m
+          [33mstroke-linejoin[39m=[32m"round"[39m
+          [33mstroke-width[39m=[32m"2"[39m
+        [36m/>[39m
+      [36m</svg>[39m
+      [0m新建對話[0m
+    [36m</button>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            border border-gray-300 dark:border-gray-600
+            bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+    [36m>[39m
+      [0m新建對話[0m
+    [36m</button>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"[39m
+    [36m>[39m
+      [0m新建對話[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 overflow-y-auto"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"p-4 text-center text-gray-500"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"[39m
+                [36m/>[39m
+                [0m載入中...[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col min-w-0"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0mAI 對話中心[0m
+                [36m</h1>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            border border-gray-300 dark:border-gray-600
+            bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                [36m>[39m
+                  [0m新建對話[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-h-0"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center h-full "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-8 text-center max-w-md
+            "[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-6xl mb-4"[39m
+                  [36m>[39m
+                    [0m💬[0m
+                  [36m</div>[39m
+                  [36m<h2[39m
+                    [33mclass[39m=[32m"text-xl font-semibold text-gray-900 mb-2"[39m
+                  [36m>[39m
+                    [0m尚未選擇對話[0m
+                  [36m</h2>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"text-gray-600 mb-4"[39m
+                  [36m>[39m
+                    [0m請先建立一個 AI 對話，或從左側清單中選擇現有對話。[0m
+                  [36m</p>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"[39m
+                  [36m>[39m
+                    [0m新建對話[0m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+    [0m [90m 187 |[39m       renderChatPage()[33m;[39m
+     [90m 188 |[39m
+    [31m[1m>[22m[39m[90m 189 |[39m       [36mconst[39m newChatButton [33m=[39m screen[33m.[39mgetByText([32m'\u65b0\u5efa\u5c0d\u8a71'[39m)[33m;[39m
+     [90m     |[39m                                    [31m[1m^[22m[39m
+     [90m 190 |[39m       fireEvent[33m.[39mclick(newChatButton)[33m;[39m
+     [90m 191 |[39m
+     [90m 192 |[39m       [36mawait[39m waitFor(() [33m=>[39m {[0m
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at getElementError (node_modules/@testing-library/dom/dist/query-helpers.js:20:35)
+      at getMultipleElementsFoundError (node_modules/@testing-library/dom/dist/query-helpers.js:23:10)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:55:13
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:189:36)
+
+  ● Chat Integration › Conversation Management › should update conversation title
+
+    Found multiple elements with the text: Test Conversation
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<h3[39m
+      [33mclass[39m=[32m"font-medium text-gray-900 truncate"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</h3>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"text-left w-full truncate text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-3
+            "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-2 gap-4 text-center"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-2xl font-bold text-blue-600"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-xs text-gray-600"[39m
+                    [36m>[39m
+                      [0m對話[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                ...
+
+    [0m [90m 205 |[39m       renderChatPage()[33m;[39m
+     [90m 206 |[39m
+    [31m[1m>[22m[39m[90m 207 |[39m       [36mawait[39m waitFor(() [33m=>[39m {
+     [90m     |[39m                    [31m[1m^[22m[39m
+     [90m 208 |[39m         expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 209 |[39m       })[33m;[39m
+     [90m 210 |[39m[0m
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:166:27)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:207:20)
+
+  ● Chat Integration › Conversation Management › should delete conversation
+
+    Found multiple elements with the text: Test Conversation
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<h3[39m
+      [33mclass[39m=[32m"font-medium text-gray-900 truncate"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</h3>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"text-left w-full truncate text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-3
+            "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-2 gap-4 text-center"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-2xl font-bold text-blue-600"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-xs text-gray-600"[39m
+                    [36m>[39m
+                      [0m對話[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                ...
+
+    [0m [90m 231 |[39m       renderChatPage()[33m;[39m
+     [90m 232 |[39m
+    [31m[1m>[22m[39m[90m 233 |[39m       [36mawait[39m waitFor(() [33m=>[39m {
+     [90m     |[39m                    [31m[1m^[22m[39m
+     [90m 234 |[39m         expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 235 |[39m       })[33m;[39m
+     [90m 236 |[39m[0m
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:166:27)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:233:20)
+
+  ● Chat Integration › Search Functionality › should search conversations
+
+    TestingLibraryElementError: Unable to find an element with the placeholder text of: ????...
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 overflow-y-auto"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"p-4 text-center text-gray-500"[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"animate-spin w-6 h-6 border-2 border-blue-500 border-t-transparent rounded-full mx-auto mb-2"[39m
+                [36m/>[39m
+                [0m載入中...[0m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex-1 flex flex-col min-w-0"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<h1[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0mAI 對話中心[0m
+                [36m</h1>[39m
+              [36m</div>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center space-x-2"[39m
+              [36m>[39m
+                [36m<button[39m
+                  [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            border border-gray-300 dark:border-gray-600
+            bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                [36m>[39m
+                  [0m新建對話[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"flex-1 min-h-0"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-center h-full "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-8 text-center max-w-md
+            "[39m
+                [36m>[39m
+                  [36m<div[39m
+                    [33mclass[39m=[32m"text-6xl mb-4"[39m
+                  [36m>[39m
+                    [0m💬[0m
+                  [36m</div>[39m
+                  [36m<h2[39m
+                    [33mclass[39m=[32m"text-xl font-semibold text-gray-900 mb-2"[39m
+                  [36m>[39m
+                    [0m尚未選擇對話[0m
+                  [36m</h2>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"text-gray-600 mb-4"[39m
+                  [36m>[39m
+                    [0m請先建立一個 AI 對話，或從左側清單中選擇現有對話。[0m
+                  [36m</p>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"[39m
+                  [36m>[39m
+                    [0m新建對話[0m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</body>[39m
+
+    [0m [90m 294 |[39m       renderChatPage()[33m;[39m
+     [90m 295 |[39m
+    [31m[1m>[22m[39m[90m 296 |[39m       [36mconst[39m searchInput [33m=[39m screen[33m.[39mgetByPlaceholderText([32m'????...'[39m)[33m;[39m
+     [90m     |[39m                                  [31m[1m^[22m[39m
+     [90m 297 |[39m       fireEvent[33m.[39mchange(searchInput[33m,[39m { target[33m:[39m { value[33m:[39m [32m'test'[39m } })[33m;[39m
+     [90m 298 |[39m
+     [90m 299 |[39m       [36mawait[39m waitFor(() [33m=>[39m {[0m
+
+      at Object.getElementError (node_modules/@testing-library/dom/dist/config.js:37:19)
+      at node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+      at node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+      at node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:296:34)
+
+  ● Chat Integration › Export Functionality › should export conversation
+
+    Found multiple elements with the text: Test Conversation
+
+    Here are the matching elements:
+
+    Ignored nodes: comments, script, style
+    [36m<h3[39m
+      [33mclass[39m=[32m"font-medium text-gray-900 truncate"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</h3>[39m
+
+    Ignored nodes: comments, script, style
+    [36m<button[39m
+      [33mclass[39m=[32m"text-left w-full truncate text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"[39m
+      [33mtitle[39m=[32m"Test Conversation"[39m
+    [36m>[39m
+      [0mTest Conversation[0m
+    [36m</button>[39m
+
+    (If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or `findAllByText`)).
+
+    Ignored nodes: comments, script, style
+    [36m<body>[39m
+      [36m<div>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex h-screen bg-gray-100"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"w-80 bg-white border-r border-gray-200 flex flex-col "[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200 space-y-3"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"flex items-center justify-between"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"text-lg font-semibold text-gray-900"[39m
+                [36m>[39m
+                  [0m對話[0m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"flex items-center space-x-2"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"重新整理"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M4 4v6h6M20 20v-6h-6M5 19a9 9 0 0114-7.5M19 5a9 9 0 01-14 7.5"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                  [36m<button[39m
+                    [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800
+            text-gray-700 dark:text-gray-300
+            focus:ring-gray-500
+          
+              px-3 py-1.5 text-sm
+              
+              text-gray-600 hover:text-gray-800
+            "[39m
+                    [33mtitle[39m=[32m"收合側邊欄"[39m
+                  [36m>[39m
+                    [36m<svg[39m
+                      [33mclass[39m=[32m"w-4 h-4"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"M6 18L18 6M6 6l12 12"[39m
+                        [33mstroke-linecap[39m=[32m"round"[39m
+                        [33mstroke-linejoin[39m=[32m"round"[39m
+                        [33mstroke-width[39m=[32m"2"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</div>[39m
+              [36m</div>[39m
+              [36m<button[39m
+                [33mclass[39m=[32m"
+              
+          inline-flex items-center justify-center
+          font-medium rounded-lg
+          transition-all duration-200
+          focus:outline-none focus:ring-2 focus:ring-offset-2
+          dark:focus:ring-offset-gray-900
+          disabled:opacity-50 disabled:cursor-not-allowed
+        
+              
+            bg-primary-600 hover:bg-primary-700 
+            text-white 
+            focus:ring-primary-500
+            disabled:hover:bg-primary-600
+          
+              px-3 py-1.5 text-sm
+              
+              w-full
+            "[39m
+              [36m>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"w-4 h-4 mr-2"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M12 4v16m8-8H4"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+                [0m新建對話[0m
+              [36m</button>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"relative"[39m
+              [36m>[39m
+                [36m<input[39m
+                  [33mclass[39m=[32m"w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"[39m
+                  [33mplaceholder[39m=[32m"搜尋對話..."[39m
+                  [33mtype[39m=[32m"text"[39m
+                  [33mvalue[39m=[32m""[39m
+                [36m/>[39m
+                [36m<svg[39m
+                  [33mclass[39m=[32m"absolute left-3 top-2.5 w-4 h-4 text-gray-400"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"[39m
+                    [33mstroke-linecap[39m=[32m"round"[39m
+                    [33mstroke-linejoin[39m=[32m"round"[39m
+                    [33mstroke-width[39m=[32m"2"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</div>[39m
+            [36m</div>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"p-4 border-b border-gray-200"[39m
+            [36m>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"
+              
+          bg-white dark:bg-gray-800
+          rounded-lg
+          transition-colors duration-200
+        
+              
+            border border-gray-200 dark:border-gray-700
+          
+              p-6
+              p-3
+            "[39m
+              [36m>[39m
+                [36m<div[39m
+                  [33mclass[39m=[32m"grid grid-cols-2 gap-4 text-center"[39m
+                [36m>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-2xl font-bold text-blue-600"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</div>[39m
+                    [36m<div[39m
+                      [33mclass[39m=[32m"text-xs text-gray-600"[39m
+                    [36m>[39m
+                      [0m對話[0m
+                    [36m</div>[39m
+                  [36m</div>[39m
+                  [36m<div>[39m
+                    [36m<div[39m
+                ...
+
+    [0m [90m 337 |[39m       renderChatPage()[33m;[39m
+     [90m 338 |[39m
+    [31m[1m>[22m[39m[90m 339 |[39m       [36mawait[39m waitFor(() [33m=>[39m {
+     [90m     |[39m                    [31m[1m^[22m[39m
+     [90m 340 |[39m         expect(screen[33m.[39mgetByText([32m'Test Conversation'[39m))[33m.[39mtoBeInTheDocument()[33m;[39m
+     [90m 341 |[39m       })[33m;[39m
+     [90m 342 |[39m[0m
+
+      at waitForWrapper (node_modules/@testing-library/dom/dist/wait-for.js:166:27)
+      at Object.<anonymous> (src/components/chat/__tests__/ChatIntegration.test.tsx:339:20)
+
+Test Suites: 1 failed, 1 of 6 total
+Tests:       9 failed, 1 passed, 10 total
+Snapshots:   0 total
+Time:        16.018 s, estimated 27 s
+Ran all test suites.
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path D:\Git\ITR-AI\frontend
+npm error workspace multi-ai-platform-frontend@0.0.0
+npm error location D:\Git\ITR-AI\frontend
+npm error command failed
+npm error command C:\WINDOWS\system32\cmd.exe /d /s /c jest --runInBand --bail

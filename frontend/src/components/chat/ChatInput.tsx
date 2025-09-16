@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '../ui/Button';
 
 interface ChatInputProps {
@@ -20,67 +20,54 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const [isComposing, setIsComposing] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // 自動調整文本框高度
   const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = 'auto';
-      textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
-    }
+    if (!textarea) return;
+
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
   };
 
   useEffect(() => {
     adjustTextareaHeight();
   }, [message]);
 
-  // 處理發送訊息
   const handleSend = () => {
-    const trimmedMessage = message.trim();
-    if (trimmedMessage && !disabled) {
-      onSendMessage(trimmedMessage);
-      setMessage('');
-      // 重置文本框高度
-      if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
-      }
+    const trimmed = message.trim();
+    if (!trimmed || disabled) {
+      return;
+    }
+
+    onSendMessage(trimmed);
+    setMessage('');
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
     }
   };
 
-  // 處理鍵盤事件
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
-      e.preventDefault();
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey && !isComposing) {
+      event.preventDefault();
       handleSend();
     }
   };
 
-  // 處理輸入法組合事件
-  const handleCompositionStart = () => {
-    setIsComposing(true);
-  };
-
-  const handleCompositionEnd = () => {
-    setIsComposing(false);
-  };
-
-  // 處理文本變化
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
     if (value.length <= maxLength) {
       setMessage(value);
     }
   };
 
-  // 處理粘貼事件
-  const handlePaste = (e: React.ClipboardEvent) => {
-    const pastedText = e.clipboardData.getData('text');
-    const newText = message + pastedText;
-    
-    if (newText.length > maxLength) {
-      e.preventDefault();
-      const remainingLength = maxLength - message.length;
-      if (remainingLength > 0) {
-        setMessage(message + pastedText.substring(0, remainingLength));
+  const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const pasted = event.clipboardData.getData('text');
+    const next = message + pasted;
+
+    if (next.length > maxLength) {
+      event.preventDefault();
+      const remaining = maxLength - message.length;
+      if (remaining > 0) {
+        setMessage(message + pasted.slice(0, remaining));
       }
     }
   };
@@ -92,15 +79,14 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   return (
     <div className={`p-4 ${className}`}>
       <div className="flex items-end space-x-3">
-        {/* 文本輸入區域 */}
         <div className="flex-1 relative">
           <textarea
             ref={textareaRef}
             value={message}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            onCompositionStart={handleCompositionStart}
-            onCompositionEnd={handleCompositionEnd}
+            onCompositionStart={() => setIsComposing(true)}
+            onCompositionEnd={() => setIsComposing(false)}
             onPaste={handlePaste}
             placeholder={placeholder}
             disabled={disabled}
@@ -113,37 +99,34 @@ export const ChatInput: React.FC<ChatInputProps> = ({
             `}
             style={{ minHeight: '48px', maxHeight: '120px' }}
           />
-          
-          {/* 字符計數 */}
+
           {isNearLimit && (
-            <div className={`absolute bottom-1 right-12 text-xs ${
-              characterCount >= maxLength ? 'text-red-500' : 'text-yellow-500'
-            }`}>
+            <div
+              className={`absolute bottom-1 right-12 text-xs ${
+                characterCount >= maxLength ? 'text-red-500' : 'text-yellow-500'
+              }`}
+            >
               {characterCount}/{maxLength}
             </div>
           )}
         </div>
 
-        {/* 發送按鈕 */}
         <Button
           onClick={handleSend}
           disabled={!canSend}
           className={`
             px-4 py-3 min-w-[80px] transition-all duration-200
-            ${canSend 
-              ? 'bg-blue-500 hover:bg-blue-600 text-white' 
-              : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-            }
+            ${canSend ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}
           `}
         >
           {disabled ? (
             <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-              <span>發送中</span>
+              <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+              <span>傳送中</span>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <span>發送</span>
+              <span>傳送</span>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
@@ -152,12 +135,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         </Button>
       </div>
 
-      {/* 提示文字 */}
       <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
-        <span>按 Enter 發送，Shift + Enter 換行</span>
-        {!isNearLimit && (
-          <span>{characterCount} 字符</span>
-        )}
+        <span>按 Enter 傳送，Shift + Enter 換行</span>
+        {!isNearLimit && <span>{characterCount} 字符</span>}
       </div>
     </div>
   );

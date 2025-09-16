@@ -101,7 +101,15 @@ export class ParameterService {
       );
       
       result.isValid = result.isValid && advancedResult.valid;
-      result.errors.push(...advancedResult.errors);
+      
+      // 轉換字符串錯誤為ValidationError對象
+      const advancedErrors = advancedResult.errors.map(errorMsg => ({
+        field: 'advanced',
+        code: 'ADVANCED_VALIDATION',
+        message: errorMsg,
+      }));
+      result.errors.push(...advancedErrors);
+      
       result.dependencyErrors = advancedResult.dependencyErrors;
       result.exclusionErrors = advancedResult.exclusionErrors;
       result.customRuleErrors = advancedResult.customRuleErrors;

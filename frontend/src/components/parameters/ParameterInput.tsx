@@ -1,14 +1,28 @@
-import React from 'react';
+﻿import React from 'react';
 import { ParameterDefinition } from '../../types';
+
+type ParameterValue = string | number | boolean | undefined;
 
 interface ParameterInputProps {
   definition: ParameterDefinition;
-  value: any;
-  onChange: (value: any) => void;
+  value: ParameterValue;
+  onChange: (value: ParameterValue) => void;
   error?: string;
   disabled?: boolean;
   className?: string;
 }
+
+const formatDefaultValue = (value: unknown): string => {
+  if (value === null || value === undefined) {
+    return '無';
+  }
+
+  if (typeof value === 'boolean') {
+    return value ? '是' : '否';
+  }
+
+  return String(value);
+};
 
 export const ParameterInput: React.FC<ParameterInputProps> = ({
   definition,
@@ -18,6 +32,9 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
   disabled = false,
   className = '',
 }) => {
+  const hasMinOrMax = definition.min !== undefined || definition.max !== undefined;
+  const currentBoolean = (value ?? definition.defaultValue ?? false) as boolean;
+
   const baseInputClasses = `
     w-full px-3 py-2 border rounded-md transition-colors
     focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
@@ -25,6 +42,20 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
     ${error ? 'border-red-500' : 'border-gray-300'}
     ${className}
   `;
+
+  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = event.target.value;
+
+    if (nextValue === '') {
+      onChange(undefined);
+      return;
+    }
+
+    const parsed = Number(nextValue);
+    if (!Number.isNaN(parsed)) {
+      onChange(parsed);
+    }
+  };
 
   const renderInput = () => {
     switch (definition.type) {
@@ -34,18 +65,18 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
             <input
               type="number"
               value={value ?? definition.defaultValue ?? ''}
-              onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+              onChange={handleNumberChange}
               min={definition.min}
               max={definition.max}
               step={definition.key === 'temperature' ? 0.1 : 1}
               disabled={disabled}
               className={baseInputClasses}
-              placeholder={`預設值: ${definition.defaultValue}`}
+              placeholder={`預設值 ${formatDefaultValue(definition.defaultValue)}`}
             />
-            {(definition.min !== undefined || definition.max !== undefined) && (
+            {hasMinOrMax && (
               <div className="flex justify-between text-xs text-gray-500">
-                <span>最小值: {definition.min ?? '無限制'}</span>
-                <span>最大值: {definition.max ?? '無限制'}</span>
+                <span>最小值 {formatDefaultValue(definition.min)}</span>
+                <span>最大值 {formatDefaultValue(definition.max)}</span>
               </div>
             )}
           </div>
@@ -55,7 +86,7 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
         return (
           <select
             value={value ?? definition.defaultValue ?? ''}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(event) => onChange(event.target.value)}
             disabled={disabled}
             className={baseInputClasses}
           >
@@ -72,13 +103,13 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
           <div className="flex items-center space-x-2">
             <input
               type="checkbox"
-              checked={value ?? definition.defaultValue ?? false}
-              onChange={(e) => onChange(e.target.checked)}
+              checked={currentBoolean}
+              onChange={(event) => onChange(event.target.checked)}
               disabled={disabled}
               className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <span className="text-sm text-gray-700">
-              {value ? '啟用' : '停用'}
+              {currentBoolean ? '已啟用' : '已停用'}
             </span>
           </div>
         );
@@ -89,10 +120,14 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
           <input
             type="text"
             value={value ?? definition.defaultValue ?? ''}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(event) => onChange(event.target.value)}
             disabled={disabled}
             className={baseInputClasses}
-            placeholder={`預設值: ${definition.defaultValue || '無'}`}
+            placeholder={
+              definition.defaultValue !== undefined
+                ? `預設值 ${formatDefaultValue(definition.defaultValue)}`
+                : '請輸入值'
+            }
             maxLength={definition.max}
             minLength={definition.min}
           />
@@ -106,20 +141,18 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
         {definition.key}
         {definition.defaultValue !== undefined && (
           <span className="ml-1 text-xs text-gray-500">
-            (預設: {definition.defaultValue})
+            （預設: {formatDefaultValue(definition.defaultValue)}）
           </span>
         )}
       </label>
-      
+
       {renderInput()}
-      
+
       {definition.description && (
         <p className="text-xs text-gray-600">{definition.description}</p>
       )}
-      
-      {error && (
-        <p className="text-xs text-red-600">{error}</p>
-      )}
+
+      {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   );
 };

@@ -68,6 +68,7 @@ export class GeminiChatService
     super();
     this.validateApiKey();
     this.genAI = new GoogleGenerativeAI(this.apiKey);
+    this.initializeService();
   }
 
   protected getApiKey(): string {

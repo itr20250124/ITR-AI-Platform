@@ -75,6 +75,7 @@ export class OpenAIChatService extends BaseAIService implements ChatServiceInter
     this.openai = new OpenAI({
       apiKey: this.apiKey,
     });
+    this.initializeService();
   }
 
   protected getApiKey(): string {

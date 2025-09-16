@@ -26,7 +26,7 @@ describe('ChatMessage', () => {
 
       expect(screen.getByText('Hello, how are you?')).toBeInTheDocument();
       expect(screen.getByText('👤')).toBeInTheDocument();
-      expect(screen.getByText('12:00')).toBeInTheDocument();
+      expect(screen.getByText('下午08:00')).toBeInTheDocument();
     });
 
     it('should show user message on the right side', () => {
@@ -193,8 +193,8 @@ describe('ChatMessage', () => {
     it('should format timestamp correctly', () => {
       render(<ChatMessage message={mockMessage} />);
       
-      // The timestamp should be formatted as HH:MM
-      expect(screen.getByText('12:00')).toBeInTheDocument();
+      // The timestamp should be formatted in Chinese format
+      expect(screen.getByText('下午08:00')).toBeInTheDocument();
     });
   });
 

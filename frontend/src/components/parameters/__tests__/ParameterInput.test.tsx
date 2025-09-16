@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ParameterInput } from '../ParameterInput';
 import { ParameterDefinition } from '../../../types';
@@ -32,8 +32,8 @@ describe('ParameterInput', () => {
       expect(screen.getByDisplayValue('0.8')).toBeInTheDocument();
       expect(screen.getByText('temperature')).toBeInTheDocument();
       expect(screen.getByText('Controls randomness')).toBeInTheDocument();
-      expect(screen.getByText('最小值: 0')).toBeInTheDocument();
-      expect(screen.getByText('最大值: 2')).toBeInTheDocument();
+      expect(screen.getByText('最小值 0')).toBeInTheDocument();
+      expect(screen.getByText('最大值 2')).toBeInTheDocument();
     });
 
     it('should call onChange when value changes', () => {
@@ -163,7 +163,7 @@ describe('ParameterInput', () => {
 
       expect(screen.getByText('stream')).toBeInTheDocument();
       expect(screen.getByText('Enable streaming')).toBeInTheDocument();
-      expect(screen.getByText('啟用')).toBeInTheDocument();
+      expect(screen.getByText('已啟用')).toBeInTheDocument();
     });
 
     it('should call onChange when checkbox changes', () => {
@@ -190,7 +190,7 @@ describe('ParameterInput', () => {
         />
       );
 
-      expect(screen.getByText('停用')).toBeInTheDocument();
+      expect(screen.getByText('已停用')).toBeInTheDocument();
     });
   });
 
@@ -265,7 +265,7 @@ describe('ParameterInput', () => {
         />
       );
 
-      expect(screen.getByText('(預設: 0.7)')).toBeInTheDocument();
+      expect(screen.getByText('（預設: 0.7）')).toBeInTheDocument();
     });
 
     it('should not show default value when undefined', () => {

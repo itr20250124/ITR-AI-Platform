@@ -1,449 +1,457 @@
-import { Router } from 'express';
+import { Router, Response } from 'express';
 import multer from 'multer';
-import { body, validationResult } from 'express-validator';
+import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'crypto';
+
 import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
 import { authenticateToken } from '../../middleware/auth';
 import { rateLimiter } from '../../middleware/rateLimiter';
-import { PrismaClient } from '@prisma/client';
-import { v4 as uuidv4 } from 'uuid';
-import path from 'path';
-import fs from 'fs/promises';
+import { AuthenticatedRequest } from '../../types';
 
-const router = Router();
 const prisma = new PrismaClient();
 
-// 配置multer用於文件上傳
-const storage = multer.memoryStorage();
+const { body, validationResult } = require('express-validator');
+
+const imageRoutes = Router();
+
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: {
-    fileSize: 4 * 1024 * 1024, // 4MB
+    fileSize: 4 * 1024 * 1024,
   },
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error('不支援的圖片格式'));
+      cb(new Error('僅支援 JPG、PNG 或 WebP 圖片'));
     }
   },
 });
 
-// 圖片生成端點
-router.post('/generate',
+const SUPPORTED_PROVIDERS = new Set(['openai']);
+
+const parametersValidator = body('parameters')
+  .optional()
+  .custom((value: unknown) => {
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+          throw new Error();
+        }
+      } catch {
+        throw new Error('參數格式必須為 JSON 物件');
+      }
+      return true;
+    }
+
+    if (!value || typeof value !== 'object' || Array.isArray(value)) {
+      throw new Error('參數格式必須為物件');
+    }
+
+    return true;
+  });
+
+function parseParameters(value: unknown): Record<string, unknown> {
+  if (!value) {
+    return {};
+  }
+
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return parsed as Record<string, unknown>;
+      }
+    } catch {
+      return {};
+    }
+  }
+
+  if (typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
+
+  return {};
+}
+
+function sendValidationErrors(req: AuthenticatedRequest, res: Response) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(400).json({
+      success: false,
+      message: '輸入驗證失敗',
+      errors: errors.array(),
+    });
+    return true;
+  }
+  return false;
+}
+
+function ensureProvider(provider: string | undefined, res: Response) {
+  const current = provider || 'openai';
+  if (!SUPPORTED_PROVIDERS.has(current)) {
+    res.status(400).json({
+      success: false,
+      message: '不支援的 AI 服務提供者',
+    });
+    return null;
+  }
+  return current;
+}
+
+function formatMetadata(record: { metadata: string | null }) {
+  if (!record.metadata) {
+    return {};
+  }
+
+  try {
+    const parsed = JSON.parse(record.metadata);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function formatGeneratedImage(record: any) {
+  return {
+    id: record.id,
+    imageUrl: record.imageUrl,
+    prompt: record.prompt,
+    status: record.status,
+    createdAt: record.createdAt,
+    metadata: formatMetadata(record),
+  };
+}
+
+imageRoutes.post(
+  '/generate',
   authenticateToken,
-  rateLimiter({ windowMs: 15 * 60 * 1000, max: 10 }), // 15分鐘內最多10次
+  rateLimiter(10, 15 * 60 * 1000),
   [
     body('prompt')
       .isString()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('提示詞必須是1-1000字符的字符串'),
+      .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
     body('provider')
-      .isString()
-      .isIn(['openai'])
-      .withMessage('不支援的AI服務提供商'),
-    body('parameters')
       .optional()
-      .isObject()
-      .withMessage('參數必須是對象'),
+      .isString()
+      .withMessage('提供的 AI 服務不正確'),
+    parametersValidator,
   ],
-  async (req, res) => {
+  async (req: AuthenticatedRequest, res: Response) => {
+    if (sendValidationErrors(req, res)) {
+      return;
+    }
+
+    const { prompt, provider } = req.body;
+    const resolvedProvider = ensureProvider(provider, res);
+    if (!resolvedProvider) {
+      return;
+    }
+
     try {
-      // 驗證輸入
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          message: '輸入驗證失敗',
-          errors: errors.array(),
-        });
-      }
-
-      const { prompt, provider, parameters = {} } = req.body;
-      const userId = req.user?.id;
-
-      // 獲取AI服務
-      const aiService = AIServiceFactory.getService(provider);
+      const parameters = parseParameters(req.body.parameters);
+      const aiService = AIServiceFactory.createImageService(resolvedProvider);
       if (!aiService) {
-        return res.status(400).json({
+        res.status(400).json({
           success: false,
-          message: '不支援的AI服務提供商',
+          message: '不支援的 AI 服務提供者',
         });
+        return;
       }
 
-      // 生成圖片
-      const result = await aiService.generateImage({
-        prompt,
-        parameters,
-      });
+      const result = await aiService.generateImage(prompt, parameters);
+      const metadata = {
+        model: (parameters as any).model ?? 'dall-e-3',
+        size: (parameters as any).size ?? '1024x1024',
+        quality: (parameters as any).quality ?? 'standard',
+        style: (parameters as any).style ?? 'vivid',
+        revisedPrompt: (result as any).revisedPrompt,
+        type: 'generation',
+      };
 
-      // 保存到資料庫
-      const generatedImage = await prisma.generatedImage.create({
+      const record = await prisma.generatedImage.create({
         data: {
-          id: uuidv4(),
-          userId,
+          id: randomUUID(),
+          userId: req.user?.id ?? null,
           prompt,
-          provider,
+          provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
           imageUrl: result.imageUrl,
           status: 'completed',
-          metadata: JSON.stringify({
-            model: parameters.model || 'dall-e-3',
-            size: parameters.size || '1024x1024',
-            quality: parameters.quality || 'standard',
-            style: parameters.style || 'vivid',
-            revisedPrompt: result.revisedPrompt,
-            type: 'generation',
-          }),
+          metadata: JSON.stringify(metadata),
         },
       });
 
       res.json({
         success: true,
-        data: {
-          id: generatedImage.id,
-          imageUrl: generatedImage.imageUrl,
-          prompt: generatedImage.prompt,
-          status: generatedImage.status,
-          createdAt: generatedImage.createdAt,
-          metadata: JSON.parse(generatedImage.metadata || '{}'),
-        },
+        data: formatGeneratedImage(record),
       });
     } catch (error) {
-      console.error('圖片生成失敗:', error);
+      console.error('Generate image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片生成失敗',
+        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }
 );
 
-// 圖片變體生成端點
-router.post('/variation',
+imageRoutes.post(
+  '/variation',
   authenticateToken,
-  rateLimiter({ windowMs: 15 * 60 * 1000, max: 8 }), // 15分鐘內最多8次
+  rateLimiter(8, 15 * 60 * 1000),
   upload.single('image'),
   [
     body('provider')
-      .isString()
-      .isIn(['openai'])
-      .withMessage('不支援的AI服務提供商'),
-    body('parameters')
       .optional()
-      .isObject()
-      .withMessage('參數必須是對象'),
+      .isString()
+      .withMessage('提供的 AI 服務不正確'),
+    parametersValidator,
   ],
-  async (req, res) => {
-    try {
-      // 驗證輸入
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          message: '輸入驗證失敗',
-          errors: errors.array(),
-        });
-      }
+  async (req: AuthenticatedRequest, res: Response) => {
+    if (sendValidationErrors(req, res)) {
+      return;
+    }
 
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          message: '請上傳圖片文件',
-        });
-      }
-
-      const { provider, parameters = {} } = req.body;
-      const userId = req.user?.id;
-
-      // 獲取AI服務
-      const aiService = AIServiceFactory.getService(provider);
-      if (!aiService) {
-        return res.status(400).json({
-          success: false,
-          message: '不支援的AI服務提供商',
-        });
-      }
-
-      // 生成圖片變體
-      const result = await aiService.createImageVariation({
-        imageBuffer: req.file.buffer,
-        parameters,
+    if (!req.file) {
+      res.status(400).json({
+        success: false,
+        message: '請上傳原始圖片',
       });
+      return;
+    }
 
-      // 保存到資料庫
-      const generatedImage = await prisma.generatedImage.create({
+    const resolvedProvider = ensureProvider(req.body.provider, res);
+    if (!resolvedProvider) {
+      return;
+    }
+
+    try {
+      const parameters = parseParameters(req.body.parameters);
+      const aiService = AIServiceFactory.createImageService(resolvedProvider);
+      if (!aiService) {
+        res.status(400).json({
+          success: false,
+          message: '不支援的 AI 服務提供者',
+        });
+        return;
+      }
+
+      const result = await aiService.createImageVariation(req.file.buffer, parameters);
+      const metadata = {
+        type: 'variation',
+        originalFileName: req.file.originalname,
+        options: parameters,
+      };
+
+      const record = await prisma.generatedImage.create({
         data: {
-          id: uuidv4(),
-          userId,
-          prompt: '圖片變體生成',
-          provider,
+          id: randomUUID(),
+          userId: req.user?.id ?? null,
+          prompt: 'Image variation',
+          provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
           imageUrl: result.imageUrl,
           status: 'completed',
-          metadata: JSON.stringify({
-            size: parameters.size || '1024x1024',
-            type: 'variation',
-            originalFileName: req.file.originalname,
-          }),
+          metadata: JSON.stringify(metadata),
         },
       });
 
       res.json({
         success: true,
-        data: {
-          id: generatedImage.id,
-          imageUrl: generatedImage.imageUrl,
-          prompt: generatedImage.prompt,
-          status: generatedImage.status,
-          createdAt: generatedImage.createdAt,
-          metadata: JSON.parse(generatedImage.metadata || '{}'),
-        },
+        data: formatGeneratedImage(record),
       });
     } catch (error) {
-      console.error('圖片變體生成失敗:', error);
+      console.error('Create variation error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片變體生成失敗',
+        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }
 );
 
-// 圖片編輯端點
-router.post('/edit',
+imageRoutes.post(
+  '/edit',
   authenticateToken,
-  rateLimiter({ windowMs: 15 * 60 * 1000, max: 6 }), // 15分鐘內最多6次
+  rateLimiter(6, 15 * 60 * 1000),
   upload.fields([
     { name: 'image', maxCount: 1 },
-    { name: 'mask', maxCount: 1 }
+    { name: 'mask', maxCount: 1 },
   ]),
   [
     body('prompt')
       .isString()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('編輯描述必須是1-1000字符的字符串'),
+      .withMessage('提示文字長度必須介於 1 到 1000 字之間'),
     body('provider')
-      .isString()
-      .isIn(['openai'])
-      .withMessage('不支援的AI服務提供商'),
-    body('parameters')
       .optional()
-      .isObject()
-      .withMessage('參數必須是對象'),
+      .isString()
+      .withMessage('提供的 AI 服務不正確'),
+    parametersValidator,
   ],
-  async (req, res) => {
-    try {
-      // 驗證輸入
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          message: '輸入驗證失敗',
-          errors: errors.array(),
-        });
-      }
+  async (req: AuthenticatedRequest, res: Response) => {
+    if (sendValidationErrors(req, res)) {
+      return;
+    }
 
-      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-      
-      if (!files.image || !files.image[0]) {
-        return res.status(400).json({
-          success: false,
-          message: '請上傳原始圖片',
-        });
-      }
+    const files = req.files as Record<string, Express.Multer.File[]> | undefined;
+    const imageFile = files?.image?.[0];
+    const maskFile = files?.mask?.[0];
 
-      if (!files.mask || !files.mask[0]) {
-        return res.status(400).json({
-          success: false,
-          message: '請上傳遮罩圖片',
-        });
-      }
-
-      const { prompt, provider, parameters = {} } = req.body;
-      const userId = req.user?.id;
-
-      // 獲取AI服務
-      const aiService = AIServiceFactory.getService(provider);
-      if (!aiService) {
-        return res.status(400).json({
-          success: false,
-          message: '不支援的AI服務提供商',
-        });
-      }
-
-      // 編輯圖片
-      const result = await aiService.editImage({
-        imageBuffer: files.image[0].buffer,
-        maskBuffer: files.mask[0].buffer,
-        prompt,
-        parameters,
+    if (!imageFile) {
+      res.status(400).json({
+        success: false,
+        message: '請上傳原始圖片',
       });
+      return;
+    }
 
-      // 保存到資料庫
-      const generatedImage = await prisma.generatedImage.create({
+    if (!maskFile) {
+      res.status(400).json({
+        success: false,
+        message: '請上傳遮罩圖片',
+      });
+      return;
+    }
+
+    const resolvedProvider = ensureProvider(req.body.provider, res);
+    if (!resolvedProvider) {
+      return;
+    }
+
+    try {
+      const parameters = parseParameters(req.body.parameters);
+      const aiService = AIServiceFactory.createImageService(resolvedProvider);
+      if (!aiService) {
+        res.status(400).json({
+          success: false,
+          message: '不支援的 AI 服務提供者',
+        });
+        return;
+      }
+
+      const result = await aiService.editImage(
+        imageFile.buffer,
+        maskFile.buffer,
+        req.body.prompt,
+        parameters,
+      );
+
+      const metadata = {
+        type: 'edit',
+        originalFileName: imageFile.originalname,
+        maskFileName: maskFile.originalname,
+        options: parameters,
+      };
+
+      const record = await prisma.generatedImage.create({
         data: {
-          id: uuidv4(),
-          userId,
-          prompt,
-          provider,
+          id: randomUUID(),
+          userId: req.user?.id ?? null,
+          prompt: req.body.prompt,
+          provider: resolvedProvider,
           parameters: JSON.stringify(parameters),
           imageUrl: result.imageUrl,
           status: 'completed',
-          metadata: JSON.stringify({
-            size: parameters.size || '1024x1024',
-            type: 'edit',
-            originalFileName: files.image[0].originalname,
-            maskFileName: files.mask[0].originalname,
-          }),
+          metadata: JSON.stringify(metadata),
         },
       });
 
       res.json({
         success: true,
-        data: {
-          id: generatedImage.id,
-          imageUrl: generatedImage.imageUrl,
-          prompt: generatedImage.prompt,
-          status: generatedImage.status,
-          createdAt: generatedImage.createdAt,
-          metadata: JSON.parse(generatedImage.metadata || '{}'),
-        },
+        data: formatGeneratedImage(record),
       });
     } catch (error) {
-      console.error('圖片編輯失敗:', error);
+      console.error('Edit image error:', error);
       res.status(500).json({
         success: false,
-        message: error instanceof Error ? error.message : '圖片編輯失敗',
+        message: error instanceof Error ? error.message : '圖片服務暫時無法提供',
       });
     }
   }
 );
 
-// 獲取圖片歷史端點
-router.get('/history',
+imageRoutes.get(
+  '/history',
   authenticateToken,
-  async (req, res) => {
-    try {
-      const userId = req.user?.id;
-      const { limit = 12, offset = 0, type } = req.query;
+  rateLimiter(20, 15 * 60 * 1000),
+  async (req: AuthenticatedRequest, res: Response) => {
+    const userId = req.user?.id;
+    if (!userId) {
+      res.status(401).json({
+        success: false,
+        message: '未授權的請求',
+      });
+      return;
+    }
 
-      const where: any = { userId };
-      
-      if (type && type !== 'all') {
+    try {
+      const limit = Math.min(parseInt(req.query.limit as string, 10) || 12, 50);
+      const offset = parseInt(req.query.offset as string, 10) || 0;
+      const typeFilter = req.query.type as string | undefined;
+      const statusFilter = req.query.status as string | undefined;
+
+      const where: Record<string, unknown> = { userId };
+
+      if (typeFilter) {
         where.metadata = {
-          contains: `"type":"${type}"`,
+          contains: `"type":"${typeFilter}"`,
         };
       }
 
-      const [images, total] = await Promise.all([
+      if (statusFilter) {
+        where.status = statusFilter;
+      }
+
+      const [records, total] = await Promise.all([
         prisma.generatedImage.findMany({
           where,
           orderBy: { createdAt: 'desc' },
-          take: parseInt(limit as string),
-          skip: parseInt(offset as string),
+          take: limit,
+          skip: offset,
         }),
         prisma.generatedImage.count({ where }),
       ]);
 
-      const formattedImages = images.map(image => ({
-        id: image.id,
-        imageUrl: image.imageUrl,
-        prompt: image.prompt,
-        status: image.status,
-        createdAt: image.createdAt,
-        metadata: JSON.parse(image.metadata || '{}'),
-      }));
-
       res.json({
         success: true,
         data: {
-          images: formattedImages,
+          images: records.map(formatGeneratedImage),
           total,
         },
       });
     } catch (error) {
-      console.error('獲取圖片歷史失敗:', error);
+      console.error('Fetch image history error:', error);
       res.status(500).json({
         success: false,
-        message: '獲取圖片歷史失敗',
+        message: '圖片歷史查詢失敗',
       });
     }
   }
 );
 
-// 刪除圖片端點
-router.delete('/:imageId',
+imageRoutes.delete(
+  '/batch',
   authenticateToken,
-  async (req, res) => {
-    try {
-      const { imageId } = req.params;
-      const userId = req.user?.id;
-
-      // 檢查圖片是否存在且屬於當前用戶
-      const image = await prisma.generatedImage.findFirst({
-        where: {
-          id: imageId,
-          userId,
-        },
-      });
-
-      if (!image) {
-        return res.status(404).json({
-          success: false,
-          message: '圖片不存在或無權限刪除',
-        });
-      }
-
-      // 刪除圖片記錄
-      await prisma.generatedImage.delete({
-        where: { id: imageId },
-      });
-
-      res.json({
-        success: true,
-        message: '圖片已刪除',
-      });
-    } catch (error) {
-      console.error('刪除圖片失敗:', error);
-      res.status(500).json({
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { imageIds } = req.body ?? {};
+    if (!Array.isArray(imageIds) || imageIds.length === 0) {
+      res.status(400).json({
         success: false,
-        message: '刪除圖片失敗',
+        message: '請提供要刪除的圖片 ID 列表',
       });
+      return;
     }
-  }
-);
 
-// 批量刪除圖片端點
-router.delete('/batch',
-  authenticateToken,
-  [
-    body('imageIds')
-      .isArray({ min: 1 })
-      .withMessage('圖片ID列表不能為空'),
-    body('imageIds.*')
-      .isString()
-      .withMessage('圖片ID必須是字符串'),
-  ],
-  async (req, res) => {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          success: false,
-          message: '輸入驗證失敗',
-          errors: errors.array(),
-        });
-      }
-
-      const { imageIds } = req.body;
-      const userId = req.user?.id;
-
-      // 刪除屬於當前用戶的圖片
       const result = await prisma.generatedImage.deleteMany({
         where: {
           id: { in: imageIds },
-          userId,
+          userId: req.user?.id ?? undefined,
         },
       });
 
@@ -453,13 +461,54 @@ router.delete('/batch',
         deletedCount: result.count,
       });
     } catch (error) {
-      console.error('批量刪除圖片失敗:', error);
+      console.error('Batch delete image error:', error);
       res.status(500).json({
         success: false,
-        message: '批量刪除圖片失敗',
+        message: '圖片刪除失敗',
       });
     }
   }
 );
 
-export default router;
+imageRoutes.delete(
+  '/:imageId',
+  authenticateToken,
+  async (req: AuthenticatedRequest, res: Response) => {
+    const { imageId } = req.params;
+
+    try {
+      const existing = await prisma.generatedImage.findFirst({
+        where: {
+          id: imageId,
+          userId: req.user?.id ?? undefined,
+        },
+      });
+
+      if (!existing) {
+        res.status(404).json({
+          success: false,
+          message: '圖片不存在或無權刪除',
+        });
+        return;
+      }
+
+      await prisma.generatedImage.delete({
+        where: { id: imageId },
+      });
+
+      res.json({
+        success: true,
+        message: '圖片已刪除',
+      });
+    } catch (error) {
+      console.error('Delete image error:', error);
+      res.status(500).json({
+        success: false,
+        message: '圖片刪除失敗',
+      });
+    }
+  }
+);
+
+export { imageRoutes };
+export default imageRoutes;

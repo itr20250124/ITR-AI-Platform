@@ -129,10 +129,10 @@ export const useConversations = (options: UseConversationsOptions = {}): UseConv
       setConversations(prev => [newConversation, ...prev]);
       setTotal(prev => prev + 1);
       
-      toast.success('新對話已創建');
+      toast.success('對話已建立');
       return newConversation;
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : '創建對話失敗';
+      const errorMessage = err instanceof Error ? err.message : '建立對話失敗';
       setError(errorMessage);
       toast.error(errorMessage);
       throw err;

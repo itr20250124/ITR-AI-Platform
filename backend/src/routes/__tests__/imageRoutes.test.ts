@@ -1,17 +1,7 @@
 import request from 'supertest';
 import express from 'express';
-import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
-import imageRoutes from '../ai/image';
-import { authenticateToken } from '../../middleware/auth';
-import { PrismaClient } from '@prisma/client';
 
-// Mock dependencies
-jest.mock('../../services/ai/AIServiceFactory');
-jest.mock('../../middleware/auth');
-jest.mock('@prisma/client');
-
-const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
-const mockAuthenticateToken = authenticateToken as jest.MockedFunction<typeof authenticateToken>;
+// Mock dependencies first
 const mockPrisma = {
   generatedImage: {
     create: jest.fn(),
@@ -21,10 +11,23 @@ const mockPrisma = {
     deleteMany: jest.fn(),
     findFirst: jest.fn(),
   },
-} as any;
+};
 
-// Mock PrismaClient constructor
-(PrismaClient as jest.MockedClass<typeof PrismaClient>).mockImplementation(() => mockPrisma);
+jest.mock('../../services/ai/AIServiceFactory');
+jest.mock('../../middleware/auth');
+jest.mock('../../middleware/rateLimiter', () => ({
+  rateLimiter: () => (req: any, res: any, next: any) => next(),
+}));
+jest.mock('@prisma/client', () => ({
+  PrismaClient: jest.fn().mockImplementation(() => mockPrisma),
+}));
+
+import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
+import { imageRoutes } from '../ai/image';
+import { authenticateToken } from '../../middleware/auth';
+
+const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
+const mockAuthenticateToken = authenticateToken as jest.MockedFunction<typeof authenticateToken>;
 
 describe('Image Routes Integration Tests', () => {
   let app: express.Application;
@@ -33,12 +36,13 @@ describe('Image Routes Integration Tests', () => {
   beforeEach(() => {
     app = express();
     app.use(express.json());
-    app.use('/api/ai/image', imageRoutes);
+    app.use('/', imageRoutes); // 將路由掛在根路徑，方便測試使用完整路徑
 
     // Mock authentication middleware
     mockAuthenticateToken.mockImplementation((req: any, res, next) => {
       req.user = { id: 'user-123', email: 'test@example.com' };
       next();
+      return undefined;
     });
 
     // Mock image service
@@ -81,7 +85,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .post('/api/ai/image/generate')
+        .post('/generate')
         .send({
           prompt: 'A beautiful sunset',
           provider: 'openai',
@@ -118,7 +122,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 for invalid prompt', async () => {
       // Act
       const response = await request(app)
-        .post('/api/ai/image/generate')
+        .post('/generate')
         .send({
           prompt: '', // Empty prompt
           provider: 'openai',
@@ -133,7 +137,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 for unsupported provider', async () => {
       // Act
       const response = await request(app)
-        .post('/api/ai/image/generate')
+        .post('/generate')
         .send({
           prompt: 'A beautiful sunset',
           provider: 'unsupported-provider',
@@ -150,7 +154,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .post('/api/ai/image/generate')
+        .post('/generate')
         .send({
           prompt: 'A beautiful sunset',
           provider: 'openai',
@@ -187,10 +191,10 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .post('/api/ai/image/variation')
+        .post('/variation')
         .attach('image', Buffer.from('fake image data'), 'test.png')
         .field('provider', 'openai')
-        .field('parameters', JSON.stringify({ size: '1024x1024' }));
+        .field('parameters', '{"size":"1024x1024"}');
 
       // Assert
       expect(response.status).toBe(200);
@@ -201,7 +205,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 when no image file provided', async () => {
       // Act
       const response = await request(app)
-        .post('/api/ai/image/variation')
+        .post('/variation')
         .send({
           provider: 'openai',
         });
@@ -209,7 +213,7 @@ describe('Image Routes Integration Tests', () => {
       // Assert
       expect(response.status).toBe(400);
       expect(response.body.success).toBe(false);
-      expect(response.body.message).toBe('請上傳圖片文件');
+      expect(response.body.message).toBe('請上傳原始圖片');
     });
   });
 
@@ -238,7 +242,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .post('/api/ai/image/edit')
+        .post('/edit')
         .attach('image', Buffer.from('fake image data'), 'image.png')
         .attach('mask', Buffer.from('fake mask data'), 'mask.png')
         .field('prompt', 'Add a rainbow')
@@ -253,7 +257,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 when image file is missing', async () => {
       // Act
       const response = await request(app)
-        .post('/api/ai/image/edit')
+        .post('/edit')
         .attach('mask', Buffer.from('fake mask data'), 'mask.png')
         .field('prompt', 'Add a rainbow')
         .field('provider', 'openai');
@@ -267,7 +271,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 when mask file is missing', async () => {
       // Act
       const response = await request(app)
-        .post('/api/ai/image/edit')
+        .post('/edit')
         .attach('image', Buffer.from('fake image data'), 'image.png')
         .field('prompt', 'Add a rainbow')
         .field('provider', 'openai');
@@ -306,7 +310,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .get('/api/ai/image/history')
+        .get('/history')
         .query({ limit: 10, offset: 0 });
 
       // Assert
@@ -323,7 +327,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .get('/api/ai/image/history')
+        .get('/history')
         .query({ type: 'generation' });
 
       // Assert
@@ -355,7 +359,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .delete('/api/ai/image/img-123');
+        .delete('/img-123');
 
       // Assert
       expect(response.status).toBe(200);
@@ -369,12 +373,12 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .delete('/api/ai/image/non-existent');
+        .delete('/non-existent');
 
       // Assert
       expect(response.status).toBe(404);
       expect(response.body.success).toBe(false);
-      expect(response.body.message).toBe('圖片不存在或無權限刪除');
+      expect(response.body.message).toBe('圖片不存在或無權刪除');
     });
   });
 
@@ -385,7 +389,7 @@ describe('Image Routes Integration Tests', () => {
 
       // Act
       const response = await request(app)
-        .delete('/api/ai/image/batch')
+        .delete('/batch')
         .send({
           imageIds: ['img-1', 'img-2', 'img-3'],
         });
@@ -400,7 +404,7 @@ describe('Image Routes Integration Tests', () => {
     it('should return 400 for empty image IDs array', async () => {
       // Act
       const response = await request(app)
-        .delete('/api/ai/image/batch')
+        .delete('/batch')
         .send({
           imageIds: [],
         });

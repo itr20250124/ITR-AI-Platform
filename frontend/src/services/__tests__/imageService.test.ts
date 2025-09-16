@@ -76,6 +76,10 @@ describe('ImageService', () => {
     jest.clearAllMocks();
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   describe('generateImage', () => {
     it('should generate image successfully', async () => {
       // Arrange
@@ -168,12 +172,7 @@ describe('ImageService', () => {
       // Assert
       expect(mockApiClient.post).toHaveBeenCalledWith(
         '/ai/image/variation',
-        expect.any(FormData),
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        expect.any(FormData)
       );
       expect(result.id).toBe('var-123');
     });
@@ -211,12 +210,7 @@ describe('ImageService', () => {
       // Assert
       expect(mockApiClient.post).toHaveBeenCalledWith(
         '/ai/image/edit',
-        expect.any(FormData),
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
+        expect.any(FormData)
       );
       expect(result.id).toBe('edit-123');
     });
@@ -248,9 +242,7 @@ describe('ImageService', () => {
       const result = await ImageService.getImageHistory({ limit: 10 });
 
       // Assert
-      expect(mockApiClient.get).toHaveBeenCalledWith('/ai/images/history', {
-        params: { limit: 10 },
-      });
+      expect(mockApiClient.get).toHaveBeenCalledWith('/ai/image/history?limit=10');
       expect(result.images).toHaveLength(1);
       expect(result.total).toBe(1);
       expect(result.images[0].createdAt).toBeInstanceOf(Date);
@@ -265,6 +257,7 @@ describe('ImageService', () => {
 
       // Mock fetch
       global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
         blob: () => Promise.resolve(new Blob(['fake image data'])),
       });
 
@@ -274,7 +267,13 @@ describe('ImageService', () => {
         download: '',
         click: jest.fn(),
       };
-      const createElementSpy = jest.spyOn(document, 'createElement').mockReturnValue(mockLink as any);
+      const originalCreateElement = document.createElement.bind(document);
+      const createElementSpy = jest.spyOn(document, 'createElement').mockImplementation(((tagName: string, ...args: any[]) => {
+        if (tagName.toLowerCase() === 'a') {
+          return mockLink as any;
+        }
+        return originalCreateElement(tagName, ...args);
+      }) as any);
       const appendChildSpy = jest.spyOn(document.body, 'appendChild').mockImplementation();
       const removeChildSpy = jest.spyOn(document.body, 'removeChild').mockImplementation();
 

@@ -18,6 +18,11 @@ export interface ChatServiceInterface extends AIServiceInterface {
     parameters: ChatParameters,
     conversationId?: string
   ): Promise<ChatResponse>;
+  
+  sendMessageWithContext(
+    messages: Array<{ role: 'user' | 'assistant' | 'system'; content: string }>,
+    parameters: ChatParameters
+  ): Promise<ChatResponse>;
 }
 
 /**

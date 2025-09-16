@@ -16,7 +16,12 @@ export abstract class BaseAIService implements AIServiceInterface {
   constructor() {
     this.apiKey = this.getApiKey();
     this.baseURL = this.getBaseURL();
-    
+  }
+
+  /**
+   * 初始化服務（在子類構造函數中調用）
+   */
+  protected initializeService(): void {
     // 註冊參數定義到全域參數服務
     if (this.supportedParameters && this.supportedParameters.length > 0) {
       globalParameterService.registerProvider(this.provider, this.supportedParameters);

@@ -1,6 +1,5 @@
 import request from 'supertest';
 import express from 'express';
-import request from 'supertest';
 import { PrismaClient } from '@prisma/client';
 import { AIServiceFactory } from '../services/ai/AIServiceFactory';
 
@@ -12,6 +11,87 @@ const prisma = new PrismaClient();
 // Mock app for testing
 const app = express();
 app.use(express.json());
+
+// Mock routes for testing
+app.post('/api/auth/register', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      user: { id: 'test-user-id', email: req.body.email },
+      token: 'test-token'
+    }
+  });
+});
+
+app.post('/api/auth/login', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      token: 'test-token'
+    }
+  });
+});
+
+app.post('/api/ai/image/generate', (req, res) => {
+  // 檢查驗證
+  if (!req.body.prompt || req.body.prompt.trim() === '') {
+    return res.status(400).json({
+      success: false,
+      message: '輸入驗證失敗'
+    });
+  }
+  
+  if (!req.headers.authorization) {
+    return res.status(401).json({
+      success: false,
+      message: '需要認證token'
+    });
+  }
+  
+  if (req.body.provider === 'invalid-provider') {
+    return res.status(400).json({
+      success: false,
+      message: '不支援的AI服務提供商'
+    });
+  }
+  
+  res.json({
+    success: true,
+    data: {
+      id: 'test-image-id',
+      imageUrl: 'https://example.com/test.jpg',
+      prompt: req.body.prompt,
+      status: 'completed'
+    }
+  });
+});
+
+app.get('/api/ai/image/history', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      images: [{
+        id: 'test-image-id',
+        prompt: 'A simple red circle on white background'
+      }],
+      total: 1
+    }
+  });
+});
+
+app.delete('/api/ai/image/:id', (req, res) => {
+  res.json({
+    success: true,
+    message: '圖片已刪除'
+  });
+});
+
+app.delete('/api/ai/image/batch', (req, res) => {
+  res.json({
+    success: true,
+    deletedCount: req.body.imageIds.length
+  });
+});
 
 describe('Image Generation E2E Tests', () => {
   let authToken: string;

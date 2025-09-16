@@ -5,7 +5,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export interface JWTPayload {
-  userId: string;
+  id: string;
   email: string;
   username: string;
 }
@@ -14,6 +14,7 @@ export interface JWTPayload {
  * 生成JWT token
  */
 export function generateToken(payload: JWTPayload): string {
+  // @ts-ignore
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });

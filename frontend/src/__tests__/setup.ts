@@ -37,6 +37,9 @@ Object.defineProperty(window, 'scrollTo', {
   value: jest.fn(),
 });
 
+// Mock scrollIntoView
+Element.prototype.scrollIntoView = jest.fn();
+
 // Mock fetch
 global.fetch = jest.fn();
 
@@ -55,6 +58,45 @@ global.File = class File extends Blob {
 // Mock URL.createObjectURL and revokeObjectURL
 global.URL.createObjectURL = jest.fn(() => 'mocked-url');
 global.URL.revokeObjectURL = jest.fn();
+
+// Mock canvas methods
+HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
+  drawImage: jest.fn(),
+  canvas: {
+    width: 1024,
+    height: 1024,
+    toDataURL: jest.fn(() => 'data:image/jpeg;base64,mock-canvas-data'),
+  },
+})) as any;
+
+HTMLCanvasElement.prototype.toBlob = jest.fn((callback) => {
+  callback(new Blob(['mock'], { type: 'image/jpeg' }));
+});
+
+// Mock Image constructor
+global.Image = class MockImage {
+  width = 1024;
+  height = 1024;
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  
+  constructor() {
+    setTimeout(() => {
+      if (this.onload) {
+        this.onload();
+      }
+    }, 0);
+  }
+  
+  set src(value: string) {
+    // Trigger onload after setting src
+    setTimeout(() => {
+      if (this.onload) {
+        this.onload();
+      }
+    }, 0);
+  }
+} as any;
 
 // Clean up after each test
 afterEach(() => {
