@@ -1,11 +1,11 @@
-﻿import React, { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-hot-toast'
-import { ChatInterface } from '../components/chat/ChatInterface'
-import { ConversationSidebar } from '../components/chat/ConversationSidebar'
-import { Button } from '../components/ui/Button'
-import { useChat } from '../hooks/useChat'
-import { useConversations } from '../hooks/useConversations'
+﻿import React, { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { ChatInterface } from '../components/chat/ChatInterface';
+import { ConversationSidebar } from '../components/chat/ConversationSidebar';
+import { Button } from '../components/ui/Button';
+import { useChat } from '../hooks/useChat';
+import { useConversations } from '../hooks/useConversations';
 
 const DEFAULT_PARAMETERS: Record<string, Record<string, unknown>> = {
   openai: {
@@ -17,147 +17,147 @@ const DEFAULT_PARAMETERS: Record<string, Record<string, unknown>> = {
     model: 'gemini-pro',
     temperature: 0.7,
   },
-}
+};
 
 const getDefaultParameters = (provider: string): Record<string, unknown> => {
-  return DEFAULT_PARAMETERS[provider] ?? DEFAULT_PARAMETERS.openai
-}
+  return DEFAULT_PARAMETERS[provider] ?? DEFAULT_PARAMETERS.openai;
+};
 
 export const ChatPage: React.FC = () => {
-  const { conversationId } = useParams<{ conversationId?: string }>()
-  const navigate = useNavigate()
+  const { conversationId } = useParams<{ conversationId?: string }>();
+  const navigate = useNavigate();
 
-  const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [selectedProvider, setSelectedProvider] = useState('openai')
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [selectedProvider, setSelectedProvider] = useState('openai');
 
   const chat = useChat({
     conversationId,
     enableStreaming: true,
-  })
+  });
 
-  const conversations = useConversations({ autoLoad: true })
+  const conversations = useConversations({ autoLoad: true });
 
   useEffect(() => {
     if (chat.conversation?.aiProvider) {
-      setSelectedProvider(chat.conversation.aiProvider)
+      setSelectedProvider(chat.conversation.aiProvider);
     }
-  }, [chat.conversation?.aiProvider])
+  }, [chat.conversation?.aiProvider]);
 
   const handleNewConversation = async () => {
     try {
-      const title = chat.conversation ? `新對話 ${new Date().toLocaleTimeString()}` : '新的對話'
+      const title = chat.conversation ? `新對話 ${new Date().toLocaleTimeString()}` : '新的對話';
 
       const newConversation = await conversations.createConversation(
         title,
         selectedProvider,
         getDefaultParameters(selectedProvider)
-      )
+      );
 
-      navigate(`/chat/${newConversation.id}`)
+      navigate(`/chat/${newConversation.id}`);
     } catch (error) {
-      console.error('建立對話失敗:', error)
-      toast.error('建立對話失敗')
+      console.error('建立對話失敗:', error);
+      toast.error('建立對話失敗');
     }
-  }
+  };
 
   const handleSelectConversation = (id: string) => {
-    navigate(`/chat/${id}`)
-  }
+    navigate(`/chat/${id}`);
+  };
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim()) {
-      return
+      return;
     }
 
     if (!chat.conversation) {
       try {
-        const title = content.length > 30 ? `${content.slice(0, 30)}...` : content
+        const title = content.length > 30 ? `${content.slice(0, 30)}...` : content;
         const newConversation = await conversations.createConversation(
           title || '新的對話',
           selectedProvider,
           getDefaultParameters(selectedProvider)
-        )
+        );
 
-        navigate(`/chat/${newConversation.id}`)
+        navigate(`/chat/${newConversation.id}`);
 
         setTimeout(() => {
-          chat.sendMessage(content)
-        }, 100)
+          chat.sendMessage(content);
+        }, 100);
       } catch (error) {
-        toast.error('建立對話失敗')
+        toast.error('建立對話失敗');
       }
 
-      return
+      return;
     }
 
-    await chat.sendMessage(content)
-  }
+    await chat.sendMessage(content);
+  };
 
   const handleUpdateConversation = async (updates: Partial<any>) => {
     if (!chat.conversation) {
-      return
+      return;
     }
 
-    await chat.updateConversation(updates)
-    await conversations.updateConversation(chat.conversation.id, updates)
+    await chat.updateConversation(updates);
+    await conversations.updateConversation(chat.conversation.id, updates);
 
     if (updates.aiProvider) {
-      setSelectedProvider(updates.aiProvider)
+      setSelectedProvider(updates.aiProvider);
     }
-  }
+  };
 
   const handleDeleteConversation = async () => {
     if (!chat.conversation) {
-      return
+      return;
     }
 
-    await chat.deleteConversation()
-    await conversations.deleteConversation(chat.conversation.id)
-    navigate('/chat')
-  }
+    await chat.deleteConversation();
+    await conversations.deleteConversation(chat.conversation.id);
+    navigate('/chat');
+  };
 
   const handleExportConversation = async () => {
     try {
-      const exportText = await chat.exportConversation()
-      const blob = new Blob([exportText], { type: 'text/markdown' })
-      const url = URL.createObjectURL(blob)
-      const anchor = document.createElement('a')
-      anchor.href = url
-      anchor.download = `${chat.conversation?.title ?? '對話'}.md`
-      document.body.appendChild(anchor)
-      anchor.click()
-      document.body.removeChild(anchor)
-      URL.revokeObjectURL(url)
+      const exportText = await chat.exportConversation();
+      const blob = new Blob([exportText], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${chat.conversation?.title ?? '對話'}.md`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+      URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('導出對話失敗:', error)
-      toast.error('導出對話失敗')
+      console.error('導出對話失敗:', error);
+      toast.error('導出對話失敗');
     }
-  }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'n') {
-        event.preventDefault()
-        handleNewConversation()
+        event.preventDefault();
+        handleNewConversation();
       }
 
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'b') {
-        event.preventDefault()
-        setSidebarOpen(prev => !prev)
+        event.preventDefault();
+        setSidebarOpen(prev => !prev);
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [sidebarOpen])
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [sidebarOpen]);
 
   const messages = useMemo(() => {
     if (!chat.conversation) {
-      return chat.messages
+      return chat.messages;
     }
 
     if (!chat.streamingMessage) {
-      return chat.messages
+      return chat.messages;
     }
 
     return [
@@ -169,8 +169,8 @@ export const ChatPage: React.FC = () => {
         content: chat.streamingMessage,
         timestamp: new Date(),
       },
-    ]
-  }, [chat.conversation, chat.messages, chat.streamingMessage])
+    ];
+  }, [chat.conversation, chat.messages, chat.streamingMessage]);
 
   return (
     <div className='flex h-screen bg-gray-100'>
@@ -280,5 +280,5 @@ export const ChatPage: React.FC = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};

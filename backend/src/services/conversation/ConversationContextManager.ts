@@ -34,8 +34,7 @@ export class ConversationContextManager {
         role: 'system',
         content: systemPrompt,
       });
-      tokenCount +=
-        this.estimateTokens(systemPrompt) + this.SYSTEM_MESSAGE_TOKENS;
+      tokenCount += this.estimateTokens(systemPrompt) + this.SYSTEM_MESSAGE_TOKENS;
     }
 
     // 從最新的訊息開始，向前添加直到達到token限制
@@ -132,10 +131,7 @@ export class ConversationContextManager {
   /**
    * 獲取對話摘要
    */
-  static generateConversationSummary(
-    messages: Message[],
-    maxLength: number = 100
-  ): string {
+  static generateConversationSummary(messages: Message[], maxLength: number = 100): string {
     if (messages.length === 0) {
       return '空對話';
     }
@@ -178,9 +174,7 @@ export class ConversationContextManager {
 
     const lastActivity =
       messages.length > 0
-        ? new Date(
-            Math.max(...messages.map(m => new Date(m.timestamp).getTime()))
-          )
+        ? new Date(Math.max(...messages.map(m => new Date(m.timestamp).getTime())))
         : null;
 
     return {
@@ -196,10 +190,7 @@ export class ConversationContextManager {
   /**
    * 檢查對話是否需要新的標題
    */
-  static shouldUpdateTitle(conversation: {
-    title: string;
-    messages: Message[];
-  }): boolean {
+  static shouldUpdateTitle(conversation: { title: string; messages: Message[] }): boolean {
     // 如果標題是預設的或者很短，且有足夠的對話內容，建議更新標題
     const isDefaultTitle =
       conversation.title.includes('新對話') ||
@@ -281,9 +272,7 @@ export class ConversationContextManager {
     const words = text
       .replace(/[^\w\s\u4e00-\u9fff]/g, ' ') // 保留中文字符和字母數字
       .split(/\s+/)
-      .filter(
-        word => word.length > 1 && !stopWords.includes(word.toLowerCase())
-      );
+      .filter(word => word.length > 1 && !stopWords.includes(word.toLowerCase()));
 
     // 簡單的詞頻統計
     const wordCount = new Map<string, number>();

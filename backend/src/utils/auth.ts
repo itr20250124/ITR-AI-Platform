@@ -42,19 +42,14 @@ export async function hashPassword(password: string): Promise<string> {
 /**
  * 驗證密碼
  */
-export async function verifyPassword(
-  password: string,
-  hashedPassword: string
-): Promise<boolean> {
+export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
   return bcrypt.compare(password, hashedPassword);
 }
 
 /**
  * 從Authorization header中提取token
  */
-export function extractTokenFromHeader(
-  authHeader: string | undefined
-): string | null {
+export function extractTokenFromHeader(authHeader: string | undefined): string | null {
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     return null;
   }

@@ -200,9 +200,7 @@ describe('OpenAIImageService', () => {
       mockGenerate.mockRejectedValue(apiError);
 
       // Act & Assert
-      await expect(service.generateImage('Invalid prompt')).rejects.toThrow(
-        'API Error'
-      );
+      await expect(service.generateImage('Invalid prompt')).rejects.toThrow('API Error');
     });
 
     it('should throw error when no images generated', async () => {
@@ -240,9 +238,7 @@ describe('OpenAIImageService', () => {
       // Assert
       expect(result.imageUrl).toBe('https://example.com/image1.jpg');
       expect(result.metadata?.additionalImages).toHaveLength(1);
-      expect(result.metadata?.additionalImages[0]).toBe(
-        'https://example.com/image2.jpg'
-      );
+      expect(result.metadata?.additionalImages[0]).toBe('https://example.com/image2.jpg');
     });
   });
 
@@ -292,9 +288,9 @@ describe('OpenAIImageService', () => {
       const imageBuffer = Buffer.from('invalid-data');
 
       // Act & Assert
-      await expect(
-        service.createImageVariation(imageBuffer, {})
-      ).rejects.toThrow('Invalid image format');
+      await expect(service.createImageVariation(imageBuffer, {})).rejects.toThrow(
+        'Invalid image format'
+      );
     });
   });
 
@@ -316,15 +312,10 @@ describe('OpenAIImageService', () => {
       const maskBuffer = Buffer.from('fake-mask-data');
 
       // Act
-      const result = await service.editImage(
-        imageBuffer,
-        maskBuffer,
-        'Add a rainbow',
-        {
-          size: '1024x1024',
-          n: 1,
-        }
-      );
+      const result = await service.editImage(imageBuffer, maskBuffer, 'Add a rainbow', {
+        size: '1024x1024',
+        n: 1,
+      });
 
       // Assert
       expect(mockEdit).toHaveBeenCalledWith({
@@ -355,25 +346,23 @@ describe('OpenAIImageService', () => {
       const maskBuffer = Buffer.from('invalid-mask');
 
       // Act & Assert
-      await expect(
-        service.editImage(imageBuffer, maskBuffer, 'Edit prompt', {})
-      ).rejects.toThrow('Invalid mask');
+      await expect(service.editImage(imageBuffer, maskBuffer, 'Edit prompt', {})).rejects.toThrow(
+        'Invalid mask'
+      );
     });
   });
 
   describe('makeRequest', () => {
     it('should call generateImage for string input', async () => {
       // Arrange
-      const generateImageSpy = jest
-        .spyOn(service, 'generateImage')
-        .mockResolvedValue({
-          id: 'test',
-          imageUrl: 'https://example.com/test.jpg',
-          prompt: 'test',
-          parameters: {},
-          status: 'completed',
-          createdAt: new Date(),
-        });
+      const generateImageSpy = jest.spyOn(service, 'generateImage').mockResolvedValue({
+        id: 'test',
+        imageUrl: 'https://example.com/test.jpg',
+        prompt: 'test',
+        parameters: {},
+        status: 'completed',
+        createdAt: new Date(),
+      });
 
       // Act
       await service.makeRequest('Test prompt', { size: '512x512' });
@@ -420,21 +409,14 @@ describe('OpenAIImageService', () => {
       mockGenerate.mockResolvedValue(mockResponse);
 
       // Act & Assert
-      await expect(
-        service.generateImage('test', { quality: 'standard' })
-      ).resolves.toBeDefined();
-      await expect(
-        service.generateImage('test', { quality: 'hd' })
-      ).resolves.toBeDefined();
+      await expect(service.generateImage('test', { quality: 'standard' })).resolves.toBeDefined();
+      await expect(service.generateImage('test', { quality: 'hd' })).resolves.toBeDefined();
     });
 
     it('should validate n parameter for DALL-E 2', async () => {
       // Arrange
       const mockResponse = {
-        data: [
-          { url: 'https://example.com/test1.jpg' },
-          { url: 'https://example.com/test2.jpg' },
-        ],
+        data: [{ url: 'https://example.com/test1.jpg' }, { url: 'https://example.com/test2.jpg' }],
       };
       mockGenerate.mockResolvedValue(mockResponse);
 

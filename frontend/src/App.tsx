@@ -1,10 +1,10 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import { Toaster } from 'react-hot-toast'
-import { ThemeProvider } from './contexts/ThemeContext'
-import { Container, Grid, GridItem, Card, Button } from './components'
-import { ThemeToggle } from './components/ThemeToggle'
-import { ImagePage } from './pages/ImagePage'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { ThemeProvider } from './contexts/ThemeContext';
+import { Container, Grid, GridItem, Card, Button } from './components';
+import { ThemeToggle } from './components/ThemeToggle';
+import { ImagePage } from './pages/ImagePage';
 
 function App() {
   return (
@@ -170,7 +170,7 @@ function App() {
         </div>
       </Router>
     </ThemeProvider>
-  )
+  );
 }
 
-export default App
+export default App;

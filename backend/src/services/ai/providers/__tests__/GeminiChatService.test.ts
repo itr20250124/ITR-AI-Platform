@@ -152,9 +152,7 @@ describe('GeminiChatService', () => {
       mockModel.generateContent.mockRejectedValue(apiError);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(
-        AIServiceError
-      );
+      await expect(service.sendMessage('Hello')).rejects.toThrow(AIServiceError);
     });
 
     it('should throw error when no response from Gemini', async () => {
@@ -168,9 +166,7 @@ describe('GeminiChatService', () => {
       });
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(
-        'No response from Gemini'
-      );
+      await expect(service.sendMessage('Hello')).rejects.toThrow('No response from Gemini');
     });
 
     it('should include conversation ID in metadata', async () => {
@@ -316,14 +312,12 @@ describe('GeminiChatService', () => {
   describe('makeRequest', () => {
     it('should call sendMessage for string input', async () => {
       // Arrange
-      const sendMessageSpy = jest
-        .spyOn(service, 'sendMessage')
-        .mockResolvedValue({
-          id: 'test',
-          content: 'response',
-          role: 'assistant',
-          timestamp: new Date(),
-        });
+      const sendMessageSpy = jest.spyOn(service, 'sendMessage').mockResolvedValue({
+        id: 'test',
+        content: 'response',
+        role: 'assistant',
+        timestamp: new Date(),
+      });
 
       // Act
       await service.makeRequest('Hello', { temperature: 0.7 });
@@ -358,9 +352,9 @@ describe('GeminiChatService', () => {
 
     it('should throw error for invalid input format', async () => {
       // Act & Assert
-      await expect(
-        service.makeRequest({ invalid: 'input' }, {})
-      ).rejects.toThrow('Invalid input format for Gemini chat service');
+      await expect(service.makeRequest({ invalid: 'input' }, {})).rejects.toThrow(
+        'Invalid input format for Gemini chat service'
+      );
     });
   });
 
@@ -371,9 +365,7 @@ describe('GeminiChatService', () => {
       mockModel.generateContent.mockRejectedValue(apiError);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(
-        AIServiceError
-      );
+      await expect(service.sendMessage('Hello')).rejects.toThrow(AIServiceError);
 
       try {
         await service.sendMessage('Hello');
@@ -437,9 +429,7 @@ describe('GeminiChatService', () => {
       mockModel.generateContent.mockResolvedValue({ response: mockResponse });
 
       // Act & Assert - should not throw for valid temperature
-      await expect(
-        service.sendMessage('test', { temperature: 0.5 })
-      ).resolves.toBeDefined();
+      await expect(service.sendMessage('test', { temperature: 0.5 })).resolves.toBeDefined();
     });
 
     it('should validate maxOutputTokens parameter', async () => {
@@ -451,9 +441,7 @@ describe('GeminiChatService', () => {
       mockModel.generateContent.mockResolvedValue({ response: mockResponse });
 
       // Act & Assert
-      await expect(
-        service.sendMessage('test', { maxOutputTokens: 4000 })
-      ).resolves.toBeDefined();
+      await expect(service.sendMessage('test', { maxOutputTokens: 4000 })).resolves.toBeDefined();
     });
   });
 });

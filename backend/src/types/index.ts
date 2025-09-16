@@ -21,10 +21,7 @@ export interface UserService {
   createUser(userData: CreateUserData): Promise<User>;
   getUserById(id: string): Promise<User | null>;
   getUserByEmail(email: string): Promise<User | null>;
-  updateUserPreferences(
-    userId: string,
-    preferences: Partial<UserPreferences>
-  ): Promise<User>;
+  updateUserPreferences(userId: string, preferences: Partial<UserPreferences>): Promise<User>;
   deleteUser(userId: string): Promise<void>;
 }
 
@@ -37,15 +34,8 @@ export interface ChatService {
     conversationId?: string
   ): Promise<ChatResponse>;
 
-  getConversationHistory(
-    conversationId: string,
-    userId: string
-  ): Promise<Message[]>;
-  createConversation(
-    userId: string,
-    title: string,
-    provider: string
-  ): Promise<Conversation>;
+  getConversationHistory(conversationId: string, userId: string): Promise<Message[]>;
+  createConversation(userId: string, title: string, provider: string): Promise<Conversation>;
   deleteConversation(conversationId: string, userId: string): Promise<void>;
 }
 

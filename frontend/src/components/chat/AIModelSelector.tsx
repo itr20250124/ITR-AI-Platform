@@ -1,29 +1,29 @@
-import React, { useState } from 'react'
-import { Button } from '../ui/Button'
-import { ParameterPanel } from '../parameters/ParameterPanel'
+import React, { useState } from 'react';
+import { Button } from '../ui/Button';
+import { ParameterPanel } from '../parameters/ParameterPanel';
 
 interface AIModel {
-  id: string
-  name: string
-  provider: string
-  description: string
-  icon: string
+  id: string;
+  name: string;
+  provider: string;
+  description: string;
+  icon: string;
   parameters: Array<{
-    key: string
-    type: 'number' | 'string' | 'boolean' | 'select'
-    defaultValue: any
-    min?: number
-    max?: number
-    options?: string[]
-    description: string
-  }>
+    key: string;
+    type: 'number' | 'string' | 'boolean' | 'select';
+    defaultValue: any;
+    min?: number;
+    max?: number;
+    options?: string[];
+    description: string;
+  }>;
 }
 
 interface AIModelSelectorProps {
-  currentProvider: string
-  currentParameters: Record<string, any>
-  onModelChange: (provider: string, parameters?: Record<string, any>) => void
-  className?: string
+  currentProvider: string;
+  currentParameters: Record<string, any>;
+  onModelChange: (provider: string, parameters?: Record<string, any>) => void;
+  className?: string;
 }
 
 export const AIModelSelector: React.FC<AIModelSelectorProps> = ({
@@ -32,8 +32,8 @@ export const AIModelSelector: React.FC<AIModelSelectorProps> = ({
   onModelChange,
   className = '',
 }) => {
-  const [showSelector, setShowSelector] = useState(false)
-  const [showParameters, setShowParameters] = useState(false)
+  const [showSelector, setShowSelector] = useState(false);
+  const [showParameters, setShowParameters] = useState(false);
 
   // 可用的AI模型
   const availableModels: AIModel[] = [
@@ -101,25 +101,25 @@ export const AIModelSelector: React.FC<AIModelSelectorProps> = ({
         },
       ],
     },
-  ]
+  ];
 
-  const currentModel = availableModels.find(m => m.provider === currentProvider)
+  const currentModel = availableModels.find(m => m.provider === currentProvider);
 
   const handleModelSelect = (model: AIModel) => {
     if (model.provider !== currentProvider) {
       // 切換到新模型時使用預設參數
-      const defaultParams: Record<string, any> = {}
+      const defaultParams: Record<string, any> = {};
       model.parameters.forEach(param => {
-        defaultParams[param.key] = param.defaultValue
-      })
-      onModelChange(model.provider, defaultParams)
+        defaultParams[param.key] = param.defaultValue;
+      });
+      onModelChange(model.provider, defaultParams);
     }
-    setShowSelector(false)
-  }
+    setShowSelector(false);
+  };
 
   const handleParametersChange = (parameters: Record<string, any>) => {
-    onModelChange(currentProvider, parameters)
-  }
+    onModelChange(currentProvider, parameters);
+  };
 
   return (
     <div className={`relative ${className}`}>
@@ -243,11 +243,11 @@ export const AIModelSelector: React.FC<AIModelSelectorProps> = ({
         <div
           className='fixed inset-0 z-10'
           onClick={() => {
-            setShowSelector(false)
-            setShowParameters(false)
+            setShowSelector(false);
+            setShowParameters(false);
           }}
         />
       )}
     </div>
-  )
-}
+  );
+};

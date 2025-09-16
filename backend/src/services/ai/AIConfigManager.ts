@@ -138,9 +138,7 @@ export class AIConfigManager {
 
         case 'select':
           if (definition.options && !definition.options.includes(value)) {
-            errors.push(
-              `Parameter ${key} must be one of: ${definition.options.join(', ')}`
-            );
+            errors.push(`Parameter ${key} must be one of: ${definition.options.join(', ')}`);
           }
           break;
       }

@@ -26,12 +26,8 @@ import { AIServiceFactory } from '../../services/ai/AIServiceFactory';
 import { imageRoutes } from '../ai/image';
 import { authenticateToken } from '../../middleware/auth';
 
-const mockAIServiceFactory = AIServiceFactory as jest.Mocked<
-  typeof AIServiceFactory
->;
-const mockAuthenticateToken = authenticateToken as jest.MockedFunction<
-  typeof authenticateToken
->;
+const mockAIServiceFactory = AIServiceFactory as jest.Mocked<typeof AIServiceFactory>;
+const mockAuthenticateToken = authenticateToken as jest.MockedFunction<typeof authenticateToken>;
 
 describe('Image Routes Integration Tests', () => {
   let app: express.Application;
@@ -104,13 +100,10 @@ describe('Image Routes Integration Tests', () => {
       expect(response.body.success).toBe(true);
       expect(response.body.data.id).toBe('img-123');
 
-      expect(mockImageService.generateImage).toHaveBeenCalledWith(
-        'A beautiful sunset',
-        {
-          model: 'dall-e-3',
-          size: '1024x1024',
-        }
-      );
+      expect(mockImageService.generateImage).toHaveBeenCalledWith('A beautiful sunset', {
+        model: 'dall-e-3',
+        size: '1024x1024',
+      });
 
       expect(mockPrisma.generatedImage.create).toHaveBeenCalledWith({
         data: expect.objectContaining({
@@ -150,9 +143,7 @@ describe('Image Routes Integration Tests', () => {
 
     it('should handle service errors', async () => {
       // Arrange
-      mockImageService.generateImage.mockRejectedValue(
-        new Error('Service unavailable')
-      );
+      mockImageService.generateImage.mockRejectedValue(new Error('Service unavailable'));
 
       // Act
       const response = await request(app).post('/generate').send({
@@ -186,9 +177,7 @@ describe('Image Routes Integration Tests', () => {
         }),
       };
 
-      mockImageService.createImageVariation.mockResolvedValue(
-        mockVariationResponse
-      );
+      mockImageService.createImageVariation.mockResolvedValue(mockVariationResponse);
       mockPrisma.generatedImage.create.mockResolvedValue(mockDbResponse);
 
       // Act
@@ -309,9 +298,7 @@ describe('Image Routes Integration Tests', () => {
       mockPrisma.generatedImage.count.mockResolvedValue(2);
 
       // Act
-      const response = await request(app)
-        .get('/history')
-        .query({ limit: 10, offset: 0 });
+      const response = await request(app).get('/history').query({ limit: 10, offset: 0 });
 
       // Assert
       expect(response.status).toBe(200);
@@ -326,9 +313,7 @@ describe('Image Routes Integration Tests', () => {
       mockPrisma.generatedImage.count.mockResolvedValue(0);
 
       // Act
-      const response = await request(app)
-        .get('/history')
-        .query({ type: 'generation' });
+      const response = await request(app).get('/history').query({ type: 'generation' });
 
       // Assert
       expect(response.status).toBe(200);

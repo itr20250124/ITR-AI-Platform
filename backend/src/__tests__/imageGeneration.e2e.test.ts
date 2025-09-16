@@ -143,9 +143,7 @@ describe('Image Generation E2E Tests', () => {
     it('should complete full image generation workflow', async () => {
       // Skip if no API key is available or in CI
       if (!process.env.OPENAI_API_KEY || process.env.CI) {
-        console.log(
-          'Skipping E2E test: No OpenAI API key provided or running in CI'
-        );
+        console.log('Skipping E2E test: No OpenAI API key provided or running in CI');
         return;
       }
 

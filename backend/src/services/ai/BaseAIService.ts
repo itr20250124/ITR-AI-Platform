@@ -24,10 +24,7 @@ export abstract class BaseAIService implements AIServiceInterface {
   protected initializeService(): void {
     // 註冊參數定義到全域參數服務
     if (this.supportedParameters && this.supportedParameters.length > 0) {
-      globalParameterService.registerProvider(
-        this.provider,
-        this.supportedParameters
-      );
+      globalParameterService.registerProvider(this.provider, this.supportedParameters);
     }
   }
 
@@ -58,11 +55,10 @@ export abstract class BaseAIService implements AIServiceInterface {
    * 驗證參數
    */
   protected validateParameters(parameters: Record<string, any>): void {
-    const validation = globalParameterService.validateParameters(
-      this.provider,
-      parameters,
-      { validateDependencies: true, validateCustomRules: true }
-    );
+    const validation = globalParameterService.validateParameters(this.provider, parameters, {
+      validateDependencies: true,
+      validateCustomRules: true,
+    });
 
     if (!validation.isValid) {
       throw new AIServiceError(
@@ -76,13 +72,8 @@ export abstract class BaseAIService implements AIServiceInterface {
   /**
    * 合併參數
    */
-  protected mergeParameters(
-    userParameters: Record<string, any>
-  ): Record<string, any> {
-    return globalParameterService.mergeWithDefaults(
-      this.provider,
-      userParameters
-    );
+  protected mergeParameters(userParameters: Record<string, any>): Record<string, any> {
+    return globalParameterService.mergeWithDefaults(this.provider, userParameters);
   }
 
   /**

@@ -40,12 +40,7 @@ const router = Router();
  * @route POST /api/ai/chat
  * @access Private
  */
-router.post(
-  '/chat',
-  authenticateToken,
-  validateBody(chatMessageSchema),
-  sendChatMessage
-);
+router.post('/chat', authenticateToken, validateBody(chatMessageSchema), sendChatMessage);
 
 /**
  * 發送帶上下文的聊天訊息
@@ -64,12 +59,7 @@ router.post(
  * @route POST /api/ai/chat/stream
  * @access Private
  */
-router.post(
-  '/chat/stream',
-  authenticateToken,
-  validateBody(chatContextSchema),
-  streamChat
-);
+router.post('/chat/stream', authenticateToken, validateBody(chatContextSchema), streamChat);
 
 /**
  * 生成圖片

@@ -1,8 +1,8 @@
-import React, { HTMLAttributes, forwardRef } from 'react'
+import React, { HTMLAttributes, forwardRef } from 'react';
 
 interface ContainerProps extends HTMLAttributes<HTMLDivElement> {
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
-  center?: boolean
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full';
+  center?: boolean;
 }
 
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
@@ -13,9 +13,9 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
       lg: 'max-w-6xl',
       xl: 'max-w-7xl',
       full: 'max-w-full',
-    }
+    };
 
-    const centerClass = center ? 'mx-auto' : ''
+    const centerClass = center ? 'mx-auto' : '';
 
     return (
       <div
@@ -30,8 +30,8 @@ export const Container = forwardRef<HTMLDivElement, ContainerProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-Container.displayName = 'Container'
+Container.displayName = 'Container';

@@ -1,22 +1,12 @@
 import { ParameterDefinition } from '../../types';
-import {
-  ParameterValidator,
-  ValidationResult,
-} from '../../utils/parameterValidator';
+import { ParameterValidator, ValidationResult } from '../../utils/parameterValidator';
 import {
   ParameterManager,
   ParameterDefaultsManager,
   globalParameterManager,
 } from './ParameterManager';
-import {
-  ParameterPresetsManager,
-  ParameterPreset,
-  globalPresetsManager,
-} from './ParameterPresets';
-import {
-  AdvancedParameterValidator,
-  globalAdvancedValidator,
-} from './ParameterValidationRules';
+import { ParameterPresetsManager, ParameterPreset, globalPresetsManager } from './ParameterPresets';
+import { AdvancedParameterValidator, globalAdvancedValidator } from './ParameterValidationRules';
 
 /**
  * 參數驗證選項
@@ -99,10 +89,7 @@ export class ParameterService {
     const definitions = this.getProviderDefinitions(provider);
 
     // 基本驗證
-    const basicResult = ParameterValidator.validateParameters(
-      parameters,
-      definitions
-    );
+    const basicResult = ParameterValidator.validateParameters(parameters, definitions);
 
     const result: CompleteValidationResult = {
       ...basicResult,
@@ -134,10 +121,7 @@ export class ParameterService {
 
     // 生成建議
     if (options.includeWarnings) {
-      result.suggestions = this.generateParameterSuggestions(
-        provider,
-        parameters
-      );
+      result.suggestions = this.generateParameterSuggestions(provider, parameters);
     }
 
     return result;
@@ -146,46 +130,28 @@ export class ParameterService {
   /**
    * 合併參數與預設值
    */
-  mergeWithDefaults(
-    provider: string,
-    parameters: Record<string, any>
-  ): Record<string, any> {
-    return this.parameterManager.mergeWithProviderDefaults(
-      provider,
-      parameters
-    );
+  mergeWithDefaults(provider: string, parameters: Record<string, any>): Record<string, any> {
+    return this.parameterManager.mergeWithProviderDefaults(provider, parameters);
   }
 
   /**
    * 清理參數
    */
-  cleanParameters(
-    provider: string,
-    parameters: Record<string, any>
-  ): Record<string, any> {
+  cleanParameters(provider: string, parameters: Record<string, any>): Record<string, any> {
     return this.parameterManager.cleanProviderParameters(provider, parameters);
   }
 
   /**
    * 轉換參數類型
    */
-  convertParameters(
-    provider: string,
-    parameters: Record<string, any>
-  ): Record<string, any> {
-    return this.parameterManager.convertProviderParameters(
-      provider,
-      parameters
-    );
+  convertParameters(provider: string, parameters: Record<string, any>): Record<string, any> {
+    return this.parameterManager.convertProviderParameters(provider, parameters);
   }
 
   /**
    * 獲取參數詳細信息
    */
-  getParameterDetails(
-    provider: string,
-    parameterKey: string
-  ): ParameterDefinition | null {
+  getParameterDetails(provider: string, parameterKey: string): ParameterDefinition | null {
     return this.parameterManager.getParameterDetails(provider, parameterKey);
   }
 
@@ -200,19 +166,13 @@ export class ParameterService {
    * 獲取參數建議值
    */
   getParameterSuggestions(provider: string, parameterKey: string): any[] {
-    return this.parameterManager.getParameterSuggestions(
-      provider,
-      parameterKey
-    );
+    return this.parameterManager.getParameterSuggestions(provider, parameterKey);
   }
 
   /**
    * 生成參數優化建議
    */
-  generateParameterSuggestions(
-    provider: string,
-    parameters: Record<string, any>
-  ): string[] {
+  generateParameterSuggestions(provider: string, parameters: Record<string, any>): string[] {
     const suggestions: string[] = [];
     const definitions = this.getProviderDefinitions(provider);
 
@@ -228,24 +188,15 @@ export class ParameterService {
       if (definition.type === 'number' && typeof value === 'number') {
         if (definition.key === 'temperature') {
           if (value < 0.3) {
-            suggestions.push(
-              'Low temperature may produce repetitive responses'
-            );
+            suggestions.push('Low temperature may produce repetitive responses');
           } else if (value > 1.2) {
-            suggestions.push(
-              'High temperature may produce incoherent responses'
-            );
+            suggestions.push('High temperature may produce incoherent responses');
           }
         }
 
-        if (
-          definition.key === 'maxTokens' ||
-          definition.key === 'maxOutputTokens'
-        ) {
+        if (definition.key === 'maxTokens' || definition.key === 'maxOutputTokens') {
           if (value > 2000) {
-            suggestions.push(
-              'High token limit may result in expensive API calls'
-            );
+            suggestions.push('High token limit may result in expensive API calls');
           }
         }
       }
@@ -295,13 +246,7 @@ export class ParameterService {
     parameters: Record<string, any>,
     tags: string[] = []
   ): ParameterPreset {
-    return this.presetsManager.createCustomPreset(
-      provider,
-      name,
-      description,
-      parameters,
-      tags
-    );
+    return this.presetsManager.createCustomPreset(provider, name, description, parameters, tags);
   }
 
   /**
@@ -355,10 +300,7 @@ export class ParameterService {
   /**
    * 比較兩組參數
    */
-  compareParameters(
-    params1: Record<string, any>,
-    params2: Record<string, any>
-  ) {
+  compareParameters(params1: Record<string, any>, params2: Record<string, any>) {
     const keys1 = new Set(Object.keys(params1));
     const keys2 = new Set(Object.keys(params2));
     const allKeys = new Set([...keys1, ...keys2]);

@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import { ParameterDefinition } from '../../types'
-import { ParameterInput } from './ParameterInput'
-import { ParameterSlider } from './ParameterSlider'
-import { Card } from '../ui/Card'
-import { Button } from '../ui/Button'
+import React, { useState, useEffect } from 'react';
+import { ParameterDefinition } from '../../types';
+import { ParameterInput } from './ParameterInput';
+import { ParameterSlider } from './ParameterSlider';
+import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
 
 interface ParameterPanelProps {
-  provider: string
-  definitions: ParameterDefinition[]
-  values: Record<string, any>
-  onChange: (values: Record<string, any>) => void
-  onValidate?: (isValid: boolean, errors: string[]) => void
+  provider: string;
+  definitions: ParameterDefinition[];
+  values: Record<string, any>;
+  onChange: (values: Record<string, any>) => void;
+  onValidate?: (isValid: boolean, errors: string[]) => void;
   presets?: Array<{
-    id: string
-    name: string
-    description: string
-    parameters: Record<string, any>
-    tags: string[]
-  }>
-  className?: string
-  showPresets?: boolean
-  showSliders?: boolean
-  showAdvanced?: boolean
+    id: string;
+    name: string;
+    description: string;
+    parameters: Record<string, any>;
+    tags: string[];
+  }>;
+  className?: string;
+  showPresets?: boolean;
+  showSliders?: boolean;
+  showAdvanced?: boolean;
 }
 
 export const ParameterPanel: React.FC<ParameterPanelProps> = ({
@@ -36,114 +36,114 @@ export const ParameterPanel: React.FC<ParameterPanelProps> = ({
   showSliders = true,
   showAdvanced = false,
 }) => {
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [selectedPreset, setSelectedPreset] = useState<string>('')
-  const [showAdvancedParams, setShowAdvancedParams] = useState(showAdvanced)
-  const [viewMode, setViewMode] = useState<'input' | 'slider'>('input')
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [selectedPreset, setSelectedPreset] = useState<string>('');
+  const [showAdvancedParams, setShowAdvancedParams] = useState(showAdvanced);
+  const [viewMode, setViewMode] = useState<'input' | 'slider'>('input');
 
   // 基礎參數和高級參數分類
   const basicParams = definitions.filter(def =>
     ['model', 'temperature', 'maxTokens', 'maxOutputTokens'].includes(def.key)
-  )
+  );
   const advancedParams = definitions.filter(
     def => !['model', 'temperature', 'maxTokens', 'maxOutputTokens'].includes(def.key)
-  )
+  );
 
   // 驗證參數
   const validateParameter = (definition: ParameterDefinition, value: any): string | null => {
     if (value === undefined || value === null) {
-      return null // 使用預設值
+      return null; // 使用預設值
     }
 
     switch (definition.type) {
       case 'number':
         if (typeof value !== 'number' || isNaN(value)) {
-          return '必須是有效數字'
+          return '必須是有效數字';
         }
         if (definition.min !== undefined && value < definition.min) {
-          return `不能小於 ${definition.min}`
+          return `不能小於 ${definition.min}`;
         }
         if (definition.max !== undefined && value > definition.max) {
-          return `不能大於 ${definition.max}`
+          return `不能大於 ${definition.max}`;
         }
-        break
+        break;
 
       case 'select':
         if (definition.options && !definition.options.includes(value)) {
-          return `必須是以下選項之一: ${definition.options.join(', ')}`
+          return `必須是以下選項之一: ${definition.options.join(', ')}`;
         }
-        break
+        break;
 
       case 'string':
         if (typeof value !== 'string') {
-          return '必須是文字'
+          return '必須是文字';
         }
         if (definition.min !== undefined && value.length < definition.min) {
-          return `長度不能少於 ${definition.min} 個字符`
+          return `長度不能少於 ${definition.min} 個字符`;
         }
         if (definition.max !== undefined && value.length > definition.max) {
-          return `長度不能超過 ${definition.max} 個字符`
+          return `長度不能超過 ${definition.max} 個字符`;
         }
-        break
+        break;
     }
 
-    return null
-  }
+    return null;
+  };
 
   // 驗證所有參數
   const validateAll = () => {
-    const newErrors: Record<string, string> = {}
-    let isValid = true
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
 
     definitions.forEach(definition => {
-      const error = validateParameter(definition, values[definition.key])
+      const error = validateParameter(definition, values[definition.key]);
       if (error) {
-        newErrors[definition.key] = error
-        isValid = false
+        newErrors[definition.key] = error;
+        isValid = false;
       }
-    })
+    });
 
-    setErrors(newErrors)
-    onValidate?.(isValid, Object.values(newErrors))
-    return isValid
-  }
+    setErrors(newErrors);
+    onValidate?.(isValid, Object.values(newErrors));
+    return isValid;
+  };
 
   // 當值改變時驗證
   useEffect(() => {
-    validateAll()
-  }, [values])
+    validateAll();
+  }, [values]);
 
   // 處理參數值改變
   const handleParameterChange = (key: string, value: any) => {
-    const newValues = { ...values, [key]: value }
-    onChange(newValues)
-  }
+    const newValues = { ...values, [key]: value };
+    onChange(newValues);
+  };
 
   // 應用預設配置
   const applyPreset = (presetId: string) => {
-    const preset = presets.find(p => p.id === presetId)
+    const preset = presets.find(p => p.id === presetId);
     if (preset) {
-      onChange(preset.parameters)
-      setSelectedPreset(presetId)
+      onChange(preset.parameters);
+      setSelectedPreset(presetId);
     }
-  }
+  };
 
   // 重置為預設值
   const resetToDefaults = () => {
-    const defaultValues: Record<string, any> = {}
+    const defaultValues: Record<string, any> = {};
     definitions.forEach(def => {
       if (def.defaultValue !== undefined) {
-        defaultValues[def.key] = def.defaultValue
+        defaultValues[def.key] = def.defaultValue;
       }
-    })
-    onChange(defaultValues)
-    setSelectedPreset('')
-  }
+    });
+    onChange(defaultValues);
+    setSelectedPreset('');
+  };
 
   // 渲染參數組件
   const renderParameter = (definition: ParameterDefinition) => {
-    const value = values[definition.key]
-    const error = errors[definition.key]
+    const value = values[definition.key];
+    const error = errors[definition.key];
 
     if (viewMode === 'slider' && definition.type === 'number' && showSliders) {
       return (
@@ -153,7 +153,7 @@ export const ParameterPanel: React.FC<ParameterPanelProps> = ({
           value={value ?? definition.defaultValue ?? 0}
           onChange={val => handleParameterChange(definition.key, val)}
         />
-      )
+      );
     }
 
     return (
@@ -164,8 +164,8 @@ export const ParameterPanel: React.FC<ParameterPanelProps> = ({
         onChange={val => handleParameterChange(definition.key, val)}
         error={error}
       />
-    )
-  }
+    );
+  };
 
   return (
     <Card className={`p-6 ${className}`}>
@@ -276,5 +276,5 @@ export const ParameterPanel: React.FC<ParameterPanelProps> = ({
         </div>
       </div>
     </Card>
-  )
-}
+  );
+};

@@ -1,36 +1,36 @@
-﻿import React, { useMemo, useState } from 'react'
-import { Conversation } from '../../types'
-import { Button } from '../ui/Button'
-import { AIModelSelector } from './AIModelSelector'
+﻿import React, { useMemo, useState } from 'react';
+import { Conversation } from '../../types';
+import { Button } from '../ui/Button';
+import { AIModelSelector } from './AIModelSelector';
 
 interface ChatHeaderProps {
-  conversation: Conversation
-  onUpdateConversation: (updates: Partial<Conversation>) => void
-  onDeleteConversation: () => void
-  onNewConversation: () => void
-  className?: string
+  conversation: Conversation;
+  onUpdateConversation: (updates: Partial<Conversation>) => void;
+  onDeleteConversation: () => void;
+  onNewConversation: () => void;
+  className?: string;
 }
 
 const providerNames: Record<string, string> = {
   openai: 'OpenAI',
   gemini: 'Google Gemini',
-}
+};
 
 const providerIcons: Record<string, string> = {
   openai: '🤖',
   gemini: '✨',
-}
+};
 
 const formatCreatedTime = (createdAt: Date) => {
-  const date = new Date(createdAt)
+  const date = new Date(createdAt);
   return new Intl.DateTimeFormat('zh-TW', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
-  }).format(date)
-}
+  }).format(date);
+};
 
 export const ChatHeader: React.FC<ChatHeaderProps> = ({
   conversation,
@@ -39,51 +39,48 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   onNewConversation,
   className = '',
 }) => {
-  const [isEditingTitle, setIsEditingTitle] = useState(false)
-  const [editTitle, setEditTitle] = useState(conversation.title)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [editTitle, setEditTitle] = useState(conversation.title);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const providerName = useMemo(
     () => providerNames[conversation.aiProvider] ?? conversation.aiProvider,
     [conversation.aiProvider]
-  )
+  );
 
   const providerIcon = useMemo(
     () => providerIcons[conversation.aiProvider] ?? '💬',
     [conversation.aiProvider]
-  )
+  );
 
-  if (process.env.NODE_ENV === 'test') {
-    console.log('render header', conversation.title)
-  }
   const handleTitleSave = () => {
-    const trimmed = editTitle.trim()
+    const trimmed = editTitle.trim();
     if (!trimmed || trimmed === conversation.title) {
-      setEditTitle(conversation.title)
-      setIsEditingTitle(false)
-      return
+      setEditTitle(conversation.title);
+      setIsEditingTitle(false);
+      return;
     }
 
-    onUpdateConversation({ title: trimmed })
-    setIsEditingTitle(false)
-  }
+    onUpdateConversation({ title: trimmed });
+    setIsEditingTitle(false);
+  };
 
   const handleTitleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      handleTitleSave()
+      handleTitleSave();
     }
     if (event.key === 'Escape') {
-      setEditTitle(conversation.title)
-      setIsEditingTitle(false)
+      setEditTitle(conversation.title);
+      setIsEditingTitle(false);
     }
-  }
+  };
 
   const handleModelChange = (provider: string, parameters?: Record<string, unknown>) => {
     onUpdateConversation({
       aiProvider: provider,
       parameters: parameters ?? conversation.parameters,
-    })
-  }
+    });
+  };
 
   return (
     <div className={`bg-white border-b border-gray-200 px-4 py-3 ${className}`}>
@@ -169,8 +166,8 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                 <div className='py-1'>
                   <button
                     onClick={() => {
-                      setIsEditingTitle(true)
-                      setMenuOpen(false)
+                      setIsEditingTitle(true);
+                      setMenuOpen(false);
                     }}
                     className='w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
                   >
@@ -179,8 +176,8 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
                   <div className='border-t border-gray-100' />
                   <button
                     onClick={() => {
-                      setMenuOpen(false)
-                      onDeleteConversation()
+                      setMenuOpen(false);
+                      onDeleteConversation();
                     }}
                     className='w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50'
                   >
@@ -195,5 +192,5 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
 
       {menuOpen && <div className='fixed inset-0 z-0' onClick={() => setMenuOpen(false)} />}
     </div>
-  )
-}
+  );
+};

@@ -29,15 +29,9 @@ export interface ChatServiceInterface extends AIServiceInterface {
  * 圖片生成服務介面
  */
 export interface ImageServiceInterface extends AIServiceInterface {
-  generateImage(
-    prompt: string,
-    parameters: ImageParameters
-  ): Promise<ImageResponse>;
+  generateImage(prompt: string, parameters: ImageParameters): Promise<ImageResponse>;
 
-  createImageVariation(
-    imageBuffer: Buffer,
-    parameters: ImageParameters
-  ): Promise<ImageResponse>;
+  createImageVariation(imageBuffer: Buffer, parameters: ImageParameters): Promise<ImageResponse>;
 
   editImage(
     imageBuffer: Buffer,
@@ -51,10 +45,7 @@ export interface ImageServiceInterface extends AIServiceInterface {
  * 影片生成服務介面
  */
 export interface VideoServiceInterface extends AIServiceInterface {
-  generateVideo(
-    prompt: string,
-    parameters: VideoParameters
-  ): Promise<VideoResponse>;
+  generateVideo(prompt: string, parameters: VideoParameters): Promise<VideoResponse>;
 }
 
 /**

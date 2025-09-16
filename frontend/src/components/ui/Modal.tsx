@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from 'react'
-import { X } from 'lucide-react'
-import { Button } from './Button'
+import React, { useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
+import { Button } from './Button';
 
 interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  title?: string
-  children: React.ReactNode
-  size?: 'sm' | 'md' | 'lg' | 'xl'
-  closeOnOverlayClick?: boolean
-  closeOnEscape?: boolean
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  closeOnOverlayClick?: boolean;
+  closeOnEscape?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -21,50 +21,50 @@ export const Modal: React.FC<ModalProps> = ({
   closeOnOverlayClick = true,
   closeOnEscape = true,
 }) => {
-  const modalRef = useRef<HTMLDivElement>(null)
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // 處理ESC鍵關閉
   useEffect(() => {
-    if (!closeOnEscape) return
+    if (!closeOnEscape) return;
 
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
-        onClose()
+        onClose();
       }
-    }
+    };
 
-    document.addEventListener('keydown', handleEscape)
-    return () => document.removeEventListener('keydown', handleEscape)
-  }, [isOpen, onClose, closeOnEscape])
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen, onClose, closeOnEscape]);
 
   // 處理body滾動鎖定
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset'
+      document.body.style.overflow = 'unset';
     }
 
     return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [isOpen])
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
 
   // 處理點擊遮罩關閉
   const handleOverlayClick = (event: React.MouseEvent) => {
     if (closeOnOverlayClick && event.target === event.currentTarget) {
-      onClose()
+      onClose();
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   const sizeClasses = {
     sm: 'max-w-md',
     md: 'max-w-lg',
     lg: 'max-w-2xl',
     xl: 'max-w-4xl',
-  }
+  };
 
   return (
     <div className='fixed inset-0 z-50 overflow-y-auto'>
@@ -101,13 +101,13 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Modal子組件
 interface ModalHeaderProps {
-  children: React.ReactNode
-  onClose?: () => void
+  children: React.ReactNode;
+  onClose?: () => void;
 }
 
 export const ModalHeader: React.FC<ModalHeaderProps> = ({ children, onClose }) => {
@@ -120,19 +120,19 @@ export const ModalHeader: React.FC<ModalHeaderProps> = ({ children, onClose }) =
         </Button>
       )}
     </div>
-  )
-}
+  );
+};
 
 interface ModalContentProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const ModalContent: React.FC<ModalContentProps> = ({ children }) => {
-  return <div className='p-6'>{children}</div>
-}
+  return <div className='p-6'>{children}</div>;
+};
 
 interface ModalFooterProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export const ModalFooter: React.FC<ModalFooterProps> = ({ children }) => {
@@ -140,5 +140,5 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({ children }) => {
     <div className='flex items-center justify-end gap-3 p-6 border-t border-gray-200 dark:border-gray-700'>
       {children}
     </div>
-  )
-}
+  );
+};

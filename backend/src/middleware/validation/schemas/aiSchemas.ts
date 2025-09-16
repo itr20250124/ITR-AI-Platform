@@ -57,13 +57,7 @@ export const imageGenerationSchema = Joi.object({
   provider: Joi.string().valid('openai', 'dall-e').default('openai'),
   parameters: Joi.object({
     model: Joi.string().valid('dall-e-2', 'dall-e-3'),
-    size: Joi.string().valid(
-      '256x256',
-      '512x512',
-      '1024x1024',
-      '1792x1024',
-      '1024x1792'
-    ),
+    size: Joi.string().valid('256x256', '512x512', '1024x1024', '1792x1024', '1024x1792'),
     quality: Joi.string().valid('standard', 'hd'),
     style: Joi.string().valid('vivid', 'natural'),
     n: Joi.number().min(1).max(4),

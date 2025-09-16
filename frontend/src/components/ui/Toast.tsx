@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react'
+import React, { useEffect, useState } from 'react';
+import { X, CheckCircle, AlertCircle, Info, AlertTriangle } from 'lucide-react';
 
 export interface ToastProps {
-  id: string
-  type: 'success' | 'error' | 'warning' | 'info'
-  title: string
-  message?: string
-  duration?: number
-  onClose: (id: string) => void
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  message?: string;
+  duration?: number;
+  onClose: (id: string) => void;
 }
 
 export const Toast: React.FC<ToastProps> = ({
@@ -18,33 +18,33 @@ export const Toast: React.FC<ToastProps> = ({
   duration = 5000,
   onClose,
 }) => {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     // 進入動畫
-    setIsVisible(true)
+    setIsVisible(true);
 
     // 自動關閉
     if (duration > 0) {
       const timer = setTimeout(() => {
-        handleClose()
-      }, duration)
+        handleClose();
+      }, duration);
 
-      return () => clearTimeout(timer)
+      return () => clearTimeout(timer);
     }
-  }, [duration])
+  }, [duration]);
 
   const handleClose = () => {
-    setIsVisible(false)
-    setTimeout(() => onClose(id), 300) // 等待退出動畫完成
-  }
+    setIsVisible(false);
+    setTimeout(() => onClose(id), 300); // 等待退出動畫完成
+  };
 
   const icons = {
     success: CheckCircle,
     error: AlertCircle,
     warning: AlertTriangle,
     info: Info,
-  }
+  };
 
   const colors = {
     success: {
@@ -75,10 +75,10 @@ export const Toast: React.FC<ToastProps> = ({
       title: 'text-blue-800 dark:text-blue-200',
       message: 'text-blue-700 dark:text-blue-300',
     },
-  }
+  };
 
-  const Icon = icons[type]
-  const colorScheme = colors[type]
+  const Icon = icons[type];
+  const colorScheme = colors[type];
 
   return (
     <div
@@ -117,13 +117,13 @@ export const Toast: React.FC<ToastProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // Toast容器組件
 interface ToastContainerProps {
-  toasts: ToastProps[]
-  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+  toasts: ToastProps[];
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
 }
 
 export const ToastContainer: React.FC<ToastContainerProps> = ({
@@ -135,7 +135,7 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
     'top-left': 'top-4 left-4',
     'bottom-right': 'bottom-4 right-4',
     'bottom-left': 'bottom-4 left-4',
-  }
+  };
 
   return (
     <div className={`fixed ${positionClasses[position]} z-50 space-y-4`}>
@@ -143,5 +143,5 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({
         <Toast key={toast.id} {...toast} />
       ))}
     </div>
-  )
-}
+  );
+};

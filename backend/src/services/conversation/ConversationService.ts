@@ -27,9 +27,7 @@ export class ConversationService {
   /**
    * 創建新對話
    */
-  static async createConversation(
-    data: CreateConversationData
-  ): Promise<Conversation> {
+  static async createConversation(data: CreateConversationData): Promise<Conversation> {
     const conversation = await prisma.conversation.create({
       data: {
         userId: data.userId,
@@ -66,12 +64,7 @@ export class ConversationService {
       order?: 'asc' | 'desc';
     } = {}
   ): Promise<{ conversations: Conversation[]; total: number }> {
-    const {
-      limit = 20,
-      offset = 0,
-      orderBy = 'updatedAt',
-      order = 'desc',
-    } = options;
+    const { limit = 20, offset = 0, orderBy = 'updatedAt', order = 'desc' } = options;
 
     const [conversations, total] = await Promise.all([
       prisma.conversation.findMany({
@@ -164,10 +157,7 @@ export class ConversationService {
   /**
    * 刪除對話
    */
-  static async deleteConversation(
-    conversationId: string,
-    userId: string
-  ): Promise<boolean> {
+  static async deleteConversation(conversationId: string, userId: string): Promise<boolean> {
     const result = await prisma.conversation.deleteMany({
       where: {
         id: conversationId,
@@ -340,30 +330,29 @@ export class ConversationService {
     providerUsage: Record<string, number>;
     recentActivity: Array<{ date: string; count: number }>;
   }> {
-    const [totalConversations, totalMessages, providerStats, recentActivity] =
-      await Promise.all([
-        prisma.conversation.count({ where: { userId } }),
-        prisma.message.count({
-          where: {
-            conversation: { userId },
+    const [totalConversations, totalMessages, providerStats, recentActivity] = await Promise.all([
+      prisma.conversation.count({ where: { userId } }),
+      prisma.message.count({
+        where: {
+          conversation: { userId },
+        },
+      }),
+      prisma.conversation.groupBy({
+        by: ['aiProvider'],
+        where: { userId },
+        _count: { id: true },
+      }),
+      prisma.conversation.groupBy({
+        by: ['createdAt'],
+        where: {
+          userId,
+          createdAt: {
+            gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 最近30天
           },
-        }),
-        prisma.conversation.groupBy({
-          by: ['aiProvider'],
-          where: { userId },
-          _count: { id: true },
-        }),
-        prisma.conversation.groupBy({
-          by: ['createdAt'],
-          where: {
-            userId,
-            createdAt: {
-              gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // 最近30天
-            },
-          },
-          _count: { id: true },
-        }),
-      ]);
+        },
+        _count: { id: true },
+      }),
+    ]);
 
     const providerUsage: Record<string, number> = {};
     providerStats.forEach(stat => {
@@ -376,20 +365,16 @@ export class ConversationService {
       activityMap.set(date, (activityMap.get(date) || 0) + activity._count.id);
     });
 
-    const recentActivityArray = Array.from(activityMap.entries()).map(
-      ([date, count]) => ({
-        date,
-        count,
-      })
-    );
+    const recentActivityArray = Array.from(activityMap.entries()).map(([date, count]) => ({
+      date,
+      count,
+    }));
 
     return {
       totalConversations,
       totalMessages,
       averageMessagesPerConversation:
-        totalConversations > 0
-          ? Math.round((totalMessages / totalConversations) * 100) / 100
-          : 0,
+        totalConversations > 0 ? Math.round((totalMessages / totalConversations) * 100) / 100 : 0,
       providerUsage,
       recentActivity: recentActivityArray,
     };

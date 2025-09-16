@@ -1,15 +1,15 @@
-import React from 'react'
-import { Button } from '../ui/Button'
-import { Card } from '../ui/Card'
-import { ImageResponse } from '../../services/imageService'
+import React from 'react';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { ImageResponse } from '../../services/imageService';
 
 interface ImagePreviewProps {
-  image: ImageResponse
-  onDownload?: () => void
-  onDelete?: () => void
-  onRegenerate?: () => void
-  onClick?: () => void
-  className?: string
+  image: ImageResponse;
+  onDownload?: () => void;
+  onDelete?: () => void;
+  onRegenerate?: () => void;
+  onClick?: () => void;
+  className?: string;
 }
 
 export const ImagePreview: React.FC<ImagePreviewProps> = ({
@@ -27,34 +27,34 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    })
-  }
+    });
+  };
 
   const getTypeLabel = (type?: string) => {
     switch (type) {
       case 'generation':
-        return '生成'
+        return '生成';
       case 'variation':
-        return '變體'
+        return '變體';
       case 'edit':
-        return '編輯'
+        return '編輯';
       default:
-        return '圖片'
+        return '圖片';
     }
-  }
+  };
 
   const getTypeColor = (type?: string) => {
     switch (type) {
       case 'generation':
-        return 'bg-green-100 text-green-800'
+        return 'bg-green-100 text-green-800';
       case 'variation':
-        return 'bg-blue-100 text-blue-800'
+        return 'bg-blue-100 text-blue-800';
       case 'edit':
-        return 'bg-purple-100 text-purple-800'
+        return 'bg-purple-100 text-purple-800';
       default:
-        return 'bg-gray-100 text-gray-800'
+        return 'bg-gray-100 text-gray-800';
     }
-  }
+  };
 
   return (
     <Card className={`overflow-hidden hover:shadow-lg transition-shadow ${className}`}>
@@ -74,8 +74,8 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 size='sm'
                 variant='outline'
                 onClick={e => {
-                  e.stopPropagation()
-                  onDownload()
+                  e.stopPropagation();
+                  onDownload();
                 }}
                 className='bg-white text-gray-900 hover:bg-gray-100'
               >
@@ -95,8 +95,8 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 size='sm'
                 variant='outline'
                 onClick={e => {
-                  e.stopPropagation()
-                  onRegenerate()
+                  e.stopPropagation();
+                  onRegenerate();
                 }}
                 className='bg-white text-gray-900 hover:bg-gray-100'
               >
@@ -116,8 +116,8 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
                 size='sm'
                 variant='outline'
                 onClick={e => {
-                  e.stopPropagation()
-                  onDelete()
+                  e.stopPropagation();
+                  onDelete();
                 }}
                 className='bg-white text-red-600 hover:bg-red-50'
               >
@@ -171,5 +171,5 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
         </div>
       </div>
     </Card>
-  )
-}
+  );
+};

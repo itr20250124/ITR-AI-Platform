@@ -79,11 +79,7 @@ describe('ParameterService', () => {
       validateCustomRules: jest.fn(),
     } as any;
 
-    service = new ParameterService(
-      mockParameterManager,
-      mockPresetsManager,
-      mockAdvancedValidator
-    );
+    service = new ParameterService(mockParameterManager, mockPresetsManager, mockAdvancedValidator);
   });
 
   describe('registerProvider', () => {
@@ -102,9 +98,7 @@ describe('ParameterService', () => {
       const result = service.getProviderDefinitions('openai');
 
       expect(result).toEqual(mockDefinitions);
-      expect(mockParameterManager.getProviderDefinitions).toHaveBeenCalledWith(
-        'openai'
-      );
+      expect(mockParameterManager.getProviderDefinitions).toHaveBeenCalledWith('openai');
     });
   });
 
@@ -193,9 +187,10 @@ describe('ParameterService', () => {
       const result = service.mergeWithDefaults('openai', parameters);
 
       expect(result).toEqual(expected);
-      expect(
-        mockParameterManager.mergeWithProviderDefaults
-      ).toHaveBeenCalledWith('openai', parameters);
+      expect(mockParameterManager.mergeWithProviderDefaults).toHaveBeenCalledWith(
+        'openai',
+        parameters
+      );
     });
   });
 
@@ -226,9 +221,10 @@ describe('ParameterService', () => {
       const result = service.convertParameters('openai', parameters);
 
       expect(result).toEqual(expected);
-      expect(
-        mockParameterManager.convertProviderParameters
-      ).toHaveBeenCalledWith('openai', parameters);
+      expect(mockParameterManager.convertProviderParameters).toHaveBeenCalledWith(
+        'openai',
+        parameters
+      );
     });
   });
 
@@ -262,10 +258,7 @@ describe('ParameterService', () => {
       const result = service.supportsParameter('openai', 'temperature');
 
       expect(result).toBe(true);
-      expect(mockParameterManager.supportsParameter).toHaveBeenCalledWith(
-        'openai',
-        'temperature'
-      );
+      expect(mockParameterManager.supportsParameter).toHaveBeenCalledWith('openai', 'temperature');
     });
 
     it('should return false for unsupported parameter', () => {
@@ -298,9 +291,7 @@ describe('ParameterService', () => {
 
       const result = service.generateParameterSuggestions('openai', parameters);
 
-      expect(result).toContain(
-        'Low temperature may produce repetitive responses'
-      );
+      expect(result).toContain('Low temperature may produce repetitive responses');
     });
 
     it('should suggest setting default values for missing parameters', () => {
@@ -316,9 +307,7 @@ describe('ParameterService', () => {
 
       const result = service.generateParameterSuggestions('openai', parameters);
 
-      expect(result).toContain(
-        'High token limit may result in expensive API calls'
-      );
+      expect(result).toContain('High token limit may result in expensive API calls');
     });
   });
 
@@ -333,15 +322,9 @@ describe('ParameterService', () => {
         maxTokens: 1000,
       };
 
-      mockParameterManager.convertProviderParameters.mockReturnValue(
-        convertedParams
-      );
-      mockParameterManager.cleanProviderParameters.mockReturnValue(
-        cleanedParams
-      );
-      mockParameterManager.mergeWithProviderDefaults.mockReturnValue(
-        mergedParams
-      );
+      mockParameterManager.convertProviderParameters.mockReturnValue(convertedParams);
+      mockParameterManager.cleanProviderParameters.mockReturnValue(cleanedParams);
+      mockParameterManager.mergeWithProviderDefaults.mockReturnValue(mergedParams);
 
       const result = service.processParameters('openai', inputParameters);
 
@@ -350,16 +333,18 @@ describe('ParameterService', () => {
       expect(result.validation.isValid).toBe(true);
 
       // Verify pipeline order
-      expect(
-        mockParameterManager.convertProviderParameters
-      ).toHaveBeenCalledWith('openai', inputParameters);
+      expect(mockParameterManager.convertProviderParameters).toHaveBeenCalledWith(
+        'openai',
+        inputParameters
+      );
       expect(mockParameterManager.cleanProviderParameters).toHaveBeenCalledWith(
         'openai',
         convertedParams
       );
-      expect(
-        mockParameterManager.mergeWithProviderDefaults
-      ).toHaveBeenCalledWith('openai', cleanedParams);
+      expect(mockParameterManager.mergeWithProviderDefaults).toHaveBeenCalledWith(
+        'openai',
+        cleanedParams
+      );
     });
   });
 

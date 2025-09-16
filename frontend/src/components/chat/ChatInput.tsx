@@ -1,12 +1,12 @@
-﻿import React, { useEffect, useRef, useState } from 'react'
-import { Button } from '../ui/Button'
+﻿import React, { useEffect, useRef, useState } from 'react';
+import { Button } from '../ui/Button';
 
 interface ChatInputProps {
-  onSendMessage: (message: string) => void
-  disabled?: boolean
-  placeholder?: string
-  maxLength?: number
-  className?: string
+  onSendMessage: (message: string) => void;
+  disabled?: boolean;
+  placeholder?: string;
+  maxLength?: number;
+  className?: string;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
@@ -16,65 +16,65 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   maxLength = 10000,
   className = '',
 }) => {
-  const [message, setMessage] = useState('')
-  const [isComposing, setIsComposing] = useState(false)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const [message, setMessage] = useState('');
+  const [isComposing, setIsComposing] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const adjustTextareaHeight = () => {
-    const textarea = textareaRef.current
-    if (!textarea) return
+    const textarea = textareaRef.current;
+    if (!textarea) return;
 
-    textarea.style.height = 'auto'
-    textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`
-  }
+    textarea.style.height = 'auto';
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+  };
 
   useEffect(() => {
-    adjustTextareaHeight()
-  }, [message])
+    adjustTextareaHeight();
+  }, [message]);
 
   const handleSend = () => {
-    const trimmed = message.trim()
+    const trimmed = message.trim();
     if (!trimmed || disabled) {
-      return
+      return;
     }
 
-    onSendMessage(trimmed)
-    setMessage('')
+    onSendMessage(trimmed);
+    setMessage('');
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto'
+      textareaRef.current.style.height = 'auto';
     }
-  }
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === 'Enter' && !event.shiftKey && !isComposing) {
-      event.preventDefault()
-      handleSend()
+      event.preventDefault();
+      handleSend();
     }
-  }
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = event.target.value
+    const value = event.target.value;
     if (value.length <= maxLength) {
-      setMessage(value)
+      setMessage(value);
     }
-  }
+  };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
-    const pasted = event.clipboardData.getData('text')
-    const next = message + pasted
+    const pasted = event.clipboardData.getData('text');
+    const next = message + pasted;
 
     if (next.length > maxLength) {
-      event.preventDefault()
-      const remaining = maxLength - message.length
+      event.preventDefault();
+      const remaining = maxLength - message.length;
       if (remaining > 0) {
-        setMessage(message + pasted.slice(0, remaining))
+        setMessage(message + pasted.slice(0, remaining));
       }
     }
-  }
+  };
 
-  const characterCount = message.length
-  const isNearLimit = characterCount > maxLength * 0.8
-  const canSend = message.trim().length > 0 && !disabled
+  const characterCount = message.length;
+  const isNearLimit = characterCount > maxLength * 0.8;
+  const canSend = message.trim().length > 0 && !disabled;
 
   return (
     <div className={`p-4 ${className}`}>
@@ -145,5 +145,5 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         {!isNearLimit && <span>{characterCount} 字符</span>}
       </div>
     </div>
-  )
-}
+  );
+};

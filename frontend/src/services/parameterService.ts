@@ -1,30 +1,30 @@
-import { apiClient } from './api'
-import { ParameterDefinition } from '../types'
+import { apiClient } from './api';
+import { ParameterDefinition } from '../types';
 
 export interface AIProvider {
-  id: string
-  name: string
-  type: 'chat' | 'image' | 'video'
-  enabled: boolean
-  supportedParameters: ParameterDefinition[]
-  rateLimits: any[]
+  id: string;
+  name: string;
+  type: 'chat' | 'image' | 'video';
+  enabled: boolean;
+  supportedParameters: ParameterDefinition[];
+  rateLimits: any[];
 }
 
 export interface ProviderSummary {
-  total: number
-  chat: number
-  image: number
-  video: number
+  total: number;
+  chat: number;
+  image: number;
+  video: number;
 }
 
 export interface ValidationResult {
-  isValid: boolean
-  parameters?: Record<string, any>
-  message?: string
+  isValid: boolean;
+  parameters?: Record<string, any>;
+  message?: string;
   errors?: Array<{
-    field: string
-    message: string
-  }>
+    field: string;
+    message: string;
+  }>;
 }
 
 /**
@@ -35,40 +35,40 @@ export class ParameterService {
    * 獲取所有可用的AI服務提供商
    */
   static async getAvailableProviders(): Promise<{
-    providers: AIProvider[]
-    summary: ProviderSummary
+    providers: AIProvider[];
+    summary: ProviderSummary;
   }> {
     const response = await apiClient.get<{
-      providers: AIProvider[]
-      summary: ProviderSummary
-    }>('/parameters/providers')
+      providers: AIProvider[];
+      summary: ProviderSummary;
+    }>('/parameters/providers');
 
     if (!response.success) {
-      throw new Error(response.error?.message || 'Failed to fetch providers')
+      throw new Error(response.error?.message || 'Failed to fetch providers');
     }
 
-    return response.data!
+    return response.data!;
   }
 
   /**
    * 根據類型獲取服務提供商
    */
   static async getProvidersByType(type: 'chat' | 'image' | 'video'): Promise<{
-    providers: AIProvider[]
-    type: string
-    count: number
+    providers: AIProvider[];
+    type: string;
+    count: number;
   }> {
     const response = await apiClient.get<{
-      providers: AIProvider[]
-      type: string
-      count: number
-    }>(`/parameters/providers/${type}`)
+      providers: AIProvider[];
+      type: string;
+      count: number;
+    }>(`/parameters/providers/${type}`);
 
     if (!response.success) {
-      throw new Error(response.error?.message || 'Failed to fetch providers')
+      throw new Error(response.error?.message || 'Failed to fetch providers');
     }
 
-    return response.data!
+    return response.data!;
   }
 
   /**
@@ -78,23 +78,23 @@ export class ParameterService {
     provider: string,
     type: 'chat' | 'image' | 'video'
   ): Promise<{
-    provider: string
-    type: string
-    parameters: ParameterDefinition[]
-    rateLimits: any[]
+    provider: string;
+    type: string;
+    parameters: ParameterDefinition[];
+    rateLimits: any[];
   }> {
     const response = await apiClient.get<{
-      provider: string
-      type: string
-      parameters: ParameterDefinition[]
-      rateLimits: any[]
-    }>(`/parameters/${provider}/${type}`)
+      provider: string;
+      type: string;
+      parameters: ParameterDefinition[];
+      rateLimits: any[];
+    }>(`/parameters/${provider}/${type}`);
 
     if (!response.success) {
-      throw new Error(response.error?.message || 'Failed to fetch parameters')
+      throw new Error(response.error?.message || 'Failed to fetch parameters');
     }
 
-    return response.data!
+    return response.data!;
   }
 
   /**
@@ -108,7 +108,7 @@ export class ParameterService {
     const response = await apiClient.post<ValidationResult>(
       `/parameters/${provider}/${type}/validate`,
       { parameters }
-    )
+    );
 
     if (!response.success) {
       return {
@@ -116,10 +116,10 @@ export class ParameterService {
         errors: response.error?.details || [
           { field: 'general', message: response.error?.message || 'Validation failed' },
         ],
-      }
+      };
     }
 
-    return response.data!
+    return response.data!;
   }
 
   /**
@@ -129,22 +129,22 @@ export class ParameterService {
     provider: string,
     type: 'chat' | 'image' | 'video'
   ): Promise<{
-    provider: string
-    type: string
-    defaults: Record<string, any>
-    parameters: ParameterDefinition[]
+    provider: string;
+    type: string;
+    defaults: Record<string, any>;
+    parameters: ParameterDefinition[];
   }> {
     const response = await apiClient.get<{
-      provider: string
-      type: string
-      defaults: Record<string, any>
-      parameters: ParameterDefinition[]
-    }>(`/parameters/${provider}/${type}/defaults`)
+      provider: string;
+      type: string;
+      defaults: Record<string, any>;
+      parameters: ParameterDefinition[];
+    }>(`/parameters/${provider}/${type}/defaults`);
 
     if (!response.success) {
-      throw new Error(response.error?.message || 'Failed to fetch defaults')
+      throw new Error(response.error?.message || 'Failed to fetch defaults');
     }
 
-    return response.data!
+    return response.data!;
   }
 }

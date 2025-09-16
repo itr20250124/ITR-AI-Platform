@@ -1,9 +1,4 @@
-import {
-  hashPassword,
-  verifyPassword,
-  generateToken,
-  verifyToken,
-} from '../utils/auth';
+import { hashPassword, verifyPassword, generateToken, verifyToken } from '../utils/auth';
 
 describe('Auth Utils', () => {
   describe('Password hashing', () => {

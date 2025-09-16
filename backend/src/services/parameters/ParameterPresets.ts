@@ -64,11 +64,7 @@ export class ParameterPresetsManager {
   /**
    * 更新預設配置
    */
-  updatePreset(
-    provider: string,
-    presetId: string,
-    updates: Partial<ParameterPreset>
-  ): boolean {
+  updatePreset(provider: string, presetId: string, updates: Partial<ParameterPreset>): boolean {
     const presets = this.presets.get(provider);
     if (!presets) return false;
 
@@ -123,20 +119,12 @@ export class ParameterPresetsManager {
   /**
    * 獲取所有提供商的預設配置統計
    */
-  getPresetsStats(): Record<
-    string,
-    { total: number; default: number; custom: number }
-  > {
-    const stats: Record<
-      string,
-      { total: number; default: number; custom: number }
-    > = {};
+  getPresetsStats(): Record<string, { total: number; default: number; custom: number }> {
+    const stats: Record<string, { total: number; default: number; custom: number }> = {};
 
     for (const [provider, presets] of this.presets.entries()) {
       const defaultCount = presets.filter(p => p.isDefault).length;
-      const customCount = presets.filter(p =>
-        p.id.startsWith('custom_')
-      ).length;
+      const customCount = presets.filter(p => p.id.startsWith('custom_')).length;
 
       stats[provider] = {
         total: presets.length,

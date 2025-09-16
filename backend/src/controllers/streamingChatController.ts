@@ -5,10 +5,7 @@ import { AIServiceFactory } from '../services/ai/AIServiceFactory';
 /**
  * 串流聊天端點
  */
-export const streamChat = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> => {
+export const streamChat = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { messages, provider = 'openai', parameters = {} } = req.body;
     const userId = req.user?.id;
@@ -51,10 +48,7 @@ export const streamChat = async (
       if (typeof chatService.sendMessageStream === 'function') {
         // 使用串流方法
         const lastMessage = messages[messages.length - 1];
-        const streamGenerator = chatService.sendMessageStream(
-          lastMessage.content,
-          parameters
-        );
+        const streamGenerator = chatService.sendMessageStream(lastMessage.content, parameters);
 
         // 發送開始事件
         res.write('data: {"type": "start"}\n\n');
@@ -76,10 +70,7 @@ export const streamChat = async (
         res.write('data: [DONE]\n\n');
       } else {
         // 如果不支持串流，使用普通方法並模擬串流
-        const response = await chatService.sendMessageWithContext(
-          messages,
-          parameters
-        );
+        const response = await chatService.sendMessageWithContext(messages, parameters);
 
         // 模擬串流效果，將回應分塊發送
         const content = response.content;

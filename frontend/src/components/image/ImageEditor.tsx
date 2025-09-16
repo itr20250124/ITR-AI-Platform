@@ -1,86 +1,86 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react';
 import {
   ImageService,
   ImageVariationRequest,
   ImageEditRequest,
   ImageResponse,
-} from '../../services/imageService'
-import { Button } from '../ui/Button'
-import { Card } from '../ui/Card'
-import { ImagePreview } from './ImagePreview'
-import toast from 'react-hot-toast'
+} from '../../services/imageService';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { ImagePreview } from './ImagePreview';
+import toast from 'react-hot-toast';
 
 interface ImageEditorProps {
-  onImageProcessed?: (image: ImageResponse) => void
-  className?: string
+  onImageProcessed?: (image: ImageResponse) => void;
+  className?: string;
 }
 
 export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, className = '' }) => {
-  const [mode, setMode] = useState<'variation' | 'edit'>('variation')
-  const [sourceImage, setSourceImage] = useState<File | null>(null)
-  const [maskImage, setMaskImage] = useState<File | null>(null)
-  const [editPrompt, setEditPrompt] = useState('')
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [processedImage, setProcessedImage] = useState<ImageResponse | null>(null)
-  const [sourcePreview, setSourcePreview] = useState<string>('')
-  const [maskPreview, setMaskPreview] = useState<string>('')
+  const [mode, setMode] = useState<'variation' | 'edit'>('variation');
+  const [sourceImage, setSourceImage] = useState<File | null>(null);
+  const [maskImage, setMaskImage] = useState<File | null>(null);
+  const [editPrompt, setEditPrompt] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processedImage, setProcessedImage] = useState<ImageResponse | null>(null);
+  const [sourcePreview, setSourcePreview] = useState<string>('');
+  const [maskPreview, setMaskPreview] = useState<string>('');
 
-  const sourceInputRef = useRef<HTMLInputElement>(null)
-  const maskInputRef = useRef<HTMLInputElement>(null)
+  const sourceInputRef = useRef<HTMLInputElement>(null);
+  const maskInputRef = useRef<HTMLInputElement>(null);
 
   // 處理圖片選擇
   const handleImageSelect = async (file: File, type: 'source' | 'mask') => {
-    const validation = ImageService.validateImageFile(file)
+    const validation = ImageService.validateImageFile(file);
     if (!validation.valid) {
-      toast.error(validation.error!)
-      return
+      toast.error(validation.error!);
+      return;
     }
 
     try {
       // 壓縮圖片
-      const compressedFile = await ImageService.compressImage(file)
+      const compressedFile = await ImageService.compressImage(file);
 
       if (type === 'source') {
-        setSourceImage(compressedFile)
-        const preview = await ImageService.getImageAsBase64(compressedFile)
-        setSourcePreview(preview)
+        setSourceImage(compressedFile);
+        const preview = await ImageService.getImageAsBase64(compressedFile);
+        setSourcePreview(preview);
       } else {
-        setMaskImage(compressedFile)
-        const preview = await ImageService.getImageAsBase64(compressedFile)
-        setMaskPreview(preview)
+        setMaskImage(compressedFile);
+        const preview = await ImageService.getImageAsBase64(compressedFile);
+        setMaskPreview(preview);
       }
     } catch (error) {
-      toast.error('圖片處理失敗')
+      toast.error('圖片處理失敗');
     }
-  }
+  };
 
   // 處理文件拖放
   const handleDrop = (e: React.DragEvent, type: 'source' | 'mask') => {
-    e.preventDefault()
-    const files = Array.from(e.dataTransfer.files)
-    const imageFile = files.find(file => file.type.startsWith('image/'))
+    e.preventDefault();
+    const files = Array.from(e.dataTransfer.files);
+    const imageFile = files.find(file => file.type.startsWith('image/'));
 
     if (imageFile) {
-      handleImageSelect(imageFile, type)
+      handleImageSelect(imageFile, type);
     } else {
-      toast.error('請選擇圖片文件')
+      toast.error('請選擇圖片文件');
     }
-  }
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-  }
+    e.preventDefault();
+  };
 
   // 處理圖片變體生成
   const handleCreateVariation = async () => {
     if (!sourceImage) {
-      toast.error('請先選擇原始圖片')
-      return
+      toast.error('請先選擇原始圖片');
+      return;
     }
 
     try {
-      setIsProcessing(true)
-      setProcessedImage(null)
+      setIsProcessing(true);
+      setProcessedImage(null);
 
       const request: ImageVariationRequest = {
         imageFile: sourceImage,
@@ -89,41 +89,41 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
           n: 1,
           size: '1024x1024',
         },
-      }
+      };
 
-      const imageService = new ImageService()
-      const result = await imageService.createImageVariation(request)
-      setProcessedImage(result)
-      onImageProcessed?.(result)
-      toast.success('圖片變體生成成功！')
+      const imageService = new ImageService();
+      const result = await imageService.createImageVariation(request);
+      setProcessedImage(result);
+      onImageProcessed?.(result);
+      toast.success('圖片變體生成成功！');
     } catch (error) {
-      console.error('圖片變體生成失敗:', error)
-      toast.error(error instanceof Error ? error.message : '圖片變體生成失敗')
+      console.error('圖片變體生成失敗:', error);
+      toast.error(error instanceof Error ? error.message : '圖片變體生成失敗');
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   // 處理圖片編輯
   const handleEditImage = async () => {
     if (!sourceImage) {
-      toast.error('請先選擇原始圖片')
-      return
+      toast.error('請先選擇原始圖片');
+      return;
     }
 
     if (!maskImage) {
-      toast.error('請選擇遮罩圖片')
-      return
+      toast.error('請選擇遮罩圖片');
+      return;
     }
 
     if (!editPrompt.trim()) {
-      toast.error('請輸入編輯描述')
-      return
+      toast.error('請輸入編輯描述');
+      return;
     }
 
     try {
-      setIsProcessing(true)
-      setProcessedImage(null)
+      setIsProcessing(true);
+      setProcessedImage(null);
 
       const request: ImageEditRequest = {
         imageFile: sourceImage,
@@ -134,32 +134,32 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
           n: 1,
           size: '1024x1024',
         },
-      }
+      };
 
-      const imageService = new ImageService()
-      const result = await imageService.editImage(request)
-      setProcessedImage(result)
-      onImageProcessed?.(result)
-      toast.success('圖片編輯成功！')
+      const imageService = new ImageService();
+      const result = await imageService.editImage(request);
+      setProcessedImage(result);
+      onImageProcessed?.(result);
+      toast.success('圖片編輯成功！');
     } catch (error) {
-      console.error('圖片編輯失敗:', error)
-      toast.error(error instanceof Error ? error.message : '圖片編輯失敗')
+      console.error('圖片編輯失敗:', error);
+      toast.error(error instanceof Error ? error.message : '圖片編輯失敗');
     } finally {
-      setIsProcessing(false)
+      setIsProcessing(false);
     }
-  }
+  };
 
   // 清除所有輸入
   const handleClear = () => {
-    setSourceImage(null)
-    setMaskImage(null)
-    setEditPrompt('')
-    setSourcePreview('')
-    setMaskPreview('')
-    setProcessedImage(null)
-    if (sourceInputRef.current) sourceInputRef.current.value = ''
-    if (maskInputRef.current) maskInputRef.current.value = ''
-  }
+    setSourceImage(null);
+    setMaskImage(null);
+    setEditPrompt('');
+    setSourcePreview('');
+    setMaskPreview('');
+    setProcessedImage(null);
+    if (sourceInputRef.current) sourceInputRef.current.value = '';
+    if (maskInputRef.current) maskInputRef.current.value = '';
+  };
 
   // 渲染圖片上傳區域
   const renderUploadArea = (
@@ -183,13 +183,13 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
           <button
             onClick={() => {
               if (type === 'source') {
-                setSourceImage(null)
-                setSourcePreview('')
-                if (sourceInputRef.current) sourceInputRef.current.value = ''
+                setSourceImage(null);
+                setSourcePreview('');
+                if (sourceInputRef.current) sourceInputRef.current.value = '';
               } else {
-                setMaskImage(null)
-                setMaskPreview('')
-                if (maskInputRef.current) maskInputRef.current.value = ''
+                setMaskImage(null);
+                setMaskPreview('');
+                if (maskInputRef.current) maskInputRef.current.value = '';
               }
             }}
             className='absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600'
@@ -228,9 +228,9 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
             size='sm'
             onClick={() => {
               if (type === 'source') {
-                sourceInputRef.current?.click()
+                sourceInputRef.current?.click();
               } else {
-                maskInputRef.current?.click()
+                maskInputRef.current?.click();
               }
             }}
           >
@@ -244,15 +244,15 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
         type='file'
         accept='image/*'
         onChange={e => {
-          const file = e.target.files?.[0]
+          const file = e.target.files?.[0];
           if (file) {
-            handleImageSelect(file, type)
+            handleImageSelect(file, type);
           }
         }}
         className='hidden'
       />
     </div>
-  )
+  );
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -447,12 +447,12 @@ export const ImageEditor: React.FC<ImageEditorProps> = ({ onImageProcessed, clas
               ImageService.downloadImage(
                 processedImage.imageUrl,
                 `${mode}-${processedImage.id}.png`
-              )
+              );
             }}
             onRegenerate={mode === 'variation' ? handleCreateVariation : handleEditImage}
           />
         </div>
       )}
     </div>
-  )
-}
+  );
+};

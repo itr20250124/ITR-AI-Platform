@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
-import { Card, CardHeader, CardContent, Loading } from './ui'
-import { Bot, Image, Video, ChevronDown } from 'lucide-react'
-import { ParameterService, AIProvider } from '../services/parameterService'
+import React, { useState, useEffect } from 'react';
+import { Card, CardHeader, CardContent, Loading } from './ui';
+import { Bot, Image as ImageIcon, Video, ChevronDown } from 'lucide-react';
+import { ParameterService, AIProvider } from '../services/parameterService';
 
 interface AIServiceSelectorProps {
-  selectedService: string
-  serviceType: 'chat' | 'image' | 'video'
-  onServiceChange: (service: string) => void
-  className?: string
+  selectedService: string;
+  serviceType: 'chat' | 'image' | 'video';
+  onServiceChange: (service: string) => void;
+  className?: string;
 }
 
 export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
@@ -16,64 +16,64 @@ export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
   onServiceChange,
   className = '',
 }) => {
-  const [providers, setProviders] = useState<AIProvider[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [providers, setProviders] = useState<AIProvider[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    loadProviders()
-  }, [serviceType])
+    loadProviders();
+  }, [serviceType]);
 
   const loadProviders = async () => {
     try {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
 
-      const data = await ParameterService.getProvidersByType(serviceType)
-      setProviders(data.providers)
+      const data = await ParameterService.getProvidersByType(serviceType);
+      setProviders(data.providers);
 
       // 如果沒有選中的服務或選中的服務不可用，選擇第一個可用的服務
       if (!selectedService || !data.providers.find(p => p.id === selectedService)) {
-        const firstAvailable = data.providers.find(p => p.enabled)
+        const firstAvailable = data.providers.find(p => p.enabled);
         if (firstAvailable) {
-          onServiceChange(firstAvailable.id)
+          onServiceChange(firstAvailable.id);
         }
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : '載入服務提供商失敗')
+      setError(err instanceof Error ? err.message : '載入服務提供商失敗');
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const getServiceIcon = (type: string) => {
     switch (type) {
       case 'chat':
-        return <Bot className='w-4 h-4' />
+        return <Bot className='w-4 h-4' />;
       case 'image':
-        return <Image className='w-4 h-4' />
+        return <ImageIcon className='w-4 h-4' />;
       case 'video':
-        return <Video className='w-4 h-4' />
+        return <Video className='w-4 h-4' />;
       default:
-        return <Bot className='w-4 h-4' />
+        return <Bot className='w-4 h-4' />;
     }
-  }
+  };
 
   const getServiceTypeLabel = (type: string) => {
     switch (type) {
       case 'chat':
-        return '聊天服務'
+        return '聊天服務';
       case 'image':
-        return '圖片生成'
+        return '圖片生成';
       case 'video':
-        return '影片生成'
+        return '影片生成';
       default:
-        return '未知服務'
+        return '未知服務';
     }
-  }
+  };
 
-  const selectedProvider = providers.find(p => p.id === selectedService)
+  const selectedProvider = providers.find(p => p.id === selectedService);
 
   if (loading) {
     return (
@@ -82,7 +82,7 @@ export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
           <Loading text='載入服務提供商...' />
         </CardContent>
       </Card>
-    )
+    );
   }
 
   if (error) {
@@ -92,7 +92,7 @@ export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
           <div className='text-center text-red-600 dark:text-red-400'>{error}</div>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
@@ -155,8 +155,8 @@ export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
                 <button
                   key={provider.id}
                   onClick={() => {
-                    onServiceChange(provider.id)
-                    setIsOpen(false)
+                    onServiceChange(provider.id);
+                    setIsOpen(false);
                   }}
                   className={`
                     w-full flex items-center space-x-3 px-4 py-3
@@ -219,5 +219,5 @@ export const AIServiceSelector: React.FC<AIServiceSelectorProps> = ({
         )}
       </CardContent>
     </Card>
-  )
-}
+  );
+};

@@ -63,10 +63,7 @@ export class AdvancedParameterValidator {
   /**
    * 添加參數互斥關係
    */
-  addMutualExclusion(
-    provider: string,
-    exclusion: ParameterMutualExclusion
-  ): void {
+  addMutualExclusion(provider: string, exclusion: ParameterMutualExclusion): void {
     const exclusions = this.mutualExclusions.get(provider) || [];
     exclusions.push(exclusion);
     this.mutualExclusions.set(provider, exclusions);
@@ -86,10 +83,7 @@ export class AdvancedParameterValidator {
       const paramValue = parameters[dep.parameter];
       const dependsOnValue = parameters[dep.dependsOn];
 
-      if (
-        paramValue !== undefined &&
-        !dep.condition(paramValue, dependsOnValue)
-      ) {
+      if (paramValue !== undefined && !dep.condition(paramValue, dependsOnValue)) {
         errors.push(dep.message);
       }
     }
@@ -171,22 +165,11 @@ export class AdvancedParameterValidator {
   } {
     const dependencyResult = this.validateDependencies(provider, parameters);
     const exclusionResult = this.validateMutualExclusions(provider, parameters);
-    const customRuleResult = this.validateCustomRules(
-      provider,
-      parameters,
-      definitions
-    );
+    const customRuleResult = this.validateCustomRules(provider, parameters, definitions);
 
     return {
-      valid:
-        dependencyResult.valid &&
-        exclusionResult.valid &&
-        customRuleResult.valid,
-      errors: [
-        ...dependencyResult.errors,
-        ...exclusionResult.errors,
-        ...customRuleResult.errors,
-      ],
+      valid: dependencyResult.valid && exclusionResult.valid && customRuleResult.valid,
+      errors: [...dependencyResult.errors, ...exclusionResult.errors, ...customRuleResult.errors],
       dependencyErrors: dependencyResult.errors,
       exclusionErrors: exclusionResult.errors,
       customRuleErrors: customRuleResult.errors,
@@ -236,15 +219,13 @@ export class BuiltinValidationRules {
             if (value < 0.1) {
               return {
                 valid: false,
-                message:
-                  'Temperature below 0.1 may produce very repetitive responses',
+                message: 'Temperature below 0.1 may produce very repetitive responses',
               };
             }
             if (value > 1.5) {
               return {
                 valid: false,
-                message:
-                  'Temperature above 1.5 may produce incoherent responses',
+                message: 'Temperature above 1.5 may produce incoherent responses',
               };
             }
           }
@@ -280,8 +261,7 @@ export class BuiltinValidationRules {
             if (value > 20 && allParams.topP < 0.5) {
               return {
                 valid: false,
-                message:
-                  'High topK with low topP may produce unexpected results',
+                message: 'High topK with low topP may produce unexpected results',
               };
             }
           }
@@ -301,14 +281,12 @@ export class BuiltinValidationRules {
         description: '檢查token限制的合理性',
         validate: (value, definition) => {
           if (
-            (definition.key === 'maxTokens' ||
-              definition.key === 'maxOutputTokens') &&
+            (definition.key === 'maxTokens' || definition.key === 'maxOutputTokens') &&
             value > 4000
           ) {
             return {
               valid: false,
-              message:
-                'Very high token limits may result in expensive API calls',
+              message: 'Very high token limits may result in expensive API calls',
             };
           }
           return { valid: true };
@@ -347,15 +325,13 @@ export class BuiltinDependencies {
       {
         parameter: 'quality',
         dependsOn: 'model',
-        condition: (quality, model) =>
-          model === 'dall-e-3' || quality === 'standard',
+        condition: (quality, model) => model === 'dall-e-3' || quality === 'standard',
         message: 'Quality parameter is only supported by DALL-E 3',
       },
       {
         parameter: 'style',
         dependsOn: 'model',
-        condition: (style, model) =>
-          model === 'dall-e-3' || style === undefined,
+        condition: (style, model) => model === 'dall-e-3' || style === undefined,
         message: 'Style parameter is only supported by DALL-E 3',
       },
     ];

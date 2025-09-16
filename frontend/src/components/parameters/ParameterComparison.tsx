@@ -1,18 +1,18 @@
-import React from 'react'
-import { ParameterDefinition } from '../../types'
-import { Card } from '../ui/Card'
+import React from 'react';
+import { ParameterDefinition } from '../../types';
+import { Card } from '../ui/Card';
 
 interface ParameterSet {
-  id: string
-  name: string
-  values: Record<string, any>
-  color?: string
+  id: string;
+  name: string;
+  values: Record<string, any>;
+  color?: string;
 }
 
 interface ParameterComparisonProps {
-  definitions: ParameterDefinition[]
-  parameterSets: ParameterSet[]
-  className?: string
+  definitions: ParameterDefinition[];
+  parameterSets: ParameterSet[];
+  className?: string;
 }
 
 export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
@@ -26,41 +26,41 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
     'bg-purple-100 text-purple-800 border-purple-200',
     'bg-orange-100 text-orange-800 border-orange-200',
     'bg-pink-100 text-pink-800 border-pink-200',
-  ]
+  ];
 
   const formatValue = (definition: ParameterDefinition, value: any) => {
     if (value === undefined || value === null) {
-      return definition.defaultValue !== undefined ? `${definition.defaultValue} (預設)` : '未設定'
+      return definition.defaultValue !== undefined ? `${definition.defaultValue} (預設)` : '未設定';
     }
 
     if (definition.type === 'number') {
       if (definition.key === 'temperature') {
-        return Number(value).toFixed(2)
+        return Number(value).toFixed(2);
       } else if (definition.key.includes('Token')) {
-        return Number(value).toLocaleString()
+        return Number(value).toLocaleString();
       }
-      return String(value)
+      return String(value);
     }
 
-    return String(value)
-  }
+    return String(value);
+  };
 
   const getValueDifference = (definition: ParameterDefinition, values: any[]) => {
-    const uniqueValues = [...new Set(values.filter(v => v !== undefined))]
-    return uniqueValues.length > 1
-  }
+    const uniqueValues = [...new Set(values.filter(v => v !== undefined))];
+    return uniqueValues.length > 1;
+  };
 
   const getPerformanceComparison = (parameterSet: ParameterSet) => {
-    const temp = parameterSet.values.temperature || 0.7
-    const maxTokens = parameterSet.values.maxTokens || parameterSet.values.maxOutputTokens || 1000
+    const temp = parameterSet.values.temperature || 0.7;
+    const maxTokens = parameterSet.values.maxTokens || parameterSet.values.maxOutputTokens || 1000;
 
     return {
       creativity: temp < 0.3 ? '低' : temp > 1.0 ? '高' : '中',
       consistency: temp < 0.3 ? '高' : temp > 1.0 ? '低' : '中',
       cost: maxTokens < 500 ? '低' : maxTokens > 2000 ? '高' : '中',
       speed: maxTokens < 500 ? '快' : maxTokens > 2000 ? '慢' : '中',
-    }
-  }
+    };
+  };
 
   if (parameterSets.length === 0) {
     return (
@@ -70,7 +70,7 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
           <p>選擇多個參數設定進行比較</p>
         </div>
       </Card>
-    )
+    );
   }
 
   return (
@@ -99,8 +99,8 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
             </thead>
             <tbody>
               {definitions.map(definition => {
-                const values = parameterSets.map(set => set.values[definition.key])
-                const hasDifference = getValueDifference(definition, values)
+                const values = parameterSets.map(set => set.values[definition.key]);
+                const hasDifference = getValueDifference(definition, values);
 
                 return (
                   <tr
@@ -126,7 +126,7 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
                       </td>
                     ))}
                   </tr>
-                )
+                );
               })}
             </tbody>
           </table>
@@ -149,8 +149,8 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
                 </h5>
                 <div className='space-y-1'>
                   {parameterSets.map((set, index) => {
-                    const performance = getPerformanceComparison(set)
-                    const value = performance[metric as keyof typeof performance]
+                    const performance = getPerformanceComparison(set);
+                    const value = performance[metric as keyof typeof performance];
                     return (
                       <div key={set.id} className='flex items-center justify-between'>
                         <span
@@ -172,7 +172,7 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
                           {value}
                         </span>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -185,17 +185,17 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
           <h4 className='text-md font-medium text-gray-800'>選擇建議</h4>
           <div className='space-y-2'>
             {parameterSets.map((set, index) => {
-              const performance = getPerformanceComparison(set)
-              let recommendation = ''
+              const performance = getPerformanceComparison(set);
+              let recommendation = '';
 
               if (performance.creativity === '高' && performance.cost === '高') {
-                recommendation = '適合創意寫作，但成本較高'
+                recommendation = '適合創意寫作，但成本較高';
               } else if (performance.consistency === '高' && performance.cost === '低') {
-                recommendation = '適合問答和事實查詢，經濟實惠'
+                recommendation = '適合問答和事實查詢，經濟實惠';
               } else if (performance.creativity === '中' && performance.consistency === '中') {
-                recommendation = '平衡設定，適合一般用途'
+                recommendation = '平衡設定，適合一般用途';
               } else {
-                recommendation = '自定義設定，請根據需求選擇'
+                recommendation = '自定義設定，請根據需求選擇';
               }
 
               return (
@@ -208,7 +208,7 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
                     <span className='text-sm'>{recommendation}</span>
                   </div>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -223,19 +223,19 @@ export const ParameterComparison: React.FC<ParameterComparisonProps> = ({
                   def,
                   parameterSets.map(set => set.values[def.key])
                 )
-              )
+              );
 
               if (differentParams.length === 0) {
-                return '所有參數設定相同'
+                return '所有參數設定相同';
               }
 
               return `${differentParams.length} 個參數有差異: ${differentParams
                 .map(p => p.key)
-                .join(', ')}`
+                .join(', ')}`;
             })()}
           </div>
         </div>
       </div>
     </Card>
-  )
-}
+  );
+};

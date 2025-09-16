@@ -43,18 +43,12 @@ export const sendChatMessage = async (req: Request, res: Response) => {
 /**
  * 發送帶上下文的聊天訊息
  */
-export const sendChatMessageWithContext = async (
-  req: Request,
-  res: Response
-) => {
+export const sendChatMessageWithContext = async (req: Request, res: Response) => {
   try {
     const { messages, provider = 'openai', parameters = {} } = req.body;
 
     const chatService = AIServiceFactory.createChatService(provider);
-    const response = await chatService.sendMessageWithContext(
-      messages,
-      parameters
-    );
+    const response = await chatService.sendMessageWithContext(messages, parameters);
 
     res.json({
       success: true,
@@ -142,10 +136,7 @@ export const createImageVariation = async (req: Request, res: Response) => {
 
     const imageService = AIServiceFactory.createImageService(provider);
 
-    const response = await imageService.createImageVariation(
-      imageFile.buffer,
-      parameters
-    );
+    const response = await imageService.createImageVariation(imageFile.buffer, parameters);
 
     res.json({
       success: true,

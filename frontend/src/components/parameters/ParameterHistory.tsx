@@ -1,23 +1,23 @@
-import React, { useState } from 'react'
-import { ParameterDefinition } from '../../types'
-import { Card } from '../ui/Card'
-import { Button } from '../ui/Button'
+import React, { useState } from 'react';
+import { ParameterDefinition } from '../../types';
+import { Card } from '../ui/Card';
+import { Button } from '../ui/Button';
 
 interface ParameterHistoryEntry {
-  id: string
-  timestamp: Date
-  values: Record<string, any>
-  description?: string
-  source: 'manual' | 'preset' | 'auto'
+  id: string;
+  timestamp: Date;
+  values: Record<string, any>;
+  description?: string;
+  source: 'manual' | 'preset' | 'auto';
 }
 
 interface ParameterHistoryProps {
-  definitions: ParameterDefinition[]
-  history: ParameterHistoryEntry[]
-  currentValues: Record<string, any>
-  onRestore: (values: Record<string, any>) => void
-  onClear?: () => void
-  className?: string
+  definitions: ParameterDefinition[];
+  history: ParameterHistoryEntry[];
+  currentValues: Record<string, any>;
+  onRestore: (values: Record<string, any>) => void;
+  onClear?: () => void;
+  className?: string;
 }
 
 export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
@@ -28,8 +28,8 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
   onClear,
   className = '',
 }) => {
-  const [selectedEntry, setSelectedEntry] = useState<string | null>(null)
-  const [showDiff, setShowDiff] = useState(false)
+  const [selectedEntry, setSelectedEntry] = useState<string | null>(null);
+  const [showDiff, setShowDiff] = useState(false);
 
   const formatTimestamp = (timestamp: Date) => {
     return new Intl.DateTimeFormat('zh-TW', {
@@ -38,76 +38,76 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    }).format(timestamp)
-  }
+    }).format(timestamp);
+  };
 
   const getSourceIcon = (source: string) => {
     switch (source) {
       case 'manual':
-        return '✏️'
+        return '✏️';
       case 'preset':
-        return '📋'
+        return '📋';
       case 'auto':
-        return '🤖'
+        return '🤖';
       default:
-        return '📝'
+        return '📝';
     }
-  }
+  };
 
   const getSourceLabel = (source: string) => {
     switch (source) {
       case 'manual':
-        return '手動設定'
+        return '手動設定';
       case 'preset':
-        return '預設配置'
+        return '預設配置';
       case 'auto':
-        return '自動調整'
+        return '自動調整';
       default:
-        return '未知'
+        return '未知';
     }
-  }
+  };
 
   const compareWithCurrent = (historyValues: Record<string, any>) => {
     const differences: Array<{
-      key: string
-      current: any
-      history: any
-      type: 'added' | 'removed' | 'changed'
-    }> = []
+      key: string;
+      current: any;
+      history: any;
+      type: 'added' | 'removed' | 'changed';
+    }> = [];
 
-    const allKeys = new Set([...Object.keys(currentValues), ...Object.keys(historyValues)])
+    const allKeys = new Set([...Object.keys(currentValues), ...Object.keys(historyValues)]);
 
     for (const key of allKeys) {
-      const currentValue = currentValues[key]
-      const historyValue = historyValues[key]
+      const currentValue = currentValues[key];
+      const historyValue = historyValues[key];
 
       if (currentValue === undefined && historyValue !== undefined) {
-        differences.push({ key, current: currentValue, history: historyValue, type: 'removed' })
+        differences.push({ key, current: currentValue, history: historyValue, type: 'removed' });
       } else if (currentValue !== undefined && historyValue === undefined) {
-        differences.push({ key, current: currentValue, history: historyValue, type: 'added' })
+        differences.push({ key, current: currentValue, history: historyValue, type: 'added' });
       } else if (currentValue !== historyValue) {
-        differences.push({ key, current: currentValue, history: historyValue, type: 'changed' })
+        differences.push({ key, current: currentValue, history: historyValue, type: 'changed' });
       }
     }
 
-    return differences
-  }
+    return differences;
+  };
 
   const formatValue = (definition: ParameterDefinition | undefined, value: any) => {
     if (value === undefined || value === null) {
-      return '未設定'
+      return '未設定';
     }
 
     if (definition?.type === 'number') {
       if (definition.key === 'temperature') {
-        return Number(value).toFixed(2)
+        return Number(value).toFixed(2);
       } else if (definition.key.includes('Token')) {
-        return Number(value).toLocaleString()
+        return Number(value).toLocaleString();
       }
     }
 
-    return String(value)
-  }
+    return String(value);
+  };
 
   if (history.length === 0) {
     return (
@@ -118,7 +118,7 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
           <p className='text-sm mt-1'>當您修改參數時，變更記錄會顯示在這裡</p>
         </div>
       </Card>
-    )
+    );
   }
 
   return (
@@ -145,9 +145,9 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
 
         <div className='space-y-3'>
           {history.map((entry, index) => {
-            const isSelected = selectedEntry === entry.id
-            const differences = compareWithCurrent(entry.values)
-            const isLatest = index === 0
+            const isSelected = selectedEntry === entry.id;
+            const differences = compareWithCurrent(entry.values);
+            const isLatest = index === 0;
 
             return (
               <div
@@ -184,8 +184,8 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
                     variant='outline'
                     size='sm'
                     onClick={e => {
-                      e.stopPropagation()
-                      onRestore(entry.values)
+                      e.stopPropagation();
+                      onRestore(entry.values);
                     }}
                     disabled={isLatest}
                   >
@@ -200,7 +200,7 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
                         <h5 className='text-sm font-medium text-gray-700'>與當前設定的差異</h5>
                         <div className='space-y-1'>
                           {differences.map(diff => {
-                            const definition = definitions.find(d => d.key === diff.key)
+                            const definition = definitions.find(d => d.key === diff.key);
                             return (
                               <div
                                 key={diff.key}
@@ -234,7 +234,7 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
                                   </span>
                                 </div>
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
@@ -243,13 +243,13 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
                         <h5 className='text-sm font-medium text-gray-700'>參數設定</h5>
                         <div className='grid grid-cols-2 gap-2 text-sm'>
                           {Object.entries(entry.values).map(([key, value]) => {
-                            const definition = definitions.find(d => d.key === key)
+                            const definition = definitions.find(d => d.key === key);
                             return (
                               <div key={key} className='flex justify-between'>
                                 <span className='text-gray-600'>{key}:</span>
                                 <span className='font-mono'>{formatValue(definition, value)}</span>
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </div>
@@ -257,7 +257,7 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
                   </div>
                 )}
               </div>
-            )
+            );
           })}
         </div>
 
@@ -284,5 +284,5 @@ export const ParameterHistory: React.FC<ParameterHistoryProps> = ({
         </div>
       </div>
     </Card>
-  )
-}
+  );
+};

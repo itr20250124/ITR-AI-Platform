@@ -13,12 +13,7 @@ export const DEFAULT_RETRY_CONFIG: RetryConfig = {
   backoffStrategy: 'exponential',
   baseDelay: 1000, // 1 second
   maxDelay: 30000, // 30 seconds
-  retryableErrors: [
-    'RATE_LIMIT_EXCEEDED',
-    'SERVER_ERROR',
-    'CONNECTION_ERROR',
-    'TIMEOUT',
-  ],
+  retryableErrors: ['RATE_LIMIT_EXCEEDED', 'SERVER_ERROR', 'CONNECTION_ERROR', 'TIMEOUT'],
 };
 
 /**
@@ -34,10 +29,7 @@ export class RetryHandler {
   /**
    * 執行帶重試的操作
    */
-  async execute<T>(
-    operation: () => Promise<T>,
-    context: string = 'operation'
-  ): Promise<T> {
+  async execute<T>(operation: () => Promise<T>, context: string = 'operation'): Promise<T> {
     let lastError: Error;
 
     for (let attempt = 0; attempt <= this.config.maxRetries; attempt++) {
@@ -136,9 +128,7 @@ export class RetryHandler {
 /**
  * 創建預設重試處理器
  */
-export function createRetryHandler(
-  config?: Partial<RetryConfig>
-): RetryHandler {
+export function createRetryHandler(config?: Partial<RetryConfig>): RetryHandler {
   return new RetryHandler(config);
 }
 

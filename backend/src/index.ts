@@ -62,27 +62,17 @@ app.use('*', (req, res) => {
 });
 
 // 全域錯誤處理
-app.use(
-  (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    console.error('Unhandled error:', err);
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Unhandled error:', err);
 
-    res.status(500).json({
-      success: false,
-      error: {
-        code: 'INTERNAL_SERVER_ERROR',
-        message:
-          process.env.NODE_ENV === 'production'
-            ? '服務器內部錯誤'
-            : err.message,
-      },
-    });
-  }
-);
+  res.status(500).json({
+    success: false,
+    error: {
+      code: 'INTERNAL_SERVER_ERROR',
+      message: process.env.NODE_ENV === 'production' ? '服務器內部錯誤' : err.message,
+    },
+  });
+});
 
 // 啟動服務器
 app.listen(config.port, () => {

@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "es2020": true,
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": [
     "eslint:recommended",
@@ -60,17 +61,14 @@
     "react/jsx-fragments": ["error", "syntax"],
     "react/jsx-no-useless-fragment": "error",
     "react/jsx-curly-brace-presence": ["error", { "props": "never", "children": "never" }],
-    
+
     // React Hooks Rules
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    
+
     // React Refresh Rules
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
-    ],
-    
+    "react-refresh/only-export-components": ["warn", { "allowConstantExport": true }],
+
     // Accessibility Rules
     "jsx-a11y/alt-text": "error",
     "jsx-a11y/anchor-has-content": "error",
@@ -94,7 +92,7 @@
     "jsx-a11y/role-has-required-aria-props": "error",
     "jsx-a11y/role-supports-aria-props": "error",
     "jsx-a11y/scope": "error",
-    
+
     // Import Rules
     "import/no-unresolved": "error",
     "import/named": "error",
@@ -110,14 +108,7 @@
     "import/order": [
       "error",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -125,26 +116,20 @@
         }
       }
     ],
-    
+
     // TypeScript Rules
-    "@typescript-eslint/no-unused-vars": [
-      "error",
-      { "argsIgnorePattern": "^_" }
-    ],
+    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/prefer-const": "error",
     "@typescript-eslint/no-var-requires": "error",
-    "@typescript-eslint/consistent-type-imports": [
-      "error",
-      { "prefer": "type-imports" }
-    ],
+    "@typescript-eslint/consistent-type-imports": ["error", { "prefer": "type-imports" }],
     "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
     "@typescript-eslint/prefer-optional-chain": "error",
-    
+
     // General ESLint Rules
     "no-console": "warn",
     "no-debugger": "error",
@@ -158,7 +143,7 @@
     "no-implied-eval": "error",
     "no-new-func": "error",
     "no-script-url": "error",
-    
+
     // Code Style Rules
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": ["error", "single", { "avoidEscape": true }],
@@ -188,10 +173,18 @@
       }
     }
   },
-  "ignorePatterns": [
-    "dist",
-    "node_modules",
-    "*.config.js",
-    "*.config.ts"
+  "ignorePatterns": ["dist", "node_modules", "*.config.js", "*.config.ts"],
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*", "**/*.test.*", "**/*.spec.*"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "no-unused-vars": "off",
+        "no-undef": "off"
+      }
+    }
   ]
 }

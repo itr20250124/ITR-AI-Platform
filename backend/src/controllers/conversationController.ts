@@ -89,10 +89,7 @@ export const getUserConversations = async (
       order: order as 'asc' | 'desc' | undefined,
     };
 
-    const result = await ConversationService.getUserConversations(
-      userId,
-      options
-    );
+    const result = await ConversationService.getUserConversations(userId, options);
 
     res.json({
       success: true,
@@ -133,10 +130,7 @@ export const getConversationById = async (
       return;
     }
 
-    const conversation = await ConversationService.getConversationById(
-      conversationId,
-      userId
-    );
+    const conversation = await ConversationService.getConversationById(conversationId, userId);
 
     if (!conversation) {
       res.status(404).json({
@@ -189,11 +183,11 @@ export const updateConversation = async (
       return;
     }
 
-    const conversation = await ConversationService.updateConversation(
-      conversationId,
-      userId,
-      { title, aiProvider, parameters }
-    );
+    const conversation = await ConversationService.updateConversation(conversationId, userId, {
+      title,
+      aiProvider,
+      parameters,
+    });
 
     if (!conversation) {
       res.status(404).json({
@@ -246,10 +240,7 @@ export const deleteConversation = async (
       return;
     }
 
-    const success = await ConversationService.deleteConversation(
-      conversationId,
-      userId
-    );
+    const success = await ConversationService.deleteConversation(conversationId, userId);
 
     if (!success) {
       res.status(404).json({
@@ -282,10 +273,7 @@ export const deleteConversation = async (
 /**
  * 添加訊息到對話
  */
-export const addMessage = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> => {
+export const addMessage = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { conversationId } = req.params;
     const { role, content, metadata } = req.body;
@@ -325,10 +313,7 @@ export const addMessage = async (
     }
 
     // 驗證用戶是否有權限訪問此對話
-    const conversation = await ConversationService.getConversationById(
-      conversationId,
-      userId
-    );
+    const conversation = await ConversationService.getConversationById(conversationId, userId);
     if (!conversation) {
       res.status(404).json({
         success: false,
@@ -467,11 +452,7 @@ export const searchConversations = async (
       offset: offset ? parseInt(offset as string) : undefined,
     };
 
-    const result = await ConversationService.searchConversations(
-      userId,
-      query,
-      options
-    );
+    const result = await ConversationService.searchConversations(userId, query, options);
 
     res.json({
       success: true,

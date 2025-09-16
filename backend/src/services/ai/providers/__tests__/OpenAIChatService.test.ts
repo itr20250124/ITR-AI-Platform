@@ -179,9 +179,7 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockRejectedValue(apiError);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(
-        AIServiceError
-      );
+      await expect(service.sendMessage('Hello')).rejects.toThrow(AIServiceError);
     });
 
     it('should throw error when no response from OpenAI', async () => {
@@ -193,9 +191,7 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert
-      await expect(service.sendMessage('Hello')).rejects.toThrow(
-        'No response from OpenAI'
-      );
+      await expect(service.sendMessage('Hello')).rejects.toThrow('No response from OpenAI');
     });
 
     it('should include conversation ID in metadata', async () => {
@@ -317,14 +313,12 @@ describe('OpenAIChatService', () => {
   describe('makeRequest', () => {
     it('should call sendMessage for string input', async () => {
       // Arrange
-      const sendMessageSpy = jest
-        .spyOn(service, 'sendMessage')
-        .mockResolvedValue({
-          id: 'test',
-          content: 'response',
-          role: 'assistant',
-          timestamp: new Date(),
-        });
+      const sendMessageSpy = jest.spyOn(service, 'sendMessage').mockResolvedValue({
+        id: 'test',
+        content: 'response',
+        role: 'assistant',
+        timestamp: new Date(),
+      });
 
       // Act
       await service.makeRequest('Hello', { temperature: 0.7 });
@@ -359,9 +353,9 @@ describe('OpenAIChatService', () => {
 
     it('should throw error for invalid input format', async () => {
       // Act & Assert
-      await expect(
-        service.makeRequest({ invalid: 'input' }, {})
-      ).rejects.toThrow('Invalid input format for OpenAI chat service');
+      await expect(service.makeRequest({ invalid: 'input' }, {})).rejects.toThrow(
+        'Invalid input format for OpenAI chat service'
+      );
     });
   });
 
@@ -379,14 +373,10 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert - should not throw for valid temperature
-      await expect(
-        service.sendMessage('test', { temperature: 1.5 })
-      ).resolves.toBeDefined();
+      await expect(service.sendMessage('test', { temperature: 1.5 })).resolves.toBeDefined();
 
       // Should handle invalid temperature gracefully (parameter validation in base class)
-      await expect(
-        service.sendMessage('test', { temperature: 3 })
-      ).resolves.toBeDefined();
+      await expect(service.sendMessage('test', { temperature: 3 })).resolves.toBeDefined();
     });
 
     it('should validate maxTokens parameter', async () => {
@@ -402,9 +392,7 @@ describe('OpenAIChatService', () => {
       mockOpenAI.chat.completions.create.mockResolvedValue(mockResponse);
 
       // Act & Assert
-      await expect(
-        service.sendMessage('test', { maxTokens: 2000 })
-      ).resolves.toBeDefined();
+      await expect(service.sendMessage('test', { maxTokens: 2000 })).resolves.toBeDefined();
     });
   });
 });

@@ -11,12 +11,9 @@ import { GeminiChatService } from './providers/GeminiChatService';
  * AI服務工廠類
  */
 export class AIServiceFactory {
-  private static chatServices: Map<string, () => ChatServiceInterface> =
-    new Map();
-  private static imageServices: Map<string, () => ImageServiceInterface> =
-    new Map();
-  private static videoServices: Map<string, () => VideoServiceInterface> =
-    new Map();
+  private static chatServices: Map<string, () => ChatServiceInterface> = new Map();
+  private static imageServices: Map<string, () => ImageServiceInterface> = new Map();
+  private static videoServices: Map<string, () => VideoServiceInterface> = new Map();
 
   /**
    * 初始化所有服務提供商
@@ -43,30 +40,21 @@ export class AIServiceFactory {
   /**
    * 註冊聊天服務
    */
-  static registerChatService(
-    provider: string,
-    factory: () => ChatServiceInterface
-  ) {
+  static registerChatService(provider: string, factory: () => ChatServiceInterface) {
     this.chatServices.set(provider, factory);
   }
 
   /**
    * 註冊圖片生成服務
    */
-  static registerImageService(
-    provider: string,
-    factory: () => ImageServiceInterface
-  ) {
+  static registerImageService(provider: string, factory: () => ImageServiceInterface) {
     this.imageServices.set(provider, factory);
   }
 
   /**
    * 註冊影片生成服務
    */
-  static registerVideoService(
-    provider: string,
-    factory: () => VideoServiceInterface
-  ) {
+  static registerVideoService(provider: string, factory: () => VideoServiceInterface) {
     this.videoServices.set(provider, factory);
   }
 
@@ -127,10 +115,7 @@ export class AIServiceFactory {
   /**
    * 檢查服務提供商是否可用
    */
-  static isProviderAvailable(
-    provider: string,
-    type: 'chat' | 'image' | 'video'
-  ): boolean {
+  static isProviderAvailable(provider: string, type: 'chat' | 'image' | 'video'): boolean {
     switch (type) {
       case 'chat':
         return this.chatServices.has(provider);

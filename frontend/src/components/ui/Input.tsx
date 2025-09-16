@@ -1,13 +1,13 @@
-import React, { InputHTMLAttributes, forwardRef } from 'react'
-import { AlertCircle } from 'lucide-react'
+import React, { InputHTMLAttributes, forwardRef } from 'react';
+import { AlertCircle } from 'lucide-react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  error?: string
-  helperText?: string
-  fullWidth?: boolean
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
+  label?: string;
+  error?: string;
+  helperText?: string;
+  fullWidth?: boolean;
+  leftIcon?: React.ReactNode;
+  rightIcon?: React.ReactNode;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -25,8 +25,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`
-    const hasError = !!error
+    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
+    const hasError = !!error;
 
     const baseClasses = `
       block px-3 py-2
@@ -38,7 +38,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       focus:outline-none focus:ring-2 focus:ring-offset-2
       dark:focus:ring-offset-gray-900
       disabled:opacity-50 disabled:cursor-not-allowed
-    `
+    `;
 
     const stateClasses = hasError
       ? `
@@ -48,10 +48,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       : `
         border-gray-300 dark:border-gray-600
         focus:border-primary-500 focus:ring-primary-500
-      `
+      `;
 
-    const widthClass = fullWidth ? 'w-full' : ''
-    const paddingClass = leftIcon ? 'pl-10' : rightIcon ? 'pr-10' : ''
+    const widthClass = fullWidth ? 'w-full' : '';
+    const paddingClass = leftIcon ? 'pl-10' : rightIcon ? 'pr-10' : '';
 
     return (
       <div className={fullWidth ? 'w-full' : ''}>
@@ -106,8 +106,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           </div>
         )}
       </div>
-    )
+    );
   }
-)
+);
 
-Input.displayName = 'Input'
+Input.displayName = 'Input';

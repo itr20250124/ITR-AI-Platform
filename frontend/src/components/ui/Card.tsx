@@ -1,8 +1,8 @@
-import React, { HTMLAttributes, forwardRef } from 'react'
+import React, { HTMLAttributes, forwardRef } from 'react';
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'outlined' | 'elevated'
-  padding?: 'none' | 'sm' | 'md' | 'lg'
+  variant?: 'default' | 'outlined' | 'elevated';
+  padding?: 'none' | 'sm' | 'md' | 'lg';
 }
 
 export const Card = forwardRef<HTMLDivElement, CardProps>(
@@ -11,7 +11,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       bg-white dark:bg-gray-800
       rounded-lg
       transition-colors duration-200
-    `
+    `;
 
     const variantClasses = {
       default: `
@@ -25,14 +25,14 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
         border border-gray-200 dark:border-gray-700
         transition-shadow duration-200
       `,
-    }
+    };
 
     const paddingClasses = {
       none: '',
       sm: 'p-4',
       md: 'p-6',
       lg: 'p-8',
-    }
+    };
 
     return (
       <div
@@ -47,16 +47,16 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-Card.displayName = 'Card'
+Card.displayName = 'Card';
 
 // Card子組件
 interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
-  title?: string
-  subtitle?: string
+  title?: string;
+  subtitle?: string;
 }
 
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
@@ -77,11 +77,11 @@ export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
         {subtitle && <p className='text-sm text-gray-500 dark:text-gray-400 mt-1'>{subtitle}</p>}
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-CardHeader.displayName = 'CardHeader'
+CardHeader.displayName = 'CardHeader';
 
 interface CardContentProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -91,11 +91,11 @@ export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
       <div ref={ref} className={`${className}`} {...props}>
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-CardContent.displayName = 'CardContent'
+CardContent.displayName = 'CardContent';
 
 interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -113,8 +113,8 @@ export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-CardFooter.displayName = 'CardFooter'
+CardFooter.displayName = 'CardFooter';

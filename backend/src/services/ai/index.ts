@@ -13,8 +13,4 @@ export { GeminiChatService } from './providers/GeminiChatService';
 
 // 工具導出
 export { RetryHandler, createRetryHandler } from './utils/RetryHandler';
-export {
-  RateLimiter,
-  RateLimiterManager,
-  rateLimiterManager,
-} from './utils/RateLimiter';
+export { RateLimiter, RateLimiterManager, rateLimiterManager } from './utils/RateLimiter';

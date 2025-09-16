@@ -1,11 +1,11 @@
-import React from 'react'
-import { Loader2 } from 'lucide-react'
+import React from 'react';
+import { Loader2 } from 'lucide-react';
 
 interface LoadingProps {
-  size?: 'sm' | 'md' | 'lg'
-  text?: string
-  fullScreen?: boolean
-  className?: string
+  size?: 'sm' | 'md' | 'lg';
+  text?: string;
+  fullScreen?: boolean;
+  className?: string;
 }
 
 export const Loading: React.FC<LoadingProps> = ({
@@ -18,32 +18,32 @@ export const Loading: React.FC<LoadingProps> = ({
     sm: 'w-4 h-4',
     md: 'w-8 h-8',
     lg: 'w-12 h-12',
-  }
+  };
 
   const content = (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <Loader2 className={`${sizeClasses[size]} animate-spin text-primary-600`} />
       {text && <p className='mt-2 text-sm text-gray-600 dark:text-gray-400'>{text}</p>}
     </div>
-  )
+  );
 
   if (fullScreen) {
     return (
       <div className='fixed inset-0 z-50 flex items-center justify-center bg-white dark:bg-gray-900 bg-opacity-75'>
         {content}
       </div>
-    )
+    );
   }
 
-  return content
-}
+  return content;
+};
 
 // 骨架屏組件
 interface SkeletonProps {
-  className?: string
-  width?: string
-  height?: string
-  rounded?: boolean
+  className?: string;
+  width?: string;
+  height?: string;
+  rounded?: boolean;
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({
@@ -62,8 +62,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
         ${className}
       `}
     />
-  )
-}
+  );
+};
 
 // 卡片骨架屏
 export const CardSkeleton: React.FC = () => {
@@ -79,8 +79,8 @@ export const CardSkeleton: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // 列表項骨架屏
 export const ListItemSkeleton: React.FC = () => {
@@ -92,5 +92,5 @@ export const ListItemSkeleton: React.FC = () => {
         <Skeleton height='h-3' width='w-1/2' />
       </div>
     </div>
-  )
-}
+  );
+};

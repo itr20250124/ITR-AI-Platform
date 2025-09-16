@@ -1,8 +1,8 @@
 // UI組件
-export * from './ui'
+export * from './ui';
 
 // 佈局組件
-export * from './layout'
+export * from './layout';
 
 // 功能組件
-export { ThemeToggle } from './ThemeToggle'
+export { ThemeToggle } from './ThemeToggle';

@@ -51,10 +51,7 @@ export async function getAvailableProviders(
 /**
  * 根據類型獲取服務提供商
  */
-export async function getProvidersByType(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function getProvidersByType(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const { type } = req.params;
 
@@ -68,9 +65,7 @@ export async function getProvidersByType(
       });
     }
 
-    const configs = await AIConfigManager.getConfigsByType(
-      type as 'chat' | 'image' | 'video'
-    );
+    const configs = await AIConfigManager.getConfigsByType(type as 'chat' | 'image' | 'video');
 
     const providers = configs.map(config => ({
       id: config.name,
@@ -174,10 +169,7 @@ export async function getProviderParameters(
 /**
  * 驗證參數
  */
-export async function validateParameters(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function validateParameters(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const { provider, type } = req.params;
     const { parameters } = req.body;
@@ -301,10 +293,7 @@ export async function getParameterDefaults(
 
  * 獲取參數預設配置
  */
-export async function getParameterPresets(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function getParameterPresets(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const { provider } = req.params;
     const { tag } = req.query;
@@ -362,10 +351,7 @@ export async function createParameterPreset(
     }
 
     // 驗證參數
-    const validation = globalParameterService.validateParameters(
-      provider,
-      parameters
-    );
+    const validation = globalParameterService.validateParameters(provider, parameters);
     if (!validation.isValid) {
       return res.status(400).json({
         success: false,
@@ -407,10 +393,7 @@ export async function createParameterPreset(
 /**
  * 獲取參數統計信息
  */
-export async function getParameterStats(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function getParameterStats(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const stats = globalParameterService.getParameterStats();
 
@@ -434,10 +417,7 @@ export async function getParameterStats(
 /**
  * 處理和驗證參數
  */
-export async function processParameters(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function processParameters(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const { provider } = req.params;
     const { parameters, options = {} } = req.body;
@@ -452,16 +432,12 @@ export async function processParameters(
       });
     }
 
-    const result = globalParameterService.processParameters(
-      provider,
-      parameters,
-      {
-        validateDependencies: true,
-        validateCustomRules: true,
-        includeWarnings: true,
-        ...options,
-      }
-    );
+    const result = globalParameterService.processParameters(provider, parameters, {
+      validateDependencies: true,
+      validateCustomRules: true,
+      includeWarnings: true,
+      ...options,
+    });
 
     if (result.valid) {
       res.json({

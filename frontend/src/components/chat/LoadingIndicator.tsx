@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 
 interface LoadingIndicatorProps {
-  message?: string
-  className?: string
+  message?: string;
+  className?: string;
 }
 
 export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
@@ -41,5 +41,5 @@ export const LoadingIndicator: React.FC<LoadingIndicatorProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,14 +1,14 @@
-import React, { HTMLAttributes, forwardRef } from 'react'
+import React, { HTMLAttributes, forwardRef } from 'react';
 
 interface GridProps extends HTMLAttributes<HTMLDivElement> {
-  cols?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-  gap?: 'sm' | 'md' | 'lg' | 'xl'
+  cols?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+  gap?: 'sm' | 'md' | 'lg' | 'xl';
   responsive?: {
-    sm?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    md?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    lg?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    xl?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-  }
+    sm?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    md?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    lg?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    xl?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+  };
 }
 
 export const Grid = forwardRef<HTMLDivElement, GridProps>(
@@ -21,14 +21,14 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(
       5: 'grid-cols-5',
       6: 'grid-cols-6',
       12: 'grid-cols-12',
-    }
+    };
 
     const gapClasses = {
       sm: 'gap-2',
       md: 'gap-4',
       lg: 'gap-6',
       xl: 'gap-8',
-    }
+    };
 
     const responsiveClasses = responsive
       ? [
@@ -39,7 +39,7 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(
         ]
           .filter(Boolean)
           .join(' ')
-      : ''
+      : '';
 
     return (
       <div
@@ -55,21 +55,21 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-Grid.displayName = 'Grid'
+Grid.displayName = 'Grid';
 
 // Grid項目組件
 interface GridItemProps extends HTMLAttributes<HTMLDivElement> {
-  span?: 1 | 2 | 3 | 4 | 5 | 6 | 12
+  span?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
   responsive?: {
-    sm?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    md?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    lg?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-    xl?: 1 | 2 | 3 | 4 | 5 | 6 | 12
-  }
+    sm?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    md?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    lg?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+    xl?: 1 | 2 | 3 | 4 | 5 | 6 | 12;
+  };
 }
 
 export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
@@ -82,7 +82,7 @@ export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
       5: 'col-span-5',
       6: 'col-span-6',
       12: 'col-span-12',
-    }
+    };
 
     const responsiveClasses = responsive
       ? [
@@ -93,7 +93,7 @@ export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
         ]
           .filter(Boolean)
           .join(' ')
-      : ''
+      : '';
 
     return (
       <div
@@ -107,8 +107,8 @@ export const GridItem = forwardRef<HTMLDivElement, GridItemProps>(
       >
         {children}
       </div>
-    )
+    );
   }
-)
+);
 
-GridItem.displayName = 'GridItem'
+GridItem.displayName = 'GridItem';

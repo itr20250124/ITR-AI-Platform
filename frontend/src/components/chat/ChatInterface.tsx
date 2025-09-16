@@ -1,21 +1,21 @@
-﻿import React, { useEffect, useRef } from 'react'
-import { Conversation, Message } from '../../types'
-import { ChatHeader } from './ChatHeader'
-import { ChatInput } from './ChatInput'
-import { ChatMessage } from './ChatMessage'
-import { LoadingIndicator } from './LoadingIndicator'
-import { Card } from '../ui/Card'
+﻿import React, { useEffect, useRef } from 'react';
+import { Conversation, Message } from '../../types';
+import { ChatHeader } from './ChatHeader';
+import { ChatInput } from './ChatInput';
+import { ChatMessage } from './ChatMessage';
+import { LoadingIndicator } from './LoadingIndicator';
+import { Card } from '../ui/Card';
 
 interface ChatInterfaceProps {
-  conversation: Conversation | null
-  messages: Message[]
-  isLoading: boolean
-  isStreaming: boolean
-  onSendMessage: (content: string) => void
-  onUpdateConversation: (updates: Partial<Conversation>) => void
-  onDeleteConversation: () => void
-  onNewConversation: () => void
-  className?: string
+  conversation: Conversation | null;
+  messages: Message[];
+  isLoading: boolean;
+  isStreaming: boolean;
+  onSendMessage: (content: string) => void;
+  onUpdateConversation: (updates: Partial<Conversation>) => void;
+  onDeleteConversation: () => void;
+  onNewConversation: () => void;
+  className?: string;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
@@ -29,19 +29,19 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   onNewConversation,
   className = '',
 }) => {
-  const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages])
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const handleSendMessage = (content: string) => {
     if (!content.trim() || isLoading) {
-      return
+      return;
     }
 
-    onSendMessage(content.trim())
-  }
+    onSendMessage(content.trim());
+  };
 
   if (!conversation) {
     return (
@@ -58,7 +58,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           </button>
         </Card>
       </div>
-    )
+    );
   }
 
   return (
@@ -107,5 +107,5 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};

@@ -1,64 +1,66 @@
-﻿import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { Conversation } from '../../types'
-import { ConversationStats } from '../../services/chatService'
-import { Button } from '../ui/Button'
-import { Card } from '../ui/Card'
+﻿import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Conversation } from '../../types';
+import { ConversationStats } from '../../services/chatService';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
 
 interface ConversationSidebarProps {
-  conversations: Conversation[]
-  currentConversationId?: string
-  isLoading: boolean
-  stats: ConversationStats | null
-  isOpen: boolean
-  onSelectConversation: (id: string) => void
-  onNewConversation: () => void
-  onDeleteConversation: (id: string) => void
-  onSearchConversations: (query: string) => void
-  onToggle: () => void
-  onRefresh: () => void
-  className?: string
+  conversations: Conversation[];
+  currentConversationId?: string;
+  isLoading: boolean;
+  stats: ConversationStats | null;
+  isOpen: boolean;
+  onSelectConversation: (id: string) => void;
+  onNewConversation: () => void;
+  onDeleteConversation: (id: string) => void;
+  onSearchConversations: (query: string) => void;
+  onToggle: () => void;
+  onRefresh: () => void;
+  className?: string;
 }
 
 const providerIcons: Record<string, string> = {
   openai: '🤖',
   gemini: '✨',
-}
+};
 
 const formatRelativeTime = (input: Date) => {
-  const date = new Date(input)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / (1000 * 60))
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+  const date = new Date(input);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffMinutes < 1) return '剛剛'
-  if (diffMinutes < 60) return `${diffMinutes} 分鐘前`
-  if (diffHours < 24) return `${diffHours} 小時前`
-  if (diffDays < 7) return `${diffDays} 天前`
+  if (diffMinutes < 1) return '剛剛';
+  if (diffMinutes < 60) return `${diffMinutes} 分鐘前`;
+  if (diffHours < 24) return `${diffHours} 小時前`;
+  if (diffDays < 7) return `${diffDays} 天前`;
 
   return new Intl.DateTimeFormat('zh-TW', {
     month: 'short',
     day: 'numeric',
-  }).format(date)
-}
+  }).format(date);
+};
 
 const getConversationPreview = (conversation: Conversation) => {
   if (!conversation.messages?.length) {
-    return '尚無訊息'
+    return '尚無訊息';
   }
 
-  const lastMessage = conversation.messages[conversation.messages.length - 1]
-  const prefix = lastMessage.role === 'user' ? '我: ' : 'AI: '
+  const lastMessage = conversation.messages[conversation.messages.length - 1];
+  const prefix = lastMessage.role === 'user' ? '我: ' : 'AI: ';
   const content =
-    lastMessage.content.length > 50 ? `${lastMessage.content.slice(0, 50)}...` : lastMessage.content
+    lastMessage.content.length > 50
+      ? `${lastMessage.content.slice(0, 50)}...`
+      : lastMessage.content;
 
-  return `${prefix}${content}`
-}
+  return `${prefix}${content}`;
+};
 
 const getProviderIcon = (provider: string) => {
-  return providerIcons[provider] ?? '💬'
-}
+  return providerIcons[provider] ?? '💬';
+};
 
 export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   conversations,
@@ -74,41 +76,41 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
   onRefresh,
   className = '',
 }) => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
-  const searchInputRef = useRef<HTMLInputElement>(null)
+  const [searchQuery, setSearchQuery] = useState('');
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'f' && isOpen) {
-        event.preventDefault()
-        searchInputRef.current?.focus()
+        event.preventDefault();
+        searchInputRef.current?.focus();
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen])
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
 
   const handleSearch = (value: string) => {
-    setSearchQuery(value)
-    onSearchConversations(value)
-  }
+    setSearchQuery(value);
+    onSearchConversations(value);
+  };
 
   const handleDeleteClick = (event: React.MouseEvent, id: string) => {
-    event.stopPropagation()
-    setPendingDeleteId(id)
-  }
+    event.stopPropagation();
+    setPendingDeleteId(id);
+  };
 
   const confirmDelete = () => {
-    if (!pendingDeleteId) return
-    onDeleteConversation(pendingDeleteId)
-    setPendingDeleteId(null)
-  }
+    if (!pendingDeleteId) return;
+    onDeleteConversation(pendingDeleteId);
+    setPendingDeleteId(null);
+  };
 
-  const cancelDelete = () => setPendingDeleteId(null)
+  const cancelDelete = () => setPendingDeleteId(null);
 
-  const statistics = useMemo(() => stats, [stats])
+  const statistics = useMemo(() => stats, [stats]);
 
   if (!isOpen) {
     return (
@@ -144,7 +146,7 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
           </svg>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -321,5 +323,5 @@ export const ConversationSidebar: React.FC<ConversationSidebarProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};

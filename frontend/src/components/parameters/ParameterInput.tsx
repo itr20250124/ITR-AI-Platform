@@ -1,28 +1,28 @@
-﻿import React from 'react'
-import { ParameterDefinition } from '../../types'
+﻿import React from 'react';
+import { ParameterDefinition } from '../../types';
 
-type ParameterValue = string | number | boolean | undefined
+type ParameterValue = string | number | boolean | undefined;
 
 interface ParameterInputProps {
-  definition: ParameterDefinition
-  value: ParameterValue
-  onChange: (value: ParameterValue) => void
-  error?: string
-  disabled?: boolean
-  className?: string
+  definition: ParameterDefinition;
+  value: ParameterValue;
+  onChange: (value: ParameterValue) => void;
+  error?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
 const formatDefaultValue = (value: unknown): string => {
   if (value === null || value === undefined) {
-    return '無'
+    return '無';
   }
 
   if (typeof value === 'boolean') {
-    return value ? '是' : '否'
+    return value ? '是' : '否';
   }
 
-  return String(value)
-}
+  return String(value);
+};
 
 export const ParameterInput: React.FC<ParameterInputProps> = ({
   definition,
@@ -32,8 +32,8 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
   disabled = false,
   className = '',
 }) => {
-  const hasMinOrMax = definition.min !== undefined || definition.max !== undefined
-  const currentBoolean = (value ?? definition.defaultValue ?? false) as boolean
+  const hasMinOrMax = definition.min !== undefined || definition.max !== undefined;
+  const currentBoolean = (value ?? definition.defaultValue ?? false) as boolean;
 
   const baseInputClasses = `
     w-full px-3 py-2 border rounded-md transition-colors
@@ -41,21 +41,21 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
     disabled:bg-gray-100 disabled:cursor-not-allowed
     ${error ? 'border-red-500' : 'border-gray-300'}
     ${className}
-  `
+  `;
 
   const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const nextValue = event.target.value
+    const nextValue = event.target.value;
 
     if (nextValue === '') {
-      onChange(undefined)
-      return
+      onChange(undefined);
+      return;
     }
 
-    const parsed = Number(nextValue)
+    const parsed = Number(nextValue);
     if (!Number.isNaN(parsed)) {
-      onChange(parsed)
+      onChange(parsed);
     }
-  }
+  };
 
   const renderInput = () => {
     switch (definition.type) {
@@ -80,7 +80,7 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
               </div>
             )}
           </div>
-        )
+        );
 
       case 'select':
         return (
@@ -96,7 +96,7 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
               </option>
             ))}
           </select>
-        )
+        );
 
       case 'boolean':
         return (
@@ -110,7 +110,7 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
             />
             <span className='text-sm text-gray-700'>{currentBoolean ? '已啟用' : '已停用'}</span>
           </div>
-        )
+        );
 
       case 'string':
       default:
@@ -129,9 +129,9 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
             maxLength={definition.max}
             minLength={definition.min}
           />
-        )
+        );
     }
-  }
+  };
 
   return (
     <div className='space-y-2'>
@@ -150,5 +150,5 @@ export const ParameterInput: React.FC<ParameterInputProps> = ({
 
       {error && <p className='text-xs text-red-600'>{error}</p>}
     </div>
-  )
-}
+  );
+};

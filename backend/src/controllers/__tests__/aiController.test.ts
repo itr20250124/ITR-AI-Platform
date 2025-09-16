@@ -48,9 +48,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
         message: 'Hello',
@@ -88,9 +86,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
         message: 'Hello',
@@ -109,14 +105,10 @@ describe('AI Controller', () => {
       const mockChatService = {
         sendMessage: jest
           .fn()
-          .mockRejectedValue(
-            new AIServiceError('openai', 'RATE_LIMIT', 'Rate limit exceeded')
-          ),
+          .mockRejectedValue(new AIServiceError('openai', 'RATE_LIMIT', 'Rate limit exceeded')),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
         message: 'Hello',
@@ -144,9 +136,7 @@ describe('AI Controller', () => {
         sendMessage: jest.fn().mockRejectedValue(new Error('Generic error')),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
         message: 'Hello',
@@ -180,9 +170,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       const messages = [
         { role: 'user', content: 'Hello' },
@@ -197,17 +185,13 @@ describe('AI Controller', () => {
       };
 
       // Act
-      await sendChatMessageWithContext(
-        mockRequest as Request,
-        mockResponse as Response
-      );
+      await sendChatMessageWithContext(mockRequest as Request, mockResponse as Response);
 
       // Assert
       expect(AIServiceFactory.createChatService).toHaveBeenCalledWith('gemini');
-      expect(mockChatService.sendMessageWithContext).toHaveBeenCalledWith(
-        messages,
-        { temperature: 0.5 }
-      );
+      expect(mockChatService.sendMessageWithContext).toHaveBeenCalledWith(messages, {
+        temperature: 0.5,
+      });
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
         data: {
@@ -225,17 +209,11 @@ describe('AI Controller', () => {
         sendMessageWithContext: jest
           .fn()
           .mockRejectedValue(
-            new AIServiceError(
-              'gemini',
-              'CONTENT_BLOCKED',
-              'Content blocked by safety filters'
-            )
+            new AIServiceError('gemini', 'CONTENT_BLOCKED', 'Content blocked by safety filters')
           ),
       };
 
-      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(
-        mockChatService
-      );
+      (AIServiceFactory.createChatService as jest.Mock).mockReturnValue(mockChatService);
 
       mockRequest.body = {
         messages: [{ role: 'user', content: 'Test' }],
@@ -243,10 +221,7 @@ describe('AI Controller', () => {
       };
 
       // Act
-      await sendChatMessageWithContext(
-        mockRequest as Request,
-        mockResponse as Response
-      );
+      await sendChatMessageWithContext(mockRequest as Request, mockResponse as Response);
 
       // Assert
       expect(mockStatus).toHaveBeenCalledWith(400);
@@ -274,9 +249,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(
-        mockImageService
-      );
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
 
       mockRequest.body = {
         prompt: 'A beautiful sunset',
@@ -288,13 +261,10 @@ describe('AI Controller', () => {
       await generateImage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith(
-        'openai'
-      );
-      expect(mockImageService.generateImage).toHaveBeenCalledWith(
-        'A beautiful sunset',
-        { size: '1024x1024' }
-      );
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(mockImageService.generateImage).toHaveBeenCalledWith('A beautiful sunset', {
+        size: '1024x1024',
+      });
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
         data: {
@@ -313,17 +283,11 @@ describe('AI Controller', () => {
         generateImage: jest
           .fn()
           .mockRejectedValue(
-            new AIServiceError(
-              'openai',
-              'INVALID_PROMPT',
-              'Invalid prompt provided'
-            )
+            new AIServiceError('openai', 'INVALID_PROMPT', 'Invalid prompt provided')
           ),
       };
 
-      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(
-        mockImageService
-      );
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
 
       mockRequest.body = {
         prompt: 'Invalid prompt',
@@ -358,9 +322,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(
-        mockImageService
-      );
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
 
       const mockFile = {
         buffer: Buffer.from('fake-image-data'),
@@ -375,19 +337,11 @@ describe('AI Controller', () => {
       mockRequest.file = mockFile as Express.Multer.File;
 
       // Act
-      await createImageVariation(
-        mockRequest as Request,
-        mockResponse as Response
-      );
+      await createImageVariation(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith(
-        'openai'
-      );
-      expect(mockImageService.createImageVariation).toHaveBeenCalledWith(
-        mockFile.buffer,
-        { n: 2 }
-      );
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
+      expect(mockImageService.createImageVariation).toHaveBeenCalledWith(mockFile.buffer, { n: 2 });
       expect(mockJson).toHaveBeenCalledWith({
         success: true,
         data: {
@@ -408,10 +362,7 @@ describe('AI Controller', () => {
       mockRequest.file = undefined;
 
       // Act
-      await createImageVariation(
-        mockRequest as Request,
-        mockResponse as Response
-      );
+      await createImageVariation(mockRequest as Request, mockResponse as Response);
 
       // Assert
       expect(mockStatus).toHaveBeenCalledWith(400);
@@ -438,9 +389,7 @@ describe('AI Controller', () => {
         }),
       };
 
-      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(
-        mockImageService
-      );
+      (AIServiceFactory.createImageService as jest.Mock).mockReturnValue(mockImageService);
 
       const mockFiles = {
         image: [
@@ -484,9 +433,7 @@ describe('AI Controller', () => {
       await editImage(mockRequest as Request, mockResponse as Response);
 
       // Assert
-      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith(
-        'openai'
-      );
+      expect(AIServiceFactory.createImageService).toHaveBeenCalledWith('openai');
       expect(mockImageService.editImage).toHaveBeenCalledWith(
         mockFiles.image[0].buffer,
         mockFiles.mask[0].buffer,

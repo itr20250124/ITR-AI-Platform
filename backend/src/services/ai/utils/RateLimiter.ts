@@ -36,31 +36,20 @@ export class RateLimiter {
   /**
    * 執行單個規則
    */
-  private async enforceRule(
-    identifier: string,
-    rule: RateLimitRule,
-    now: number
-  ): Promise<void> {
+  private async enforceRule(identifier: string, rule: RateLimitRule, now: number): Promise<void> {
     const key = `${identifier}:${rule.period}`;
     const records = this.requests.get(key) || [];
 
     // 清理過期記錄
-    const validRecords = records.filter(
-      record => now - record.timestamp < rule.period * 1000
-    );
+    const validRecords = records.filter(record => now - record.timestamp < rule.period * 1000);
 
     // 計算當前時間窗口內的請求數
-    const currentRequests = validRecords.reduce(
-      (sum, record) => sum + record.count,
-      0
-    );
+    const currentRequests = validRecords.reduce((sum, record) => sum + record.count, 0);
 
     // 檢查是否超過限制
     if (currentRequests >= rule.requests) {
       const oldestRecord = validRecords[0];
-      const retryAfter = Math.ceil(
-        (oldestRecord.timestamp + rule.period * 1000 - now) / 1000
-      );
+      const retryAfter = Math.ceil((oldestRecord.timestamp + rule.period * 1000 - now) / 1000);
 
       throw new RateLimitError(
         retryAfter,
@@ -98,9 +87,7 @@ export class RateLimiter {
       const [, periodStr] = key.split(':');
       const period = parseInt(periodStr) * 1000;
 
-      const validRecords = records.filter(
-        record => now - record.timestamp < period
-      );
+      const validRecords = records.filter(record => now - record.timestamp < period);
 
       if (validRecords.length === 0) {
         this.requests.delete(key);
@@ -121,18 +108,10 @@ export class RateLimiter {
       const key = `${identifier}:${rule.period}`;
       const records = this.requests.get(key) || [];
 
-      const validRecords = records.filter(
-        record => now - record.timestamp < rule.period * 1000
-      );
+      const validRecords = records.filter(record => now - record.timestamp < rule.period * 1000);
 
-      const currentRequests = validRecords.reduce(
-        (sum, record) => sum + record.count,
-        0
-      );
-      remaining[`${rule.requests}/${rule.period}s`] = Math.max(
-        0,
-        rule.requests - currentRequests
-      );
+      const currentRequests = validRecords.reduce((sum, record) => sum + record.count, 0);
+      remaining[`${rule.requests}/${rule.period}s`] = Math.max(0, rule.requests - currentRequests);
     }
 
     return remaining;
@@ -175,10 +154,7 @@ export class RateLimiterManager {
   /**
    * 獲取剩餘請求數
    */
-  getRemainingRequests(
-    provider: string,
-    userId: string
-  ): Record<string, number> {
+  getRemainingRequests(provider: string, userId: string): Record<string, number> {
     const limiter = this.limiters.get(provider);
     return limiter ? limiter.getRemainingRequests(userId) : {};
   }

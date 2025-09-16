@@ -8,10 +8,7 @@ const userService = new UserService();
 /**
  * 用戶註冊
  */
-export async function register(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function register(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const userData: CreateUserData = req.body;
 
@@ -51,10 +48,7 @@ export async function register(
 /**
  * 用戶登入
  */
-export async function login(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function login(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     const loginData: LoginData = req.body;
 
@@ -94,10 +88,7 @@ export async function login(
 /**
  * 獲取當前用戶信息
  */
-export async function getProfile(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function getProfile(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     if (!req.user) {
       return res.status(401).json({
@@ -150,10 +141,7 @@ export async function getProfile(
 /**
  * 更新用戶偏好設定
  */
-export async function updatePreferences(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function updatePreferences(req: AuthenticatedRequest, res: Response): Promise<void> {
   try {
     if (!req.user) {
       return res.status(401).json({
@@ -166,10 +154,7 @@ export async function updatePreferences(
     }
 
     const preferences = req.body;
-    const user = await userService.updateUserPreferences(
-      req.user.userId,
-      preferences
-    );
+    const user = await userService.updateUserPreferences(req.user.userId, preferences);
 
     // 移除密碼字段
     const { password, ...userWithoutPassword } = user;
@@ -197,10 +182,7 @@ export async function updatePreferences(
 /**
  * 用戶登出 (客戶端處理token清除)
  */
-export async function logout(
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> {
+export async function logout(req: AuthenticatedRequest, res: Response): Promise<void> {
   res.json({
     success: true,
     message: '登出成功',

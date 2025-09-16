@@ -83,12 +83,8 @@ describe('Gemini Integration', () => {
       const geminiService = factory.createChatService('gemini');
       const openaiService = factory.createChatService('openai');
 
-      const geminiTempParam = geminiService.supportedParameters.find(
-        p => p.key === 'temperature'
-      );
-      const openaiTempParam = openaiService.supportedParameters.find(
-        p => p.key === 'temperature'
-      );
+      const geminiTempParam = geminiService.supportedParameters.find(p => p.key === 'temperature');
+      const openaiTempParam = openaiService.supportedParameters.find(p => p.key === 'temperature');
 
       expect(geminiTempParam?.defaultValue).toBe(0.9);
       expect(openaiTempParam?.defaultValue).toBe(0.7);
@@ -98,12 +94,8 @@ describe('Gemini Integration', () => {
       const geminiService = factory.createChatService('gemini');
       const openaiService = factory.createChatService('openai');
 
-      const geminiTempParam = geminiService.supportedParameters.find(
-        p => p.key === 'temperature'
-      );
-      const openaiTempParam = openaiService.supportedParameters.find(
-        p => p.key === 'temperature'
-      );
+      const geminiTempParam = geminiService.supportedParameters.find(p => p.key === 'temperature');
+      const openaiTempParam = openaiService.supportedParameters.find(p => p.key === 'temperature');
 
       expect(geminiTempParam?.max).toBe(1);
       expect(openaiTempParam?.max).toBe(2);
@@ -113,12 +105,8 @@ describe('Gemini Integration', () => {
       const geminiService = factory.createChatService('gemini');
       const openaiService = factory.createChatService('openai');
 
-      const geminiTopK = geminiService.supportedParameters.find(
-        p => p.key === 'topK'
-      );
-      const openaiTopK = openaiService.supportedParameters.find(
-        p => p.key === 'topK'
-      );
+      const geminiTopK = geminiService.supportedParameters.find(p => p.key === 'topK');
+      const openaiTopK = openaiService.supportedParameters.find(p => p.key === 'topK');
 
       expect(geminiTopK).toBeDefined();
       expect(openaiTopK).toBeUndefined();
@@ -131,9 +119,7 @@ describe('Gemini Integration', () => {
       const geminiMaxTokens = geminiService.supportedParameters.find(
         p => p.key === 'maxOutputTokens'
       );
-      const openaiMaxTokens = openaiService.supportedParameters.find(
-        p => p.key === 'maxTokens'
-      );
+      const openaiMaxTokens = openaiService.supportedParameters.find(p => p.key === 'maxTokens');
 
       expect(geminiMaxTokens).toBeDefined();
       expect(openaiMaxTokens).toBeDefined();
@@ -163,18 +149,14 @@ describe('Gemini Integration', () => {
   describe('Model Options', () => {
     it('should support gemini-pro and gemini-pro-vision models', () => {
       const chatService = factory.createChatService('gemini');
-      const modelParam = chatService.supportedParameters.find(
-        p => p.key === 'model'
-      );
+      const modelParam = chatService.supportedParameters.find(p => p.key === 'model');
 
       expect(modelParam?.options).toEqual(['gemini-pro', 'gemini-pro-vision']);
     });
 
     it('should default to gemini-pro model', () => {
       const chatService = factory.createChatService('gemini');
-      const modelParam = chatService.supportedParameters.find(
-        p => p.key === 'model'
-      );
+      const modelParam = chatService.supportedParameters.find(p => p.key === 'model');
 
       expect(modelParam?.defaultValue).toBe('gemini-pro');
     });

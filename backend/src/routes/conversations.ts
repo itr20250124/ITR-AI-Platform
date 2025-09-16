@@ -25,12 +25,7 @@ const router = Router();
  * @route POST /api/conversations
  * @access Private
  */
-router.post(
-  '/',
-  authenticateToken,
-  validateBody(createConversationSchema),
-  createConversation
-);
+router.post('/', authenticateToken, validateBody(createConversationSchema), createConversation);
 
 /**
  * 獲取用戶的所有對話
@@ -96,10 +91,6 @@ router.post(
  * @route GET /api/conversations/:conversationId/messages
  * @access Private
  */
-router.get(
-  '/:conversationId/messages',
-  authenticateToken,
-  getConversationMessages
-);
+router.get('/:conversationId/messages', authenticateToken, getConversationMessages);
 
 export default router;

@@ -11,10 +11,7 @@ import { createRetryHandler } from '../utils/RetryHandler';
 /**
  * Google Gemini聊天服務
  */
-export class GeminiChatService
-  extends BaseAIService
-  implements ChatServiceInterface
-{
+export class GeminiChatService extends BaseAIService implements ChatServiceInterface {
   public provider = 'gemini';
   public supportedParameters: ParameterDefinition[] = [
     {
@@ -76,18 +73,13 @@ export class GeminiChatService
   }
 
   protected getBaseURL(): string {
-    return (
-      process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com'
-    );
+    return process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com';
   }
 
   /**
    * 獲取模型實例
    */
-  private getModel(
-    modelName: string,
-    parameters: Record<string, any>
-  ): GenerativeModel {
+  private getModel(modelName: string, parameters: Record<string, any>): GenerativeModel {
     return this.genAI.getGenerativeModel({
       model: modelName,
       generationConfig: {
@@ -245,9 +237,7 @@ export class GeminiChatService
    */
   private extractUsageInfo(
     response: any
-  ):
-    | { promptTokens: number; completionTokens: number; totalTokens: number }
-    | undefined {
+  ): { promptTokens: number; completionTokens: number; totalTokens: number } | undefined {
     // Gemini API目前不提供詳細的token使用信息
     // 這裡可以根據實際API回應結構進行調整
     const usageMetadata = response.usageMetadata;
@@ -269,19 +259,11 @@ export class GeminiChatService
 
     // 檢查是否是Gemini特定錯誤
     if (error.message?.includes('API_KEY_INVALID')) {
-      throw new AIServiceError(
-        this.provider,
-        'UNAUTHORIZED',
-        'Invalid Gemini API key'
-      );
+      throw new AIServiceError(this.provider, 'UNAUTHORIZED', 'Invalid Gemini API key');
     }
 
     if (error.message?.includes('QUOTA_EXCEEDED')) {
-      throw new AIServiceError(
-        this.provider,
-        'RATE_LIMIT_EXCEEDED',
-        'Gemini API quota exceeded'
-      );
+      throw new AIServiceError(this.provider, 'RATE_LIMIT_EXCEEDED', 'Gemini API quota exceeded');
     }
 
     if (error.message?.includes('SAFETY')) {
@@ -293,11 +275,7 @@ export class GeminiChatService
     }
 
     if (error.message?.includes('MODEL_NOT_FOUND')) {
-      throw new AIServiceError(
-        this.provider,
-        'BAD_REQUEST',
-        'Requested Gemini model not found'
-      );
+      throw new AIServiceError(this.provider, 'BAD_REQUEST', 'Requested Gemini model not found');
     }
 
     // 使用基礎錯誤處理

@@ -1,12 +1,12 @@
-import React from 'react'
-import { ParameterDefinition } from '../../types'
-import { Card } from '../ui/Card'
+import React from 'react';
+import { ParameterDefinition } from '../../types';
+import { Card } from '../ui/Card';
 
 interface ParameterPreviewProps {
-  provider: string
-  definitions: ParameterDefinition[]
-  values: Record<string, any>
-  className?: string
+  provider: string;
+  definitions: ParameterDefinition[];
+  values: Record<string, any>;
+  className?: string;
 }
 
 export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
@@ -17,8 +17,8 @@ export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
 }) => {
   // 計算預估成本（基於token數量）
   const estimateCost = () => {
-    const maxTokens = values.maxTokens || values.maxOutputTokens || 1000
-    const model = values.model || 'gpt-3.5-turbo'
+    const maxTokens = values.maxTokens || values.maxOutputTokens || 1000;
+    const model = values.model || 'gpt-3.5-turbo';
 
     // 簡化的成本計算（實際應該從API獲取最新價格）
     const costPerToken =
@@ -30,78 +30,78 @@ export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
         'gemini-pro': 0.000001,
         'dall-e-2': 0.02,
         'dall-e-3': 0.04,
-      }[model] || 0.000002
+      }[model] || 0.000002;
 
-    return (maxTokens * costPerToken).toFixed(4)
-  }
+    return (maxTokens * costPerToken).toFixed(4);
+  };
 
   // 獲取參數建議
   const getParameterInsights = () => {
-    const insights: Array<{ type: 'info' | 'warning' | 'error'; message: string }> = []
+    const insights: Array<{ type: 'info' | 'warning' | 'error'; message: string }> = [];
 
-    const temperature = values.temperature
+    const temperature = values.temperature;
     if (temperature !== undefined) {
       if (temperature < 0.3) {
         insights.push({
           type: 'info',
           message: '低溫度設定會產生更一致但可能較重複的回應',
-        })
+        });
       } else if (temperature > 1.2) {
         insights.push({
           type: 'warning',
           message: '高溫度設定可能產生不連貫或不相關的回應',
-        })
+        });
       }
     }
 
-    const maxTokens = values.maxTokens || values.maxOutputTokens
+    const maxTokens = values.maxTokens || values.maxOutputTokens;
     if (maxTokens && maxTokens > 2000) {
       insights.push({
         type: 'warning',
         message: '高token限制會增加API成本',
-      })
+      });
     }
 
-    const model = values.model
+    const model = values.model;
     if (model === 'dall-e-3' && values.n > 1) {
       insights.push({
         type: 'error',
         message: 'DALL-E 3 只支援生成一張圖片',
-      })
+      });
     }
 
-    return insights
-  }
+    return insights;
+  };
 
   // 獲取性能預測
   const getPerformancePrediction = () => {
-    const temperature = values.temperature || 0.7
-    const maxTokens = values.maxTokens || values.maxOutputTokens || 1000
+    const temperature = values.temperature || 0.7;
+    const maxTokens = values.maxTokens || values.maxOutputTokens || 1000;
 
-    let creativity = '中等'
-    let consistency = '中等'
-    let speed = '中等'
+    let creativity = '中等';
+    let consistency = '中等';
+    let speed = '中等';
 
     if (temperature < 0.3) {
-      creativity = '低'
-      consistency = '高'
+      creativity = '低';
+      consistency = '高';
     } else if (temperature > 1.0) {
-      creativity = '高'
-      consistency = '低'
+      creativity = '高';
+      consistency = '低';
     }
 
     if (maxTokens < 500) {
-      speed = '快'
+      speed = '快';
     } else if (maxTokens > 2000) {
-      speed = '慢'
+      speed = '慢';
     }
 
-    return { creativity, consistency, speed }
-  }
+    return { creativity, consistency, speed };
+  };
 
-  const insights = getParameterInsights()
-  const performance = getPerformancePrediction()
-  const estimatedCost = estimateCost()
+  const insights = getParameterInsights();
+  const performance = getPerformancePrediction();
+  const estimatedCost = estimateCost();
 
   return (
     <Card className={`p-6 ${className}`}>
@@ -114,7 +114,7 @@ export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
           <div className='bg-gray-50 rounded-lg p-4'>
             <div className='grid grid-cols-2 gap-4 text-sm'>
               {definitions.map(def => {
-                const value = values[def.key] ?? def.defaultValue
+                const value = values[def.key] ?? def.defaultValue;
                 return (
                   <div key={def.key} className='flex justify-between'>
                     <span className='text-gray-600'>{def.key}:</span>
@@ -122,7 +122,7 @@ export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
                       {value !== undefined ? String(value) : '未設定'}
                     </span>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -198,22 +198,22 @@ export const ParameterPreview: React.FC<ParameterPreviewProps> = ({
           <h4 className='text-md font-medium text-gray-800'>適用場景</h4>
           <div className='text-sm text-gray-600'>
             {(() => {
-              const temp = values.temperature || 0.7
-              const maxTokens = values.maxTokens || values.maxOutputTokens || 1000
+              const temp = values.temperature || 0.7;
+              const maxTokens = values.maxTokens || values.maxOutputTokens || 1000;
 
               if (temp < 0.3 && maxTokens < 1000) {
-                return '📋 適合：問答、事實查詢、簡潔回應'
+                return '📋 適合：問答、事實查詢、簡潔回應';
               } else if (temp > 0.8 && maxTokens > 1500) {
-                return '✍️ 適合：創意寫作、故事創作、頭腦風暴'
+                return '✍️ 適合：創意寫作、故事創作、頭腦風暴';
               } else if (temp >= 0.3 && temp <= 0.8) {
-                return '💼 適合：一般對話、分析、解釋說明'
+                return '💼 適合：一般對話、分析、解釋說明';
               } else {
-                return '🔧 自定義設定，請根據具體需求調整'
+                return '🔧 自定義設定，請根據具體需求調整';
               }
             })()}
           </div>
         </div>
       </div>
     </Card>
-  )
-}
+  );
+};

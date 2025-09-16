@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -9,24 +9,24 @@ import {
   ModalHeader,
   ModalContent,
   ModalFooter,
-} from './ui'
-import { Save, Trash2, Plus, Settings } from 'lucide-react'
+} from './ui';
+import { Save, Trash2, Plus, Settings } from 'lucide-react';
 
 interface ParameterPreset {
-  id: string
-  name: string
-  description?: string
-  parameters: Record<string, any>
-  createdAt: Date
+  id: string;
+  name: string;
+  description?: string;
+  parameters: Record<string, any>;
+  createdAt: Date;
 }
 
 interface ParameterPresetsProps {
-  presets: ParameterPreset[]
-  currentParameters: Record<string, any>
-  onLoadPreset: (parameters: Record<string, any>) => void
-  onSavePreset: (name: string, description: string, parameters: Record<string, any>) => void
-  onDeletePreset: (presetId: string) => void
-  className?: string
+  presets: ParameterPreset[];
+  currentParameters: Record<string, any>;
+  onLoadPreset: (parameters: Record<string, any>) => void;
+  onSavePreset: (name: string, description: string, parameters: Record<string, any>) => void;
+  onDeletePreset: (presetId: string) => void;
+  className?: string;
 }
 
 export const ParameterPresets: React.FC<ParameterPresetsProps> = ({
@@ -37,33 +37,33 @@ export const ParameterPresets: React.FC<ParameterPresetsProps> = ({
   onDeletePreset,
   className = '',
 }) => {
-  const [showSaveModal, setShowSaveModal] = useState(false)
-  const [presetName, setPresetName] = useState('')
-  const [presetDescription, setPresetDescription] = useState('')
-  const [selectedPreset, setSelectedPreset] = useState<string | null>(null)
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [presetName, setPresetName] = useState('');
+  const [presetDescription, setPresetDescription] = useState('');
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
   const handleSavePreset = () => {
     if (presetName.trim()) {
-      onSavePreset(presetName.trim(), presetDescription.trim(), currentParameters)
-      setPresetName('')
-      setPresetDescription('')
-      setShowSaveModal(false)
+      onSavePreset(presetName.trim(), presetDescription.trim(), currentParameters);
+      setPresetName('');
+      setPresetDescription('');
+      setShowSaveModal(false);
     }
-  }
+  };
 
   const handleLoadPreset = (preset: ParameterPreset) => {
-    onLoadPreset(preset.parameters)
-    setSelectedPreset(preset.id)
-  }
+    onLoadPreset(preset.parameters);
+    setSelectedPreset(preset.id);
+  };
 
   const handleDeletePreset = (presetId: string) => {
     if (window.confirm('確定要刪除這個預設值嗎？')) {
-      onDeletePreset(presetId)
+      onDeletePreset(presetId);
       if (selectedPreset === presetId) {
-        setSelectedPreset(null)
+        setSelectedPreset(null);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -130,8 +130,8 @@ export const ParameterPresets: React.FC<ParameterPresetsProps> = ({
                         variant='ghost'
                         size='sm'
                         onClick={e => {
-                          e.stopPropagation()
-                          handleDeletePreset(preset.id)
+                          e.stopPropagation();
+                          handleDeletePreset(preset.id);
                         }}
                         className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20'
                       >
@@ -231,5 +231,5 @@ export const ParameterPresets: React.FC<ParameterPresetsProps> = ({
         </ModalFooter>
       </Modal>
     </>
-  )
-}
+  );
+};

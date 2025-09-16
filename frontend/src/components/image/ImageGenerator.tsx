@@ -1,40 +1,40 @@
-import React, { useState } from 'react'
-import { Button } from '../ui/Button'
-import { Input } from '../ui/Input'
-import { Card } from '../ui/Card'
-import { Loading } from '../ui/Loading'
-import { ImageService } from '../../services/imageService'
-import toast from 'react-hot-toast'
+import React, { useState } from 'react';
+import { Button } from '../ui/Button';
+import { Input } from '../ui/Input';
+import { Card } from '../ui/Card';
+import { Loading } from '../ui/Loading';
+import { ImageService } from '../../services/imageService';
+import toast from 'react-hot-toast';
 
 interface ImageGeneratorProps {
-  onImageGenerated?: (image: { imageUrl: string; prompt: string }) => void
+  onImageGenerated?: (image: { imageUrl: string; prompt: string }) => void;
 }
 
 export const ImageGenerator: React.FC<ImageGeneratorProps> = ({ onImageGenerated }) => {
-  const [prompt, setPrompt] = useState('')
-  const [isGenerating, setIsGenerating] = useState(false)
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null)
+  const [prompt, setPrompt] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
-      toast.error('Please enter a prompt')
-      return
+      toast.error('Please enter a prompt');
+      return;
     }
 
-    setIsGenerating(true)
+    setIsGenerating(true);
     try {
-      const imageService = new ImageService()
-      const imageUrl = await imageService.generateImage(prompt)
-      setGeneratedImage(imageUrl)
-      onImageGenerated?.({ imageUrl, prompt })
-      toast.success('Image generated successfully!')
+      const imageService = new ImageService();
+      const imageUrl = await imageService.generateImage(prompt);
+      setGeneratedImage(imageUrl);
+      onImageGenerated?.({ imageUrl, prompt });
+      toast.success('Image generated successfully!');
     } catch (error) {
-      console.error('Error generating image:', error)
-      toast.error('Failed to generate image')
+      console.error('Error generating image:', error);
+      toast.error('Failed to generate image');
     } finally {
-      setIsGenerating(false)
+      setIsGenerating(false);
     }
-  }
+  };
 
   return (
     <Card className='p-6'>
@@ -74,5 +74,5 @@ export const ImageGenerator: React.FC<ImageGeneratorProps> = ({ onImageGenerated
         )}
       </div>
     </Card>
-  )
-}
+  );
+};

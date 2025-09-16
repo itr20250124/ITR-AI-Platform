@@ -1,30 +1,30 @@
-import React, { useState } from 'react'
-import { ImageGenerator } from '../components/image/ImageGenerator'
-import { ImageEditor } from '../components/image/ImageEditor'
-import { ImageHistory } from '../components/image/ImageHistory'
-import { ImageResponse } from '../services/imageService'
+import React, { useState } from 'react';
+import { ImageGenerator } from '../components/image/ImageGenerator';
+import { ImageEditor } from '../components/image/ImageEditor';
+import { ImageHistory } from '../components/image/ImageHistory';
+import { ImageResponse } from '../services/imageService';
 
 export const ImagePage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'generate' | 'edit' | 'history'>('generate')
-  const [selectedImage, setSelectedImage] = useState<ImageResponse | null>(null)
+  const [activeTab, setActiveTab] = useState<'generate' | 'edit' | 'history'>('generate');
+  const [selectedImage, setSelectedImage] = useState<ImageResponse | null>(null);
 
   // 處理圖片生成完成
   const handleImageGenerated = (image: ImageResponse) => {
     // 可以在這裡添加額外的處理邏輯，比如更新歷史列表
-    console.log('圖片生成完成:', image)
-  }
+    console.log('圖片生成完成:', image);
+  };
 
   // 處理圖片處理完成
   const handleImageProcessed = (image: ImageResponse) => {
     // 可以在這裡添加額外的處理邏輯
-    console.log('圖片處理完成:', image)
-  }
+    console.log('圖片處理完成:', image);
+  };
 
   // 處理從歷史中選擇圖片
   const handleImageSelect = (image: ImageResponse) => {
-    setSelectedImage(image)
+    setSelectedImage(image);
     // 可以根據需要切換到相應的標籤頁
-  }
+  };
 
   // 標籤頁配置
   const tabs = [
@@ -73,7 +73,7 @@ export const ImagePage: React.FC = () => {
       ),
       description: '查看和管理生成的圖片',
     },
-  ]
+  ];
 
   return (
     <div className='min-h-screen bg-gray-50'>
@@ -182,7 +182,7 @@ export const ImagePage: React.FC = () => {
               <div className='flex items-center space-x-2'>
                 <button
                   onClick={() => {
-                    setActiveTab('edit')
+                    setActiveTab('edit');
                     // 這裡可以將選中的圖片傳遞給編輯組件
                   }}
                   className='text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600'
@@ -192,10 +192,10 @@ export const ImagePage: React.FC = () => {
                 <button
                   onClick={() => {
                     // 下載圖片
-                    const link = document.createElement('a')
-                    link.href = selectedImage.imageUrl
-                    link.download = `image-${selectedImage.id}.png`
-                    link.click()
+                    const link = document.createElement('a');
+                    link.href = selectedImage.imageUrl;
+                    link.download = `image-${selectedImage.id}.png`;
+                    link.click();
                   }}
                   className='text-xs bg-gray-500 text-white px-2 py-1 rounded hover:bg-gray-600'
                 >
@@ -222,8 +222,8 @@ export const ImagePage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // 添加鍵盤快捷鍵支持
 export const useImagePageKeyboard = (
@@ -231,22 +231,22 @@ export const useImagePageKeyboard = (
 ) => {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.altKey || e.ctrlKey || e.metaKey) return
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
 
       switch (e.key.toLowerCase()) {
         case 'g':
-          setActiveTab('generate')
-          break
+          setActiveTab('generate');
+          break;
         case 'e':
-          setActiveTab('edit')
-          break
+          setActiveTab('edit');
+          break;
         case 'h':
-          setActiveTab('history')
-          break
+          setActiveTab('history');
+          break;
       }
-    }
+    };
 
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [setActiveTab])
-}
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setActiveTab]);
+};

@@ -1,14 +1,14 @@
-﻿import React, { useMemo, useState } from 'react'
-import { Message } from '../../types'
-import { Button } from '../ui/Button'
+﻿import React, { useMemo, useState } from 'react';
+import { Message } from '../../types';
+import { Button } from '../ui/Button';
 
 interface ChatMessageProps {
-  message: Message
-  isStreaming?: boolean
-  onCopy?: () => void
-  onRegenerate?: () => void
-  onStop?: () => void
-  className?: string
+  message: Message;
+  isStreaming?: boolean;
+  onCopy?: () => void;
+  onRegenerate?: () => void;
+  onStop?: () => void;
+  className?: string;
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({
@@ -19,44 +19,44 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   onStop,
   className = '',
 }) => {
-  const [showActions, setShowActions] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [showActions, setShowActions] = useState(false);
+  const [copied, setCopied] = useState(false);
 
-  const isUser = message.role === 'user'
-  const isAssistant = message.role === 'assistant'
+  const isUser = message.role === 'user';
+  const isAssistant = message.role === 'assistant';
 
   const formattedTimestamp = useMemo(() => {
     return new Intl.DateTimeFormat('zh-TW', {
       hour: '2-digit',
       minute: '2-digit',
-    }).format(new Date(message.timestamp))
-  }, [message.timestamp])
+    }).format(new Date(message.timestamp));
+  }, [message.timestamp]);
 
   const handleCopy = async () => {
     if (!onCopy) {
-      return
+      return;
     }
 
-    setCopied(true)
+    setCopied(true);
     try {
-      await onCopy()
+      await onCopy();
     } finally {
-      setTimeout(() => setCopied(false), 2000)
+      setTimeout(() => setCopied(false), 2000);
     }
-  }
+  };
 
   const renderContent = () => {
-    const content = message.content
+    const content = message.content;
 
     if (content.includes('```')) {
-      const parts = content.split('```')
+      const parts = content.split('```');
       return (
         <div className='space-y-2'>
           {parts.map((part, index) => {
             if (index % 2 === 1) {
-              const lines = part.split('\n')
-              const language = lines[0].trim()
-              const code = lines.slice(1).join('\n')
+              const lines = part.split('\n');
+              const language = lines[0].trim();
+              const code = lines.slice(1).join('\n');
 
               return (
                 <div
@@ -68,22 +68,22 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                     <code>{code}</code>
                   </pre>
                 </div>
-              )
+              );
             }
 
             return (
               <div key={index} className='whitespace-pre-wrap'>
                 {part}
               </div>
-            )
+            );
           })}
         </div>
-      )
+      );
     }
 
-    const inlineCodeRegex = /`([^`]+)`/g
+    const inlineCodeRegex = /`([^`]+)`/g;
     if (inlineCodeRegex.test(content)) {
-      const segments = content.split(inlineCodeRegex)
+      const segments = content.split(inlineCodeRegex);
       return (
         <div className='whitespace-pre-wrap'>
           {segments.map((segment, index) =>
@@ -96,11 +96,11 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
             )
           )}
         </div>
-      )
+      );
     }
 
-    return <div className='whitespace-pre-wrap'>{content}</div>
-  }
+    return <div className='whitespace-pre-wrap'>{content}</div>;
+  };
 
   return (
     <div
@@ -190,5 +190,5 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

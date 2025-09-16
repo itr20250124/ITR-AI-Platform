@@ -46,8 +46,7 @@ export const registerSchema = Joi.object({
     .required()
     .messages({
       'string.min': '密碼至少需要6個字符',
-      'string.pattern.base':
-        '密碼必須包含至少一個小寫字母、一個大寫字母和一個數字',
+      'string.pattern.base': '密碼必須包含至少一個小寫字母、一個大寫字母和一個數字',
       'any.required': '密碼為必填項',
     }),
 });

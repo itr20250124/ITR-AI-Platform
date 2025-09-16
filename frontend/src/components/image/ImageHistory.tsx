@@ -1,112 +1,112 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
   ImageService,
   ImageResponse,
   ImageHistory as ImageHistoryType,
-} from '../../services/imageService'
-import { Button } from '../ui/Button'
-import { Card } from '../ui/Card'
-import { ImagePreview } from './ImagePreview'
-import toast from 'react-hot-toast'
+} from '../../services/imageService';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { ImagePreview } from './ImagePreview';
+import toast from 'react-hot-toast';
 
 interface ImageHistoryProps {
-  onImageSelect?: (image: ImageResponse) => void
-  className?: string
+  onImageSelect?: (image: ImageResponse) => void;
+  className?: string;
 }
 
 export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, className = '' }) => {
-  const [history, setHistory] = useState<ImageHistoryType>({ images: [], total: 0 })
-  const [isLoading, setIsLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [filter, setFilter] = useState<'all' | 'generation' | 'variation' | 'edit'>('all')
-  const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set())
-  const [showBulkActions, setShowBulkActions] = useState(false)
+  const [history, setHistory] = useState<ImageHistoryType>({ images: [], total: 0 });
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [filter, setFilter] = useState<'all' | 'generation' | 'variation' | 'edit'>('all');
+  const [selectedImages, setSelectedImages] = useState<Set<string>>(new Set());
+  const [showBulkActions, setShowBulkActions] = useState(false);
 
-  const itemsPerPage = 12
+  const itemsPerPage = 12;
 
   // 載入圖片歷史
   const loadHistory = async (page: number = 1, type?: string) => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const options = {
         limit: itemsPerPage,
         offset: (page - 1) * itemsPerPage,
         ...(type && type !== 'all' && { type: type as any }),
-      }
+      };
 
-      const imageService = new ImageService()
-      const result = await imageService.getImageHistory(options)
-      setHistory(result)
+      const imageService = new ImageService();
+      const result = await imageService.getImageHistory(options);
+      setHistory(result);
     } catch (error) {
-      console.error('載入圖片歷史失敗:', error)
-      toast.error('載入圖片歷史失敗')
+      console.error('載入圖片歷史失敗:', error);
+      toast.error('載入圖片歷史失敗');
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // 初始載入
   useEffect(() => {
-    loadHistory(1, filter)
-  }, [filter])
+    loadHistory(1, filter);
+  }, [filter]);
 
   // 處理頁面變更
   const handlePageChange = (page: number) => {
-    setCurrentPage(page)
-    loadHistory(page, filter)
-  }
+    setCurrentPage(page);
+    loadHistory(page, filter);
+  };
 
   // 處理篩選變更
   const handleFilterChange = (newFilter: typeof filter) => {
-    setFilter(newFilter)
-    setCurrentPage(1)
-  }
+    setFilter(newFilter);
+    setCurrentPage(1);
+  };
 
   // 處理圖片選擇
   const handleImageToggle = (imageId: string) => {
-    const newSelected = new Set(selectedImages)
+    const newSelected = new Set(selectedImages);
     if (newSelected.has(imageId)) {
-      newSelected.delete(imageId)
+      newSelected.delete(imageId);
     } else {
-      newSelected.add(imageId)
+      newSelected.add(imageId);
     }
-    setSelectedImages(newSelected)
-    setShowBulkActions(newSelected.size > 0)
-  }
+    setSelectedImages(newSelected);
+    setShowBulkActions(newSelected.size > 0);
+  };
 
   // 全選/取消全選
   const handleSelectAll = () => {
     if (selectedImages.size === history.images.length) {
-      setSelectedImages(new Set())
-      setShowBulkActions(false)
+      setSelectedImages(new Set());
+      setShowBulkActions(false);
     } else {
-      setSelectedImages(new Set(history.images.map(img => img.id)))
-      setShowBulkActions(true)
+      setSelectedImages(new Set(history.images.map(img => img.id)));
+      setShowBulkActions(true);
     }
-  }
+  };
 
   // 批量下載
   const handleBulkDownload = async () => {
-    const selectedImagesList = history.images.filter(img => selectedImages.has(img.id))
+    const selectedImagesList = history.images.filter(img => selectedImages.has(img.id));
 
     for (const image of selectedImagesList) {
       try {
         await ImageService.downloadImage(
           image.imageUrl,
           `${image.metadata?.type || 'image'}-${image.id}.png`
-        )
+        );
       } catch (error) {
-        console.error(`下載圖片 ${image.id} 失敗:`, error)
+        console.error(`下載圖片 ${image.id} 失敗:`, error);
       }
     }
 
-    toast.success(`已開始下載 ${selectedImagesList.length} 張圖片`)
-  }
+    toast.success(`已開始下載 ${selectedImagesList.length} 張圖片`);
+  };
 
   // 批量刪除（這裡假設有刪除API）
   const handleBulkDelete = async () => {
     if (!confirm(`確定要刪除選中的 ${selectedImages.size} 張圖片嗎？`)) {
-      return
+      return;
     }
 
     try {
@@ -114,46 +114,46 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
       // await ImageService.deleteImages(Array.from(selectedImages));
 
       // 暫時從本地狀態中移除
-      const newImages = history.images.filter(img => !selectedImages.has(img.id))
+      const newImages = history.images.filter(img => !selectedImages.has(img.id));
       setHistory(prev => ({
         ...prev,
         images: newImages,
         total: prev.total - selectedImages.size,
-      }))
+      }));
 
-      setSelectedImages(new Set())
-      setShowBulkActions(false)
-      toast.success('圖片已刪除')
+      setSelectedImages(new Set());
+      setShowBulkActions(false);
+      toast.success('圖片已刪除');
     } catch (error) {
-      console.error('批量刪除失敗:', error)
-      toast.error('刪除失敗')
+      console.error('批量刪除失敗:', error);
+      toast.error('刪除失敗');
     }
-  }
+  };
 
   // 計算總頁數
-  const totalPages = Math.ceil(history.total / itemsPerPage)
+  const totalPages = Math.ceil(history.total / itemsPerPage);
 
   // 獲取篩選器標籤
   const getFilterLabel = (filterType: typeof filter) => {
     switch (filterType) {
       case 'all':
-        return '全部'
+        return '全部';
       case 'generation':
-        return '生成'
+        return '生成';
       case 'variation':
-        return '變體'
+        return '變體';
       case 'edit':
-        return '編輯'
+        return '編輯';
       default:
-        return '全部'
+        return '全部';
     }
-  }
+  };
 
   // 獲取篩選器計數
   const getFilterCount = (filterType: typeof filter) => {
-    if (filterType === 'all') return history.total
-    return history.images.filter(img => img.metadata?.type === filterType).length
-  }
+    if (filterType === 'all') return history.total;
+    return history.images.filter(img => img.metadata?.type === filterType).length;
+  };
 
   return (
     <div className={`space-y-6 ${className}`}>
@@ -227,8 +227,8 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
                   variant='ghost'
                   size='sm'
                   onClick={() => {
-                    setSelectedImages(new Set())
-                    setShowBulkActions(false)
+                    setSelectedImages(new Set());
+                    setShowBulkActions(false);
                   }}
                 >
                   取消選擇
@@ -297,18 +297,18 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
                     ImageService.downloadImage(
                       image.imageUrl,
                       `${image.metadata?.type || 'image'}-${image.id}.png`
-                    )
+                    );
                   }}
                   onDelete={() => {
                     // 實作單個圖片刪除
                     if (confirm('確定要刪除這張圖片嗎？')) {
-                      const newImages = history.images.filter(img => img.id !== image.id)
+                      const newImages = history.images.filter(img => img.id !== image.id);
                       setHistory(prev => ({
                         ...prev,
                         images: newImages,
                         total: prev.total - 1,
-                      }))
-                      toast.success('圖片已刪除')
+                      }));
+                      toast.success('圖片已刪除');
                     }
                   }}
                   className={`cursor-pointer transition-all ${
@@ -334,15 +334,15 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
 
               <div className='flex items-center space-x-1'>
                 {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                  let pageNum
+                  let pageNum;
                   if (totalPages <= 5) {
-                    pageNum = i + 1
+                    pageNum = i + 1;
                   } else if (currentPage <= 3) {
-                    pageNum = i + 1
+                    pageNum = i + 1;
                   } else if (currentPage >= totalPages - 2) {
-                    pageNum = totalPages - 4 + i
+                    pageNum = totalPages - 4 + i;
                   } else {
-                    pageNum = currentPage - 2 + i
+                    pageNum = currentPage - 2 + i;
                   }
 
                   return (
@@ -357,7 +357,7 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
                     >
                       {pageNum}
                     </button>
-                  )
+                  );
                 })}
               </div>
 
@@ -374,5 +374,5 @@ export const ImageHistory: React.FC<ImageHistoryProps> = ({ onImageSelect, class
         </>
       )}
     </div>
-  )
-}
+  );
+};

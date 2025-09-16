@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { ParameterDefinition } from '../types'
-import { Input, Button, Card, CardHeader, CardContent } from './ui'
-import { Settings, RotateCcw, Check, AlertCircle } from 'lucide-react'
+import React, { useState, useEffect } from 'react';
+import { ParameterDefinition } from '../types';
+import { Input, Button, Card, CardHeader, CardContent } from './ui';
+import { Settings, RotateCcw, Check, AlertCircle } from 'lucide-react';
 
 interface ParameterControlProps {
-  parameters: ParameterDefinition[]
-  values: Record<string, any>
-  onChange: (key: string, value: any) => void
-  onReset?: () => void
-  onValidate?: () => void
-  validationErrors?: Array<{ field: string; message: string }>
-  className?: string
+  parameters: ParameterDefinition[];
+  values: Record<string, any>;
+  onChange: (key: string, value: any) => void;
+  onReset?: () => void;
+  onValidate?: () => void;
+  validationErrors?: Array<{ field: string; message: string }>;
+  className?: string;
 }
 
 export const ParameterControl: React.FC<ParameterControlProps> = ({
@@ -22,24 +22,24 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
   validationErrors = [],
   className = '',
 }) => {
-  const [localValues, setLocalValues] = useState<Record<string, any>>(values)
+  const [localValues, setLocalValues] = useState<Record<string, any>>(values);
 
   useEffect(() => {
-    setLocalValues(values)
-  }, [values])
+    setLocalValues(values);
+  }, [values]);
 
   const handleValueChange = (key: string, value: any) => {
-    setLocalValues(prev => ({ ...prev, [key]: value }))
-    onChange(key, value)
-  }
+    setLocalValues(prev => ({ ...prev, [key]: value }));
+    onChange(key, value);
+  };
 
   const getValidationError = (field: string) => {
-    return validationErrors.find(error => error.field === field)?.message
-  }
+    return validationErrors.find(error => error.field === field)?.message;
+  };
 
   const renderParameterInput = (param: ParameterDefinition) => {
-    const value = localValues[param.key]
-    const error = getValidationError(param.key)
+    const value = localValues[param.key];
+    const error = getValidationError(param.key);
 
     switch (param.type) {
       case 'number':
@@ -79,7 +79,7 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
               </div>
             )}
           </div>
-        )
+        );
 
       case 'select':
         return (
@@ -110,7 +110,7 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
             </select>
             {error && <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>}
           </div>
-        )
+        );
 
       case 'boolean':
         return (
@@ -131,7 +131,7 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
             </label>
             {error && <p className='text-sm text-red-600 dark:text-red-400'>{error}</p>}
           </div>
-        )
+        );
 
       case 'string':
       default:
@@ -146,9 +146,9 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
               fullWidth
             />
           </div>
-        )
+        );
     }
-  }
+  };
 
   return (
     <Card className={className}>
@@ -215,5 +215,5 @@ export const ParameterControl: React.FC<ParameterControlProps> = ({
         )}
       </CardContent>
     </Card>
-  )
-}
+  );
+};

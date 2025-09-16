@@ -11,10 +11,7 @@ import { createRetryHandler } from '../utils/RetryHandler';
 /**
  * OpenAI聊天服務
  */
-export class OpenAIChatService
-  extends BaseAIService
-  implements ChatServiceInterface
-{
+export class OpenAIChatService extends BaseAIService implements ChatServiceInterface {
   public provider = 'openai';
   public supportedParameters: ParameterDefinition[] = [
     {
